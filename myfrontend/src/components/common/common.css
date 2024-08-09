@@ -1,0 +1,48 @@
+/*-------- This is the common css file for all the components --------*/
+
+/*-------- Top Navigation Bar --------*/
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #A98B2D;
+    color: white;
+    height: 67px;
+    width: 100%;
+    padding: 0 20px; /* Adjust padding as needed */
+    box-sizing: border-box;
+  }
+  
+  .left-section {
+    display: flex;
+    align-items: center;
+  }
+  
+  .menu-icon {
+    margin-right: 10px; /* Adjust spacing between icon and heading as needed */
+  }
+
+  .menu-icon img {
+    width: 30px; /* Adjust icon size as needed */
+  }
+  
+  .heading {
+    font-size: 30px;
+    margin: 0;
+  }
+  
+  .right-section {
+    display: flex;
+    gap: 20px; /* Adjust spacing between links as needed */
+  }
+  
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 16px; /* Adjust font size for navigation links */
+  }
+  
+  .nav-link:hover {
+    text-decoration: underline; /* Optional: add underline on hover */
+  }
+  
