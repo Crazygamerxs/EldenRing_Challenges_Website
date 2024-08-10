@@ -9,3 +9,11 @@ class SimpleAPIView(APIView):
 class SignupAPIView(APIView):
     def post(self, request):
         return Response({"message": "Signup successful!"})
+
+class LoginAPIView(APIView):
+    def post(self, request):
+        return Response({"message": "Login successful!"})
+    
+class HomeAPIView(APIView):
+    def post(self, request):
+        return Response({"message": "Home Page!"})
