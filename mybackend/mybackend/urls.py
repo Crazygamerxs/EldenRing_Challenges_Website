@@ -20,6 +20,7 @@ from api.views import SimpleAPIView
 from api.views import SignupAPIView
 from api.views import LoginAPIView
 from api.views import HomeAPIView
+from api.views import ChallengeAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +28,5 @@ urlpatterns = [
     path('api/signup/', SignupAPIView.as_view(), name='signup'),
     path('api/login/', LoginAPIView.as_view(), name='login'),
     path('api/home/', HomeAPIView.as_view(), name='home'),
-]
+    path('api/challenge/', ChallengeAPIView.as_view(), name='challenge'),
+    ]

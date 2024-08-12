@@ -1,11 +1,120 @@
-.home-page{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    width: 100%;
-    background-color: #111618;
+/* Home.css */
+html, body {
+    height: 100%;
     margin: 0;
-    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Main container that wraps everything */
+.home-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.home-page {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background-color: #111618;
+    padding: 20px; /* Add padding if needed */
     box-sizing: border-box;
 }
+
+
+.challenge-container {
+    background-color: #222b33;
+    padding: 34px;
+    border-radius: 8px;
+    color: #f0f0f0;
+    width: 55%;
+    position: sticky;
+    left: 175px;
+    right: 0px;
+    bottom: 0; 
+}
+
+.challenge-heading {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 0px;
+    color: #f0f0f0;
+    position: relative;
+    left: 0px;
+}
+
+.challenge-title {
+    color: #a98b2d;
+    font-size: 18px;
+}
+
+.challenge-details {
+    color: #909090;
+    font-size: 14px;
+}
+.challenge-item {
+    margin-bottom: 8px;
+    padding: 8px;
+    color: #f0f0f0;
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    border-bottom: 1px solid #444c56; 
+}
+
+.challenge-content {
+    display: flex;
+    flex-direction: row; /* Align children horizontally */
+    justify-content: space-between;
+    align-items: center;
+}
+
+.challenge-subdetails-container {
+    display: flex;
+    flex: 1; /* Take up remaining space */
+    justify-content: space-between;
+    align-items: center;
+}
+
+.challenge-subdetails {
+    font-size: 13px;
+    color: #909090;
+    flex: 1; /* Ensure it takes up space before the actions */
+}
+
+.challenge-actions {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    margin-left: 16px; /* Ensure space between subdetails and actions */
+}
+
+.challenge-btn {
+    background-color: #222b3300;
+    color: #a98b2d;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.discussion-icon {
+    display: flex;
+    align-items: center;
+    margin-right: 12px; /* Space between icon and text */
+}
+
+.discussion-icon img {
+    width: 20px;
+    height: 20px;
+}
+
+

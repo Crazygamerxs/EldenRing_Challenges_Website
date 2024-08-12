@@ -1,6 +1,12 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
+from .models import Challenge
+from .serializers import ChallengeSerializer
+from django.contrib.auth import get_user_model, authenticate, login
+
+User = get_user_model()
 
 class SimpleAPIView(APIView):
     def get(self, request):
@@ -8,12 +14,43 @@ class SimpleAPIView(APIView):
 
 class SignupAPIView(APIView):
     def post(self, request):
-        return Response({"message": "Signup successful!"})
+        email = request.data.get('email').strip().lower()
+        username = request.data.get('username').strip().lower()
+        password = request.data.get('password')
+
+        if User.objects.filter(email=email).exists():
+            return Response({"error": "Email is already in use"}, status=status.HTTP_400_BAD_REQUEST)
+        if User.objects.filter(username=username).exists():
+            return Response({"error": "Username is already in use"}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = User.objects.create_user(email=email, username=username, password=password)
+        return Response({"message": "Signup successful!"}, status=status.HTTP_201_CREATED)
+
 
 class LoginAPIView(APIView):
     def post(self, request):
-        return Response({"message": "Login successful!"})
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return Response({"message": "Login successful!"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "Invalid email or password"}, status=status.HTTP_401_UNAUTHORIZED)
     
 class HomeAPIView(APIView):
     def post(self, request):
         return Response({"message": "Home Page!"})
+    
+class ChallengeAPIView(APIView):
+    def get(self, request, challenge_id=None):
+        if challenge_id:
+            challenge = Challenge.objects.get(id=challenge_id)
+            serializer = ChallengeSerializer(challenge)
+            return Response(serializer.data)
+
+        else:
+            challenges = Challenge.objects.all()
+            serializer = ChallengeSerializer(challenges, many=True)
+            return Response(serializer.data)

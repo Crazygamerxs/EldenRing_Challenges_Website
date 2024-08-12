@@ -1,9 +1,11 @@
 import cat_logo from './cat_logo.png';
 import google from './google.png';
+import chat from './chat.png';
 
 const images = { 
 cat_logo,
-google
+google,
+chat
 };
 
 export default images;
