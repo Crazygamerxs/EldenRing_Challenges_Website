@@ -27,7 +27,7 @@ class ChallengeDetailSerializer(serializers.ModelSerializer):
 class SubmissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Submission
-        fields = '__all__'
+        fields = ['id', 'user', 'file_url', 'submitted_at']
 
 class DiscussionThreadSerializer(serializers.ModelSerializer):
     class Meta:

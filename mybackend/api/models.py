@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 class UserManager(BaseUserManager):
     def create_user(self, email, username, password=None):
@@ -21,12 +22,17 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=30, unique=True)
     email = models.EmailField(unique=True)
     profile_image = models.URLField(blank=True, null=True)
-    completed_challenges = models.JSONField(default=list, blank=True)  # Optional, can be removed if UserChallenge table is used
-    badges = models.JSONField(default=list, blank=True)  # Optional, can be removed if UserBadge table is used
+    completed_challenges = models.JSONField(default=list, blank=True)  # Optional
+    badges = models.JSONField(default=list, blank=True)  # Optional
+
+    # Required fields for Django admin
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_superuser = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

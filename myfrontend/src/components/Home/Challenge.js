@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';  // Import Link for navigation
 import './Home.css';
 import images from '../../images';
 import { categories } from '../../constants/categories';
@@ -17,7 +18,7 @@ const Challenge = ({ filters }) => {
                 const data = await response.json();
                 setChallenges(data);
             } catch (error) {
-                error('Error fetching challenges:', error);
+                console.error('Error fetching challenges:', error);
             }
         };
 
@@ -75,7 +76,10 @@ const Challenge = ({ filters }) => {
                                             </p>
                                         </div>
                                         <div className="challenge-actions">
-                                            <button className='challenge-btn'>View All Submissions</button>
+                                            {/* Link to ChallengeDetail page with challenge ID */}
+                                            <Link to={`/challenge/${challenge.id}`}>
+                                                <button className='challenge-btn'>View All Submissions</button>
+                                            </Link>
                                             <button className='challenge-btn'>
                                                 <div className='discussion-icon'>
                                                     <img src={images.chat} alt="chat icon" />

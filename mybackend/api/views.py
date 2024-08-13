@@ -1,14 +1,13 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from .models import Challenge, User
-from .serializers import ChallengeSerializer
+from rest_framework import status, generics
+from .models import Challenge, User, Submission
+from .serializers import ChallengeSerializer, SubmissionSerializer
 from django.contrib.auth import get_user_model, authenticate, login
 from django.utils.decorators import method_decorator
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-
 
 User = get_user_model()
 
@@ -37,10 +36,6 @@ class LoginAPIView(APIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
-
-        # Print all cookies received in the request
-        print("Received cookies:", request.COOKIES)
-
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
@@ -64,3 +59,15 @@ class ChallengeAPIView(APIView):
             challenges = Challenge.objects.all()
             serializer = ChallengeSerializer(challenges, many=True)
             return Response(serializer.data)
+        
+
+class ChallengeDetailView(generics.RetrieveAPIView):
+    queryset = Challenge.objects.all()
+    serializer_class = ChallengeSerializer
+
+class ChallengeSubmissionsView(generics.ListAPIView):
+    serializer_class = SubmissionSerializer
+
+    def get_queryset(self):
+        challenge_id = self.request.query_params.get('challenge')
+        return Submission.objects.filter(challenge_id=challenge_id)
