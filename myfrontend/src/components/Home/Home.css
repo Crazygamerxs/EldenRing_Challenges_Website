@@ -15,6 +15,7 @@ body {
     display: flex;
     flex-direction: column;
     flex: 1;
+    min-height: 100vh;
 }
 
 .home-page {
@@ -23,7 +24,7 @@ body {
     justify-content: flex-start;
     align-items: flex-start;
     background-color: #111618;
-    padding: 20px; /* Add padding if needed */
+    padding: 20px; 
     box-sizing: border-box;
 }
 
@@ -33,12 +34,13 @@ body {
     padding: 34px;
     border-radius: 8px;
     color: #f0f0f0;
-    width: 55%;
+    width: 49.3%;
     position: sticky;
     left: 175px;
     right: 0px;
     bottom: 0; 
 }
+
 
 .challenge-heading {
     font-size: 24px;
@@ -52,6 +54,7 @@ body {
 .challenge-title {
     color: #a98b2d;
     font-size: 18px;
+    font-weight: bold;
 }
 
 .challenge-details {
@@ -63,20 +66,20 @@ body {
     padding: 8px;
     color: #f0f0f0;
     display: flex;
-    flex-direction: column; /* Stack children vertically */
+    flex-direction: column; 
     border-bottom: 1px solid #444c56; 
 }
 
 .challenge-content {
     display: flex;
-    flex-direction: row; /* Align children horizontally */
+    flex-direction: row; 
     justify-content: space-between;
     align-items: center;
 }
 
 .challenge-subdetails-container {
     display: flex;
-    flex: 1; /* Take up remaining space */
+    flex: 1; 
     justify-content: space-between;
     align-items: center;
 }
@@ -84,14 +87,14 @@ body {
 .challenge-subdetails {
     font-size: 13px;
     color: #909090;
-    flex: 1; /* Ensure it takes up space before the actions */
+    flex: 1; 
 }
 
 .challenge-actions {
     display: flex;
     gap: 18px;
     align-items: center;
-    margin-left: 16px; /* Ensure space between subdetails and actions */
+    margin-left: 16px; 
 }
 
 .challenge-btn {
@@ -109,7 +112,7 @@ body {
 .discussion-icon {
     display: flex;
     align-items: center;
-    margin-right: 12px; /* Space between icon and text */
+    margin-right: 12px; 
 }
 
 .discussion-icon img {
@@ -117,4 +120,89 @@ body {
     height: 20px;
 }
 
+.no-data {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Space between the icon and message */
+    margin: 0 auto; /* Center the whole block horizontally */
+}
 
+.no-data-icon {
+    height: 40px;
+    width: 40px;
+}
+
+.no-data-message {
+    color: #f0f0f0;
+    font-size: 18px;
+    margin: 0; /* Remove default margin */
+}
+
+/*--------- Challenge Filter       ----------*/
+
+.challenge-filter {
+    background-color: #222b33;
+    padding: 20px;
+    border-radius: 8px;
+    color: #f0f0f0;
+    width: 22%;
+    position: relative;
+    left: 180px;
+    box-sizing: border-box; 
+}
+
+.challenge-filter h3 {
+    color: #f0f0f0;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    margin-left: 0; 
+}
+
+.filter-category {
+    margin-left: 0; 
+}
+
+.filter-category h4 {
+    color: #909090;
+    font-size: 14px;
+    margin-bottom: 8px;
+    margin-left: 0;
+}
+
+.filter-category label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #A98B2D;
+    margin-bottom: 8px;
+    padding-left: 0;
+    width: 100%;
+}
+
+.filter-category input[type="checkbox"] {
+    margin-right: 8px;
+    margin-left: 0;
+    padding: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.filter-category label {
+    justify-content: flex-start;
+    padding-left: 0;
+    margin-left: 0;
+}
+
+
+
+.filter-category label {
+    margin-left: 0; /* Ensures label starts at the container's edge */
+    padding-left: 0; /* Removes any padding that might affect alignment */
+}
+
+.challenge-filter h3, .filter-category h4 {
+    margin-left: 0;
+    padding-left: 0;
+}

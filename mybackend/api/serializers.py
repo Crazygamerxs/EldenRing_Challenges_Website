@@ -1,7 +1,7 @@
 # serializers.py
 
 from rest_framework import serializers
-from .models import User, Challenge, ChallengeDetail, Submission, DiscussionThread, Comment, Like, Leaderboard, Badge, UserBadge
+from .models import User, Challenge, Challenge_Category, ChallengeDetail, Submission, DiscussionThread, Comment, Like, Leaderboard, Badge, UserBadge
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,6 +12,12 @@ class ChallengeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Challenge
         fields = ['id', 'name', 'difficulty', 'details', 'category']
+
+class ChallengeCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Challenge_Category
+        fields = ['id', 'name']
+
 
 class ChallengeDetailSerializer(serializers.ModelSerializer):
     class Meta:

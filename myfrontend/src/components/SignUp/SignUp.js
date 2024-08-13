@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TopBar from '../common/TopBar';
 import BottomBar from '../common/BottomBar';
-import './SignUp.css';
+import './SignUp.css'; // Make sure this CSS file is updated with the new styles
 
 const SignUp = () => {
     const [username, setUsername] = useState('');

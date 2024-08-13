@@ -20,11 +20,13 @@ const LogIn = () => {
                 body: JSON.stringify({ username, password }),
             });
 
+            const data = await response.json();
+
             if (response.ok) {
-                navigate('/home');
+                console.log('Login successful:', data);  // Debug statement
+                navigate(data.redirect || '/home');  // Use redirect from response or default to /home
             } else {
-                const errorData = await response.json();
-                alert(errorData.error);
+                alert(data.error);
             }
         } catch (error) {
             console.error('Error during login:', error);
@@ -39,9 +41,9 @@ const LogIn = () => {
                     <h2>LOGIN TO ELDENRING.CA</h2>
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <label htmlFor="username">username</label>
+                            <label htmlFor="username">Username</label>
                             <input
-                                type="username"
+                                type="text"
                                 id="username"
                                 value={username}
                                 onChange={(e) => setusername(e.target.value)}
