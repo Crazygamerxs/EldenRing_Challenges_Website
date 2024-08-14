@@ -49,7 +49,7 @@
     margin-left: 155px;
   }
 
-  .left-section h1 {
+  .left-section-heading {
     font-size: 20px;
     margin: 0;
   }
@@ -155,3 +155,41 @@
     position: relative;
     left: 45%;
   }
+
+
+/*-------- Loading Indicator --------*/
+.loading-indicator {
+  position: fixed; /* Fixed positioning to overlay on top of everything */
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: rgba(255, 255, 255, 0.6);
+  transition: width 0.5s ease, opacity 2s ease; /* Smooth transition effect */
+  z-index: 1000; /* Ensure it’s on top */
+  opacity: 1; /* Start fully visible */
+}
+
+/* Keyframes for sliding effect */
+@keyframes slide {
+  from {
+    width: 0;
+    opacity: 1;
+  }
+  to {
+    width: 100%;
+    opacity: 1;
+  }
+}
+
+/* When visible, start the animation */
+.loading-indicator.visible {
+  animation: slide 0.5s forwards; 
+}
+
+/* Fade out effect */
+.loading-indicator.fade-out {
+  opacity: 0;
+  transition: visibility 0s 1s, opacity 1s linear;
+}
+

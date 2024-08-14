@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TopBar from '../common/TopBar';
-import BottomBar from '../common/BottomBar';
+import { UserContext } from '../common/UserContext';
 import './Login.css';
 
 const LogIn = () => {
-    const [username, setusername] = useState('');
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
+    const { login } = useContext(UserContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -23,8 +23,10 @@ const LogIn = () => {
             const data = await response.json();
 
             if (response.ok) {
-                console.log('Login successful:', data);  // Debug statement
-                navigate(data.redirect || '/home');  // Use redirect from response or default to /home
+                console.log('Login successful:', data);
+                // No sensitive data should be used here
+                login(); // Only perform actions based on token
+                navigate(data.redirect || '/home');
             } else {
                 alert(data.error);
             }
@@ -35,7 +37,6 @@ const LogIn = () => {
 
     return (
         <div>
-            <TopBar />
             <div className='login-page'>
                 <div className="login-content">
                     <h2>LOGIN TO ELDENRING.CA</h2>
@@ -46,7 +47,7 @@ const LogIn = () => {
                                 type="text"
                                 id="username"
                                 value={username}
-                                onChange={(e) => setusername(e.target.value)}
+                                onChange={(e) => setUsername(e.target.value)}
                                 required
                             />
                         </div>
@@ -67,7 +68,6 @@ const LogIn = () => {
                     </form>
                 </div>
             </div>
-            <BottomBar />
         </div>
     );
 };

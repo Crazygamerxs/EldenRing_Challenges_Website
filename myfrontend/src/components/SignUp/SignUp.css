@@ -23,12 +23,13 @@
     height: auto; /* Adjust to fit content height */
 }
 
-h2 {
+.sign-up-content h2 {
     color: #fff;
     font-size: 16px;
     font-weight: 700;
     font-family: 'Poppins', sans-serif;
     margin-bottom: 20px; /* Space below the heading */
+    left: 10px;
 }
 
 .form-group {

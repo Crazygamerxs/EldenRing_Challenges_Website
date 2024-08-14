@@ -2,12 +2,16 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
-from .models import Challenge, User, Submission
-from .serializers import ChallengeSerializer, SubmissionSerializer
+from .models import Challenge, User, Submission,  DiscussionThread
+from .serializers import ChallengeSerializer, SubmissionSerializer, DiscussionThreadSerializer
 from django.contrib.auth import get_user_model, authenticate, login
 from django.utils.decorators import method_decorator
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+import random
+from django.templatetags.static import static
+from rest_framework.authtoken.models import Token
+
 
 User = get_user_model()
 
@@ -27,8 +31,19 @@ class SignupAPIView(APIView):
         if User.objects.filter(username=username).exists():
             return Response({"error": "Username is already in use"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Create a new user
-        user = User.objects.create_user(email=email, username=username, password=password)
+        # Define your profile pictures URLs
+        profile_pics = [
+            static('main/images/profile_pic/pp_1.png'),
+            static('main/images/profile_pic/pp_2.png'),
+            static('main/images/profile_pic/pp_3.png'),
+        ]
+
+        # Randomly select a profile picture
+        profile_pic_url = random.choice(profile_pics)
+
+        # Create a new user with the selected profile picture
+        user = User.objects.create_user(email=email, username=username, password=password, profile_image=profile_pic_url)
+        
         return Response({"message": "Signup successful!"}, status=status.HTTP_201_CREATED)
 
 
@@ -36,14 +51,34 @@ class LoginAPIView(APIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
+        
+        # Authenticate the user
         user = authenticate(request, username=username, password=password)
+        
         if user is not None:
             login(request, user)
-            print("User logged in:", user)  # Debug statement
-            return Response({"message": "Login successful!", "redirect": "/home"}, status=status.HTTP_200_OK)
+            
+            # Generate or get the authentication token
+            token, created = Token.objects.get_or_create(user=user)
+            
+            # Create a response with a success message and redirect URL
+            response = Response({
+                "message": "Login successful!",
+                "redirect": "/home"
+            }, status=status.HTTP_200_OK)
+            
+            # Set the authentication token in an HTTP-Only cookie
+            response.set_cookie(
+                'auth_token',  # Cookie name
+                token.key,  # Token value
+                httponly=True,  # Cookie cannot be accessed via JavaScript
+                secure=True,  # Cookie only sent over HTTPS
+                samesite='Strict'  # Cookie sent only for same-site requests
+            )
+            
+            return response
         else:
-            return Response({"error": "Invalid username or password"}, status=status.HTTP_401_UNAUTHORIZED)
-
+            return Response({"error": "Invalid username or password"}, status=status.HTTP_401_UNAU)
 
 class HomeAPIView(APIView):
     def post(self, request):
@@ -71,3 +106,14 @@ class ChallengeSubmissionsView(generics.ListAPIView):
     def get_queryset(self):
         challenge_id = self.request.query_params.get('challenge')
         return Submission.objects.filter(challenge_id=challenge_id)
+    
+class ThreadListView(APIView):
+    def get(self, request, *args, **kwargs):
+        category_id = request.query_params.get('category_id', None)
+        if category_id:
+            threads = DiscussionThread.objects.filter(category_id=category_id)
+        else:
+            threads = DiscussionThread.objects.all()
+        
+        serializer = DiscussionThreadSerializer(threads, many=True)
+        return Response(serializer.data)

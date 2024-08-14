@@ -31,7 +31,8 @@ body {
 
 .challenge-container {
     background-color: #222b33;
-    padding: 34px;
+    padding-left: 34px;
+    padding-right: 34px;
     border-radius: 8px;
     color: #f0f0f0;
     width: 49.3%;
@@ -39,6 +40,8 @@ body {
     left: 175px;
     right: 0px;
     bottom: 0; 
+    margin-bottom: 10px;
+    min-height: 70px;
 }
 
 
@@ -125,7 +128,8 @@ body {
     align-items: center;
     justify-content: center;
     gap: 10px; /* Space between the icon and message */
-    margin: 0 auto; /* Center the whole block horizontally */
+    margin-top: 10px;
+     /* Center the whole block horizontally */
 }
 
 .no-data-icon {
@@ -139,11 +143,19 @@ body {
     margin: 0; /* Remove default margin */
 }
 
+/* Target all links and remove underline */
+.challenge-container a {
+    text-decoration: none;
+}
+
+
 /*--------- Challenge Filter       ----------*/
 
 .challenge-filter {
     background-color: #222b33;
-    padding: 20px;
+    padding-left: 20px;
+    padding-right: 20px;  
+    padding-bottom: 20px;      
     border-radius: 8px;
     color: #f0f0f0;
     width: 22%;

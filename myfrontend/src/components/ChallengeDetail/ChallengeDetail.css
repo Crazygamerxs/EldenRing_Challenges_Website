@@ -10,38 +10,43 @@
 }
 
 .challenge-detail-content {
-    width: 75%;
-    background-color: #222b33;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    position: sticky;
-    left: 175px;
-    right: 0px;
-    bottom: 0; 
-
+  width: 75%;
+  background-color: #222b33;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  left: 175px;
+  right: 0px;
+  bottom: 0;
 }
 
-.challenge-detail-content h1{
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 0px;
-    color: #a98b2d;
-    position: relative;
-    left: 0px;
+.challenge-detail-content h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 0;
+  color: #a98b2d;
+  margin-right: auto; /* Pushes the h1 to the left */
+  margin-top: -10px;
 }
 
-.challenge-detail-content p{
-    color: #909090;
-    font-size: 14px;
+.challenge-detail-content p {
+  color: #909090;
+  font-size: 14px;
+}
+
+.challenge-detail-content .submit-run-btn-container {
+  margin-top: auto; /* Pushes button to the bottom of the container */
+  display: flex;
+  justify-content: flex-end; /* Aligns button to the right */
 }
 
 .challenge-tabs {
     display: flex;
     border-bottom: 1px solid #444c56;
-    margin-bottom: 20px;
+    margin-top: 22px;
 }
 
 .challenge-tabs button {
@@ -50,9 +55,10 @@
     color: #f0f0f0;
     font-size: 16px;
     margin-right: 20px;
-    padding: 10px;
+    padding: 14px;
     cursor: pointer;
     transition: color 0.3s;
+    border-radius: 0; /* Ensure no border radius */
 }
 
 .challenge-tabs button.active {
@@ -71,21 +77,155 @@
     bottom: 0; 
 }
 
-.submissions-list ul {
-    list-style-type: none;
-    padding: 0;
+.leaderboard {
+    width: 100%;
 }
 
-.submissions-list li {
+.leaderboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.leaderboard-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #f0f0f0;
+}
+
+.submit-run-btn-container {
+  display: flex;
+  justify-content: flex-end; /* Ensure the button is on the right */
+  align-items: center; /* Vertically align items */
+}
+
+.submit-run-btn {
+  background-color: #a98b2d;
+  color: #f0f0f0;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+  font-size: 16px;
+  display: flex; 
+  align-items: center; 
+  font-weight: bold;
+}
+
+.submit-run-icon {
+  width: 20px;
+  height: 20px; 
+  margin-left: 8px; 
+}
+
+
+
+.challenge-detail-results table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #1e262d;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.challenge-detail-results table th, table td {
+    padding: 20px;
+    text-align: center;
+    color: #f0f0f0;
+    border-bottom: 1px solid #2c3b47;
+}
+
+.challenge-detail-results table th {
+    background-color: #2c3b47;
+}
+
+.challenge-detail-results table tr:nth-child(even) {
+    background-color: #24303e;
+}
+
+
+
+/*------------- Submit Run Modal -------------*/
+.submit-run-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .submit-run-modal {
+    background: #1e262d; /* Outer box color */
+    padding: 20px;
+    border-radius: 8px;
+    position: relative;
+    width: 800px;
+    height: 250px;
+    color: #f0f0f0; /* Text color */
+  }
+  
+  .submit-run-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #f0f0f0; /* Close button color */
+    cursor: pointer;
+  }
+  
+  .submit-run-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #a98b2d; /* Title color */
+    margin-bottom: 20px;
+  }
+  
+  .submit-run-form-container {
+    background: #2c3b47; /* Inner box color */
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100px;
+  }
+  
+  .submit-run-form-label {
+    font-size: 16px;
+    color: #f0f0f0; /* Label color */
     margin-bottom: 10px;
-}
-
-.submissions-list a {
-    color: #a98b2d;
-    text-decoration: none;
+  }
+  
+  .submit-run-input {
+    padding: 14px;
+    border: none;
+    border-radius: 4px;
+    background: #f0f0f0;
+    color: #333;
+    margin-bottom: 20px; /* Space below the input */
     font-size: 14px;
-}
+  }
+  
+  
+  .submit-run-submit-btn {
+    background-color: #a98b2d; /* Button color */
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-top: 20px;
+  }
+  
 
-.submissions-list a:hover {
-    text-decoration: underline;
-}
+  

@@ -1,7 +1,7 @@
 # serializers.py
 
 from rest_framework import serializers
-from .models import User, Challenge, Challenge_Category, ChallengeDetail, Submission, DiscussionThread, Comment, Like, Leaderboard, Badge, UserBadge
+from .models import User, Challenge, Challenge_Category, ChallengeDetail, Submission, DiscussionThread, Comment, Like, Leaderboard, Badge, UserBadge, ForumCategory
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,14 +25,25 @@ class ChallengeDetailSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class SubmissionSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)  
     class Meta:
         model = Submission
-        fields = ['id', 'user', 'file_url', 'submitted_at']
+        fields = ['id', 'user', 'username', 'challenge', 'file_url', 'submitted_at', 'time_taken']  
+
+class ForumCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ForumCategory
+        fields = ['id', 'name']
 
 class DiscussionThreadSerializer(serializers.ModelSerializer):
+    category = ForumCategorySerializer()
+    username = serializers.CharField(source='user.username', read_only=True)
+
     class Meta:
         model = DiscussionThread
-        fields = '__all__'
+        fields = ['id', 'title', 'body', 'created_at', 'username', 'category']
+
+
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:

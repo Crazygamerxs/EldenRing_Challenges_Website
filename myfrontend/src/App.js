@@ -1,22 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import SignUp from './components/SignUp/SignUp'; // Adjust path as needed
-import Login from './components/Login/Login'; // Adjust path as needed
-import Home from './components/Home/Home'; // Adjust path as needed
+import SignUp from './components/SignUp/SignUp';
+import Login from './components/Login/Login';
+import Home from './components/Home/Home';
 import ChallengeDetail from './components/ChallengeDetail/ChallengeDetail';
+import CommunityBoard from './components/CB/CB';
+import CommunityForum from './components/CB/CommunityForum'; // Import the new component
+import LoadingIndicator from './components/common/LoadingIndicator';
+import TopBar from './components/common/TopBar';
+import BottomBar from './components/common/BottomBar';
+import { UserProvider } from './components/common/UserContext';
+import RouteLoader from './components/common/RouteLoader';
 
-function App() {
+const App = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
-    <Router>
-      <Routes>
-        <Route path="/home" element={<Home />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/challenge/:id" element={<ChallengeDetail />} />
-        {/* Add other routes here */}
-      </Routes>
-    </Router>
+    <UserProvider>
+      <Router>
+        <TopBar />
+        <LoadingIndicator isVisible={isLoading} />
+        <Routes>
+          <Route path="/home" element={<Home />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/challenge/:id" element={<ChallengeDetail />} />
+          <Route path="/CB" element={<CommunityBoard />} />
+          <Route path="/forum/:forumName" element={<CommunityForum />} /> {/* Add this route */}
+        </Routes>
+        <BottomBar />
+        <RouteLoader setIsLoading={setIsLoading} />
+      </Router>
+    </UserProvider>
   );
-}
+};
 
 export default App;

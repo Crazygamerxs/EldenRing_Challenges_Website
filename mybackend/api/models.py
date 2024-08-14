@@ -1,24 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from datetime import timedelta
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, username, password=None):
+    def create_user(self, email, username, password=None, profile_image=None, **extra_fields):
         if not email:
-            raise ValueError('Users must have an email address')
+            raise ValueError('The Email field must be set')
         if not username:
-            raise ValueError('Users must have a username')
+            raise ValueError('The Username field must be set')
 
         email = self.normalize_email(email)
-        user = self.model(email=email, username=username)
+        user = self.model(email=email, username=username, profile_image=profile_image, **extra_fields)
         user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, email, username, password=None):
-        user = self.create_user(email, username, password)
-        user.is_staff = True
-        user.is_superuser = True
         user.save(using=self._db)
         return user
 
@@ -58,9 +52,7 @@ class Challenge(models.Model):
         return self.name
 
 class ChallengeDetail(models.Model):
-    challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
     submission = models.ForeignKey('Submission', on_delete=models.CASCADE)
-    time_taken = models.DurationField()
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -71,12 +63,18 @@ class Submission(models.Model):
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
     file_url = models.URLField()
     submitted_at = models.DateTimeField(auto_now_add=True)
+    time_taken = models.DurationField(default=timedelta())  # Default value set to timedelta of zero
 
     def __str__(self):
         return f"Submission by {self.user.email} for {self.challenge.name}"
 
+class ForumCategory(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    def __str__(self):
+        return self.name
+
 class DiscussionThread(models.Model):
-    category = models.CharField(max_length=20, choices=[('Introduction', 'Introduction'), ('Challenges', 'Challenges'), ('Other Talk', 'Other Talk'), ('Site', 'Site')])
+    category = models.ForeignKey(ForumCategory, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     body = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -93,6 +91,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment by {self.user.email} on {self.thread.title}"
+
 
 class Like(models.Model):
     post_id = models.PositiveIntegerField()  # To track likes on threads and comments
