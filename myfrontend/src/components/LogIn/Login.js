@@ -8,7 +8,10 @@ const LogIn = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const { login } = useContext(UserContext);
-
+    const printCookies = () => {
+        console.log('Cookies:', document.cookie);
+      };
+      
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -17,6 +20,7 @@ const LogIn = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include', 
                 body: JSON.stringify({ username, password }),
             });
 
@@ -24,8 +28,12 @@ const LogIn = () => {
 
             if (response.ok) {
                 console.log('Login successful:', data);
-                // No sensitive data should be used here
-                login(); // Only perform actions based on token
+                console.log('Logged in username:', username);
+                
+                printCookies(); // Print cookies to console
+                // Pass user data to the login context
+                login({ username });
+
                 navigate(data.redirect || '/home');
             } else {
                 alert(data.error);
@@ -36,37 +44,35 @@ const LogIn = () => {
     };
 
     return (
-        <div>
-            <div className='login-page'>
-                <div className="login-content">
-                    <h2>LOGIN TO ELDENRING.CA</h2>
-                    <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label htmlFor="username">Username</label>
-                            <input
-                                type="text"
-                                id="username"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="password">Password</label>
-                            <input
-                                type="password"
-                                id="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="form-actions">
-                            <button type="submit">Log In</button>
-                            <button type="button" onClick={() => navigate('/signup')}>Don't have an account?</button>
-                        </div>
-                    </form>
-                </div>
+        <div className='login-page'>
+            <div className="login-content">
+                <h2>LOGIN TO ELDENRING.CA</h2>
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="username">Username</label>
+                        <input
+                            type="text"
+                            id="username"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="password">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="form-actions">
+                        <button type="submit">Log In</button>
+                        <button type="button" onClick={() => navigate('/signup')}>Don't have an account?</button>
+                    </div>
+                </form>
             </div>
         </div>
     );

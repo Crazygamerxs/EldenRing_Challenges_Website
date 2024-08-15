@@ -60,6 +60,10 @@ body {
     font-weight: bold;
 }
 
+.challenge-title:hover {
+    color: #ce9e10;
+}
+
 .challenge-details {
     color: #909090;
     font-size: 14px;
@@ -110,6 +114,10 @@ body {
     border-radius: 4px;
     display: flex;
     align-items: center;
+}
+
+.challenge-btn:hover {
+    color: #ce9e10;
 }
 
 .discussion-icon {
@@ -191,6 +199,10 @@ body {
     margin-bottom: 8px;
     padding-left: 0;
     width: 100%;
+}
+
+.filter-category label:hover {
+    color: #ce9e10;
 }
 
 .filter-category input[type="checkbox"] {

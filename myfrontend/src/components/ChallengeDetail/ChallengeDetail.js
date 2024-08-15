@@ -136,7 +136,7 @@ const ChallengeDetail = () => {
                     {/* Implement discussion tab functionality later */}
                 </div>
             </div>
-            {isSubmitRunOpen && <SubmitRun onClose={() => setIsSubmitRunOpen(false)} />}
+            {isSubmitRunOpen && <SubmitRun challengeId={id} onClose={() => setIsSubmitRunOpen(false)} />}
         </div>
     );
 };

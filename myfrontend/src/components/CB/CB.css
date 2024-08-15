@@ -1,6 +1,4 @@
-/*------------------------------------*/
 /* Community Board Styling */
-/*------------------------------------*/
 .community-page {
     display: flex;
     justify-content: flex-start;
@@ -11,7 +9,6 @@
     box-sizing: border-box;
 }
 
-/* Community Board Styling */
 .community-board {
     width: 100%;
     max-width: 1120px;
@@ -20,14 +17,13 @@
     right: 5px;
     top: 50px;
     padding: 0;
-    background-color: #2F404F; /* Background color for the whole board */
+    background-color: #2F404F; 
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     color: #f0f0f0;
-    overflow: hidden; /* Ensure no overflow */
+    overflow: hidden; 
 }
 
-/* Community Board Header */
 .community-board h2 {
     color: #f0f0f0; 
     padding: 16px;
@@ -37,16 +33,49 @@
     background-color: #2F404F;
     margin: 0;
     border-bottom: 1px solid #3a3a4b;
-    border-top-left-radius: 8px; /* Apply border-radius to the top */
+    border-top-left-radius: 8px; 
     border-top-right-radius: 8px;
+    display: flex; 
+    align-items: center;
+}
+
+.community-board .forum-link {
+    color: #a98b2d;
+    text-decoration: none; 
+    margin-right: 8px; 
+    font-weight: bold; 
+    font-size: 24px; 
+    padding: 16px; 
+    line-height: 24px; 
+    display: inline-block;
+}
+
+.community-board .forum-link:hover {
+    color: #ce9e10; 
+}
+
+.community-board .divider {
+    color: #6a6d70; 
+    font-size: 24px; 
+    line-height: 24px; 
+    position: relative;
+    right: 10px;
+
+}
+
+.community-board .category-name {
+    color: #6a6d70; 
+    font-size: 24px; 
+    font-weight: bold;
+    line-height: 24px; 
 }
 
 /* Forum Table Styling */
 .forum-table {
     width: 100%;
-    border-bottom-left-radius: 8px; /* Apply border-radius to the bottom */
+    border-bottom-left-radius: 8px; 
     border-bottom-right-radius: 8px;
-    overflow: hidden; /* Prevent overflow issues */
+    overflow: hidden;
 }
 
 .forum-header {
@@ -57,20 +86,21 @@
     color: #f0f0f0;
 }
 
-/* Adjust column widths for header */
+/*------------------- Forum table Styling   -------------------*/
 .forum-header .forum-column-1st {
-    flex: 0 0 60%; /* 60% of the total width */
-    text-align: start; /* Left align header content */
+    flex: 0 0 60%; 
+    text-align: start; 
+    text-decoration: none !important;
 }
 
 .forum-header .forum-column {
     flex: 0 0 10%; 
-    text-align: center; /* Center align header content */
+    text-align: center; 
 }
 
 .forum-header .forum-column:last-child {
-    flex: 0 0 25%; /* 25% of the total width */
-    text-align: left; /* Left align header content */
+    flex: 0 0 25%; 
+    text-align: left; 
 }
 
 /* Forum Row Styling */
@@ -81,6 +111,7 @@
     border-bottom: 1px solid #3a3a4b;
     transition: background-color 0.3s ease;
     align-items: center;
+    text-decoration: none !important;
 }
 
 .forum-row:last-child {
@@ -95,17 +126,26 @@
     background-color: #222B33;
 }
 
-/* Adjust column widths for rows */
 .forum-column-1st {
-    flex: 0 0 60%; /* 60% of the total width */
+    flex: 0 0 60%;
     color: #f0f0f0;
-    text-align: start; /* Align content left */
+    text-align: start; 
+    text-decoration: none !important;
 }
+
+.forum-column-1st a {
+    text-decoration: none; /* Removes the underline from links */
+}
+
 
 .forum-column-1st strong {
     display: block;
     color: #a98b2d;
     font-weight: bold;
+}
+
+.forum-column-1st strong:hover {
+    color: #ce9e10; 
 }
 
 .forum-column-1st span {
@@ -114,17 +154,17 @@
 }
 
 .forum-column {
-    display: flex; /* Enable flexbox for alignment */
-    align-items: center; /* Center items vertically */
-    flex: 0 0 9%; /* 15% of the total width */
-    text-align: center; /* Center align content */
+    display: flex;
+    align-items: center; 
+    flex: 0 0 9%;
+    text-align: center;
 }
 
 .forum-column img.avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    margin-right: 10px; /* Space between image and text */
+    margin-right: 10px; 
 }
 
 .forum-column span {
@@ -133,8 +173,165 @@
 }
 
 .forum-column:last-child {
-    flex: 0 0 25%; /* 25% of the total width */
-    text-align: left; /* Align content left */
+    flex: 0 0 25%; 
+    text-align: left; 
     margin-left: 120px;
+}
+/*------------------- Thread Page Styling   -------------------*/
+/* Thread Page Styling */
+.thread-page {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 100vh;
+    background-color: #111618;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Thread Header Styling */
+.thread-header {
+    width: 100%;
+    max-width: 1120px;
+    margin: 0 auto 0px; /* Adjust margin-bottom to eliminate gap */
+    padding: 20px;
+    background-color: #2F404F;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    color: #f0f0f0;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+}
+
+/* Flex container for the title and icon */
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between icon and title */
+    position: relative;
+    bottom: 10px;
+}
+
+/* Pin Icon Styling */
+.pin-icon img {
+    width: 24px; /* Adjust size as needed */
+    height: 24px;
+}
+
+/* Header Styling */
+.thread-header h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: bold;
+    color: #f0f0f0;
+}
+
+/* Paragraph Styling */
+.thread-header p {
+    margin: 5px 0;
+    color: #909090;
+}
+
+
+/* Breadcrumb Navigation Styling */
+.breadcrumb {
+    width: 100%;
+    max-width: 1120px;
+    margin: 0 auto 0px; /* Adjust margin-bottom to reduce gap */
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    background-color: #222b33;
+    color: #f0f0f0;
+    min-height: 50px; /* Ensure breadcrumb is at least 50px tall */
+}
+
+.breadcrumb .forum-link {
+    color: #a98b2d;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+    margin-right: 8px;
+}
+
+.breadcrumb .forum-link:hover  {
+    color: #ce9e10;
+}
+
+.breadcrumb .divider {
+    color: #6a6d70;
+    font-size: 18px;
+    margin: 0 8px;
+}
+
+.breadcrumb .category-link {
+    color: #a98b2d;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.breadcrumb .category-link:hover  {
+    color: #ce9e10;
+    cursor: pointer;
+}
+
+/* Comments Section Styling */
+.thread-content {
+    width: 100%;
+    max-width: 1120px;
+    margin: 0 auto; /* Ensure content is centered */
+    padding: 20px;
+    background-color: #2F404F;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    color: #f0f0f0;
+}
+
+.thread-content h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #f0f0f0;
+    border-bottom: 1px solid #3a3a4b;
+    padding-bottom: 10px;
+}
+
+/* Comment Styling */
+.comment {
+    padding: 15px;
+    background-color: #2F404F; /* Match the thread-content background color */
+    color: #f0f0f0;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #6a6d70; /* Grey line underneath each comment */
+    transition: background-color 0.3s ease;
+}
+
+.comment:last-child {
+    border-bottom: none; /* Remove bottom border for the last comment */
+}
+
+.comment p {
+    margin: 5px 0;
+}
+
+.comment strong {
+    color: #a98b2d;
+    font-weight: bold;
+}
+
+.comment strong:hover {
+    color: #ce9e10;
+}
+
+.comment .comment-date {
+    color: #6a6d70; 
+    font-size: 14px; 
+    position: relative;
+    bottom: 8px;
+}
+
+.comment span {
+    color: #909090;
+    font-size: 14px;
 }
 

@@ -24,31 +24,39 @@ class ChallengeDetailSerializer(serializers.ModelSerializer):
         model = ChallengeDetail
         fields = '__all__'
 
+# serializers.py
 class SubmissionSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(source='user.username', read_only=True)  
     class Meta:
         model = Submission
-        fields = ['id', 'user', 'username', 'challenge', 'file_url', 'submitted_at', 'time_taken']  
+        fields = ['file_url', 'challenge', 'user', 'time_taken']
 
+
+
+# for the Community Form Page
 class ForumCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = ForumCategory
         fields = ['id', 'name']
 
-class DiscussionThreadSerializer(serializers.ModelSerializer):
-    category = ForumCategorySerializer()
+
+# For the community thread detail page
+class CommentSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username', read_only=True)
 
     class Meta:
-        model = DiscussionThread
-        fields = ['id', 'title', 'body', 'created_at', 'username', 'category']
-
-
-
-class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
         model = Comment
-        fields = '__all__'
+        fields = ['id', 'body', 'created_at', 'username']
+
+class DiscussionThreadSerializer(serializers.ModelSerializer):
+    category = ForumCategorySerializer()
+    username = serializers.CharField(source='user.username', read_only=True)
+    comments = CommentSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = DiscussionThread
+        fields = ['id', 'title', 'body', 'created_at', 'username', 'category', 'comments']
+
+
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:

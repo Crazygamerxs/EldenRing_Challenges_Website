@@ -53,15 +53,23 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # Handles Cross-Origin Resource Sharing (CORS)
+    'django.middleware.security.SecurityMiddleware',  # Adds security-related headers
+    'django.contrib.sessions.middleware.SessionMiddleware',  # Manages sessions
+    'django.middleware.csrf.CsrfViewMiddleware',  # Handles CSRF protection
+    'django.middleware.common.CommonMiddleware',  # Adds various common middleware features
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',  # Protects against clickjacking
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  # Manages user authentication
+    'django.contrib.messages.middleware.MessageMiddleware',  # Manages messages for the user
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
 
 
 
@@ -72,6 +80,9 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",  # Ensure this matches your frontend's URL
+]
 
 ROOT_URLCONF = 'mybackend.urls'
 
@@ -155,3 +166,20 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'api', 'static')]
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Session cookie settings
+SESSION_COOKIE_NAME = 'sessionid'
+SESSION_COOKIE_SECURE = True  # Set to True if using HTTPS
+SESSION_COOKIE_SAMESITE = 'None'  # Allow cross-site requests if needed
+
+# CSRF cookie settings
+CSRF_COOKIE_NAME = 'csrftoken'
+CSRF_COOKIE_SECURE = True  # Set to True if using HTTPS
+CSRF_COOKIE_SAMESITE = 'None'  # Allow cross-site requests if needed
+
+# Token cookie settings
+AUTH_TOKEN_COOKIE_NAME = 'auth_token'
+AUTH_TOKEN_COOKIE_SECURE = False  # Set to True if using HTTPS
+AUTH_TOKEN_COOKIE_SAMESITE = 'None'  # Set to 'Lax' or 'Strict' if you don't need cross-site requests
+
+

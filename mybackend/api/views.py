@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
-from .models import Challenge, User, Submission,  DiscussionThread
-from .serializers import ChallengeSerializer, SubmissionSerializer, DiscussionThreadSerializer
+from .models import Challenge, User, Submission,  DiscussionThread, Comment
+from .serializers import ChallengeSerializer, SubmissionSerializer, DiscussionThreadSerializer, CommentSerializer, UserSerializer
 from django.contrib.auth import get_user_model, authenticate, login
 from django.utils.decorators import method_decorator
 from django.http import JsonResponse
@@ -11,7 +11,9 @@ from django.contrib.auth.decorators import login_required
 import random
 from django.templatetags.static import static
 from rest_framework.authtoken.models import Token
-
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
+import logging
 
 User = get_user_model()
 
@@ -71,14 +73,24 @@ class LoginAPIView(APIView):
             response.set_cookie(
                 'auth_token',  # Cookie name
                 token.key,  # Token value
-                httponly=True,  # Cookie cannot be accessed via JavaScript
+                httponly=False,  # Cookie cannot be accessed via JavaScript
                 secure=True,  # Cookie only sent over HTTPS
-                samesite='Strict'  # Cookie sent only for same-site requests
+                samesite='None'  # Cookie sent only for same-site requests
             )
             
             return response
         else:
-            return Response({"error": "Invalid username or password"}, status=status.HTTP_401_UNAU)
+            return Response({"error": "Invalid username or password"}, status=status.HTTP_401_UNAUTHORIZED)
+
+class UserProfileAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 
 class HomeAPIView(APIView):
     def post(self, request):
@@ -106,7 +118,31 @@ class ChallengeSubmissionsView(generics.ListAPIView):
     def get_queryset(self):
         challenge_id = self.request.query_params.get('challenge')
         return Submission.objects.filter(challenge_id=challenge_id)
-    
+
+class SubmitRunAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+
+    def post(self, request):
+        challenge_id = request.data.get('challenge')
+        time_taken = request.data.get('time_taken')
+        file_url = request.data.get('file_url')
+        user = request.user
+
+        # Ensure challenge_id and file_url are provided
+        if not challenge_id or not file_url:
+            return Response({"error": "Challenge ID and file URL are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create the submission
+        submission = Submission.objects.create(
+            challenge_id=challenge_id,
+            time_taken=time_taken,
+            file_url=file_url,
+            user=user
+        )
+
+        return Response({"message": "Submission successful!"}, status=status.HTTP_201_CREATED)
+
 class ThreadListView(APIView):
     def get(self, request, *args, **kwargs):
         category_id = request.query_params.get('category_id', None)
@@ -116,4 +152,24 @@ class ThreadListView(APIView):
             threads = DiscussionThread.objects.all()
         
         serializer = DiscussionThreadSerializer(threads, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)  # Co
+    
+class ThreadDetailView(APIView):
+    def get(self, request, thread_id, *args, **kwargs):
+        try:
+            thread = DiscussionThread.objects.get(id=thread_id)
+            comments = Comment.objects.filter(thread=thread).order_by('created_at')
+            
+            thread_serializer = DiscussionThreadSerializer(thread)
+            comments_serializer = CommentSerializer(comments, many=True)
+            
+            # Prepare response data
+            data = {
+                'thread': thread_serializer.data,
+                'comments': comments_serializer.data,
+                'categoryName': thread.category.name  # Include categoryName
+            }
+            
+            return Response(data, status=status.HTTP_200_OK)
+        except DiscussionThread.DoesNotExist:
+            return Response({'detail': 'Thread not found'}, status=status.HTTP_404_NOT_FOUND)

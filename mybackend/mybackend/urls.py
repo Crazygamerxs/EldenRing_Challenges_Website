@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from api.views import SimpleAPIView, SignupAPIView, LoginAPIView, HomeAPIView, ChallengeAPIView, ChallengeDetailView, ChallengeSubmissionsView, ThreadListView
+from api.views import SimpleAPIView, SignupAPIView, LoginAPIView, HomeAPIView, ChallengeAPIView, ChallengeDetailView, ChallengeSubmissionsView, ThreadListView, ThreadDetailView, UserProfileAPIView, SubmitRunAPIView
 
 
 urlpatterns = [
@@ -29,4 +29,7 @@ urlpatterns = [
     path('api/challenge/<int:pk>/', ChallengeDetailView.as_view(), name='challenge-specific'),
     path('api/submissions/', ChallengeSubmissionsView.as_view(), name='challenge-submissions'),
     path('api/threads/', ThreadListView.as_view(), name='thread-list'),
+    path('api/threads/<int:thread_id>/', ThreadDetailView.as_view(), name='thread-detail'),
+    path('api/user-profile/', UserProfileAPIView.as_view(), name='user-profile'),
+    path('api/submit_run/', SubmitRunAPIView.as_view(), name='submit-run'),
     ]

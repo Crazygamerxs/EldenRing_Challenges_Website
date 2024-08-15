@@ -6,6 +6,7 @@ import plus_icon from './plus_icon.png';
 import pp_1 from '../images/profile_pic/pp_1.png';
 import pp_2 from '../images/profile_pic/pp_2.png';
 import pp_3 from '../images/profile_pic/pp_3.png';
+import pin from './pin.png';
 
 const images = { 
 cat_logo,
@@ -15,7 +16,9 @@ nodata,
 plus_icon,
 pp_1,
 pp_2,
-pp_3
+pp_3,
+pin
+
 };
 
 export default images;

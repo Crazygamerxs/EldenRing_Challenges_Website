@@ -1,0 +1,13 @@
+/* src/global.css */
+
+:root {
+    --primary-color: #a98b2d;
+    --secondary-color: #f0f0f0;
+    --light-grey-color: #6a6d70;
+    --background-color: #111618;
+    --light-blue-background: #2f404f;
+    --dark-blue-background: #222b33;
+    --primary-color-hover: #ce9e10;
+    --light-grey-color: #909090;
+}
+

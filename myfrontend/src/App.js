@@ -6,6 +6,7 @@ import Home from './components/Home/Home';
 import ChallengeDetail from './components/ChallengeDetail/ChallengeDetail';
 import CommunityBoard from './components/CB/CB';
 import CommunityForum from './components/CB/CommunityForum'; // Import the new component
+import ThreadPage from './components/CB/ThreadPage';
 import LoadingIndicator from './components/common/LoadingIndicator';
 import TopBar from './components/common/TopBar';
 import BottomBar from './components/common/BottomBar';
@@ -26,7 +27,8 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/challenge/:id" element={<ChallengeDetail />} />
           <Route path="/CB" element={<CommunityBoard />} />
-          <Route path="/forum/:forumName" element={<CommunityForum />} /> {/* Add this route */}
+          <Route path="/forum/:forumId" element={<CommunityForum />} /> {/* Add this route */}
+          <Route path="/thread/:threadId" element={<ThreadPage />} />
         </Routes>
         <BottomBar />
         <RouteLoader setIsLoading={setIsLoading} />

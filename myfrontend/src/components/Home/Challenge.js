@@ -1,24 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';  // Import Link for navigation
+import React, { useState, useEffect } from 'react';
 import './Home.css';
 import images from '../../images';
 import { categories } from '../../constants/categories';
+import { Link } from 'react-router-dom';
 
 const Challenge = ({ filters }) => {
     const [challenges, setChallenges] = useState([]);
     const [filteredChallenges, setFilteredChallenges] = useState([]);
+    const [loading, setLoading] = useState(true); // Add loading state
 
     useEffect(() => {
         const fetchChallenges = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8888/api/challenge/');
+                const response = await fetch('http://127.0.0.1:8888/api/challenge/', {
+                    method: 'GET',
+                    credentials: 'include',
+                });
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
                 setChallenges(data);
+                setLoading(false); // Data has been loaded
             } catch (error) {
                 console.error('Error fetching challenges:', error);
+                setLoading(false); // Even on error, stop loading
             }
         };
 
@@ -35,7 +41,7 @@ const Challenge = ({ filters }) => {
         });
 
         setFilteredChallenges(newFilteredChallenges);
-    }, [challenges, filters]); // Dependencies are correct
+    }, [challenges, filters]);
 
     const getCategoryName = (id) => {
         const category = categories.find(cat => cat.id === id);
@@ -50,6 +56,10 @@ const Challenge = ({ filters }) => {
         acc[categoryName].push(challenge);
         return acc;
     }, {});
+
+    if (loading) {
+        return <div className="loading">Loading...</div>; // Show a loading indicator
+    }
 
     return (
         <div className="challenge-container">
@@ -76,7 +86,6 @@ const Challenge = ({ filters }) => {
                                             </p>
                                         </div>
                                         <div className="challenge-actions">
-                                            {/* Link to ChallengeDetail page with challenge ID */}
                                             <Link to={`/challenge/${challenge.id}`}>
                                                 <button className='challenge-btn'>View All Submissions</button>
                                             </Link>
