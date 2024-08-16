@@ -1,19 +1,13 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, generics
 from .models import Challenge, User, Submission,  DiscussionThread, Comment
 from .serializers import ChallengeSerializer, SubmissionSerializer, DiscussionThreadSerializer, CommentSerializer, UserSerializer
 from django.contrib.auth import get_user_model, authenticate, login
-from django.utils.decorators import method_decorator
-from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 import random
 from django.templatetags.static import static
-from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
-import logging
 
 User = get_user_model()
 
@@ -51,6 +45,7 @@ class SignupAPIView(APIView):
 
 class LoginAPIView(APIView):
     def post(self, request):
+        print("Login View")
         username = request.data.get('username')
         password = request.data.get('password')
         
@@ -60,24 +55,11 @@ class LoginAPIView(APIView):
         if user is not None:
             login(request, user)
             
-            # Generate or get the authentication token
-            token, created = Token.objects.get_or_create(user=user)
-            
             # Create a response with a success message and redirect URL
             response = Response({
                 "message": "Login successful!",
                 "redirect": "/home"
             }, status=status.HTTP_200_OK)
-            
-            # Set the authentication token in an HTTP-Only cookie
-            response.set_cookie(
-                'auth_token',  # Cookie name
-                token.key,  # Token value
-                httponly=False,  # Cookie cannot be accessed via JavaScript
-                secure=True,  # Cookie only sent over HTTPS
-                samesite='None'  # Cookie sent only for same-site requests
-            )
-            
             return response
         else:
             return Response({"error": "Invalid username or password"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -120,28 +102,30 @@ class ChallengeSubmissionsView(generics.ListAPIView):
         return Submission.objects.filter(challenge_id=challenge_id)
 
 class SubmitRunAPIView(APIView):
-    permission_classes = [IsAuthenticated]
-    authentication_classes = [TokenAuthentication]
-
     def post(self, request):
+        print("Submit Run View")
+        print(f"Request Headers: {request.headers}")
+        print(f"Request Data: {request.data}")
+
         challenge_id = request.data.get('challenge')
-        time_taken = request.data.get('time_taken')
         file_url = request.data.get('file_url')
-        user = request.user
+        user_id = request.data.get('user')  # Get the user ID from the request
 
-        # Ensure challenge_id and file_url are provided
-        if not challenge_id or not file_url:
-            return Response({"error": "Challenge ID and file URL are required."}, status=status.HTTP_400_BAD_REQUEST)
+        if not challenge_id or not file_url or not user_id:
+            return Response({"error": "Challenge ID, file URL, and user ID are required."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Create the submission
-        submission = Submission.objects.create(
-            challenge_id=challenge_id,
-            time_taken=time_taken,
-            file_url=file_url,
-            user=user
-        )
-
-        return Response({"message": "Submission successful!"}, status=status.HTTP_201_CREATED)
+        try:
+            # Create the submission
+            submission = Submission.objects.create(
+                challenge_id=challenge_id,
+                file_url=file_url,
+                user_id=user_id,  # Include the user ID
+                # time_taken will use the default value (timedelta())
+            )
+            return Response({"message": "Submission successful!"}, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            print(f"Error creating submission: {e}")
+            return Response({"error": "Failed to create submission"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class ThreadListView(APIView):
     def get(self, request, *args, **kwargs):

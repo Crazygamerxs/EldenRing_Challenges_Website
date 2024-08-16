@@ -48,8 +48,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
     'corsheaders',
-    'rest_framework.authtoken',
-
 ]
 
 MIDDLEWARE = [
@@ -67,9 +65,9 @@ MIDDLEWARE = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
     ),
 }
+
 
 
 
@@ -174,12 +172,12 @@ SESSION_COOKIE_SAMESITE = 'None'  # Allow cross-site requests if needed
 
 # CSRF cookie settings
 CSRF_COOKIE_NAME = 'csrftoken'
-CSRF_COOKIE_SECURE = True  # Set to True if using HTTPS
-CSRF_COOKIE_SAMESITE = 'None'  # Allow cross-site requests if needed
+CSRF_COOKIE_SECURE = False  # Set to True if using HTTPS
+CSRF_COOKIE_SAMESITE = 'Lax'  # Allow cross-site requests if needed
 
 # Token cookie settings
 AUTH_TOKEN_COOKIE_NAME = 'auth_token'
 AUTH_TOKEN_COOKIE_SECURE = False  # Set to True if using HTTPS
-AUTH_TOKEN_COOKIE_SAMESITE = 'None'  # Set to 'Lax' or 'Strict' if you don't need cross-site requests
+AUTH_TOKEN_COOKIE_SAMESITE = 'Lax'  # Set to 'Lax' or 'Strict' if you don't need cross-site requests
 
 

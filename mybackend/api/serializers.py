@@ -26,10 +26,15 @@ class ChallengeDetailSerializer(serializers.ModelSerializer):
 
 # serializers.py
 class SubmissionSerializer(serializers.ModelSerializer):
+    username = serializers.SerializerMethodField()
+    submitted_at = serializers.DateTimeField()  # Add this line if you have a submission date field in the model
+
     class Meta:
         model = Submission
-        fields = ['file_url', 'challenge', 'user', 'time_taken']
+        fields = ['file_url', 'challenge', 'user', 'username', 'time_taken', 'submitted_at']
 
+    def get_username(self, obj):
+        return obj.user.username if obj.user else None
 
 
 # for the Community Form Page
