@@ -1,16 +1,32 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../common/UserContext';
 import './Login.css';
+import axios from 'axios';
 
 const LogIn = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const { login } = useContext(UserContext);
+    const [csrfToken, setCsrfToken] = useState('');
+
     const printCookies = () => {
         console.log('Cookies:', document.cookie);
       };
+
+
+      useEffect(() => {
+        const fetchCsrfToken = async () => {
+            try {
+                const response = await axios.get('http://127.0.0.1:8888/api/csrf-token/', { withCredentials: true });
+                setCsrfToken(response.data.csrfToken);
+            } catch (error) {
+                console.error('Error fetching CSRF token:', error);
+            }
+        };
+        fetchCsrfToken();
+    }, []);  
       
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,6 +35,7 @@ const LogIn = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken, // Include CSRF token here
                 },
                 credentials: 'include', 
                 body: JSON.stringify({ username, password }),

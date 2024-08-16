@@ -71,8 +71,8 @@
     background-color: #222b33;
     padding: 20px;
     border-radius: 8px;
-    position: sticky;
-    left: 175px;
+    position: relative;
+    left: 155px;
     right: 0px;
     bottom: 0; 
 }

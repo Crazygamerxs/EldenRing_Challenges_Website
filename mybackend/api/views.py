@@ -8,8 +8,15 @@ from django.contrib.auth.decorators import login_required
 import random
 from django.templatetags.static import static
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth import logout as django_logout
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from django.middleware.csrf import get_token
 
 User = get_user_model()
+
+def csrf_token(request):
+    return JsonResponse({'csrfToken': get_token(request)})
 
 class SimpleAPIView(APIView):
     def get(self, request):
@@ -63,6 +70,12 @@ class LoginAPIView(APIView):
             return response
         else:
             return Response({"error": "Invalid username or password"}, status=status.HTTP_401_UNAUTHORIZED)
+
+class LogoutAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        django_logout(request)
+        return Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
 
 class UserProfileAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -128,6 +141,9 @@ class SubmitRunAPIView(APIView):
             return Response({"error": "Failed to create submission"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class ThreadListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    print("ThreadListView")
     def get(self, request, *args, **kwargs):
         category_id = request.query_params.get('category_id', None)
         if category_id:
@@ -139,6 +155,8 @@ class ThreadListView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)  # Co
     
 class ThreadDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request, thread_id, *args, **kwargs):
         try:
             thread = DiscussionThread.objects.get(id=thread_id)

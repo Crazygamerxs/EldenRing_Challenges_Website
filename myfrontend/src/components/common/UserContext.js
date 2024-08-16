@@ -1,4 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
+import axios from 'axios'; // Import axios
+import Cookies from 'js-cookie'; // Import js-cookie
 
 export const UserContext = createContext();
 
@@ -9,23 +11,12 @@ export const UserProvider = ({ children }) => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8888/api/user-profile/', {
-                    method: 'GET',
-                    credentials: 'include',
+                const response = await axios.get('http://127.0.0.1:8888/api/user-profile/', {
+                    withCredentials: true, // Ensure cookies are sent
                 });
-                if (response.ok) {
-                    const data = await response.json();
-                    // Log each data point separately
-                    // console.log('User Data Fetched:');
-                    // console.log('User ID:', data.id);
-                    // console.log('Username:', data.username);
-                    // console.log('Email:', data.email);
-                    // console.log('Profile Image:', data.profile_image);
-                    // console.log('Completed Challenges:', data.completed_challenges);
-                    // console.log('Badges:', data.badges);
-                    setUser(data);
+                if (response.status === 200) {
+                    setUser(response.data);
                 } else {
-                    console.log('Failed to fetch user data:', response.status);
                     setUser(null);
                 }
             } catch (error) {
@@ -41,13 +32,6 @@ export const UserProvider = ({ children }) => {
 
     const login = async (userData) => {
         try {
-            // console.log('User logged in:');
-            // console.log('User ID:', userData.id);
-            // console.log('Username:', userData.username);
-            // console.log('Email:', userData.email);
-            // console.log('Profile Image:', userData.profile_image);
-            // console.log('Completed Challenges:', userData.completed_challenges);
-            // console.log('Badges:', userData.badges);
             setUser(userData);
         } catch (error) {
             console.error('Error during login:', error);
@@ -56,8 +40,18 @@ export const UserProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            console.log('User logged out');
-            setUser(null);
+            const csrfToken = Cookies.get('csrftoken'); // Get the CSRF token from cookies
+    
+            await axios.post('http://127.0.0.1:8888/api/logout/', {}, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken, // Include CSRF token
+                },
+                withCredentials: true, // Ensure cookies are sent with the request
+            });
+    
+            // Clear user state or handle post-logout actions
+            setUser(null); // Assuming you have setUser in your context
         } catch (error) {
             console.error('Error during logout:', error);
         }

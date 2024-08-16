@@ -24,7 +24,6 @@ class ChallengeDetailSerializer(serializers.ModelSerializer):
         model = ChallengeDetail
         fields = '__all__'
 
-# serializers.py
 class SubmissionSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField()
     submitted_at = serializers.DateTimeField()  # Add this line if you have a submission date field in the model

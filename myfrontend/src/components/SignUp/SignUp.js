@@ -1,12 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './SignUp.css'; // Ensure this CSS file is updated
+import axios from 'axios';
+import './SignUp.css';
 
 const SignUp = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [csrfToken, setCsrfToken] = useState('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchCsrfToken = async () => {
+            try {
+                const response = await axios.get('http://127.0.0.1:8888/api/csrf-token/', { withCredentials: true });
+                setCsrfToken(response.data.csrfToken);
+            } catch (error) {
+                console.error('Error fetching CSRF token:', error);
+            }
+        };
+        fetchCsrfToken();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -15,8 +29,10 @@ const SignUp = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken, // Include CSRF token here
                 },
                 body: JSON.stringify({ username, email, password }),
+                credentials: 'include', // Ensure cookies are sent
             });
 
             if (response.ok) {

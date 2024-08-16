@@ -15,30 +15,56 @@ const CommunityForum = () => {
             console.error('Forum ID is missing');
             return;
         }
-        fetch(`http://127.0.0.1:8888/api/threads/?category_id=${forumId}`)
-            .then(response => {
-                console.log('Response Status:', response.status);
-                if (!response.ok) {
-                    return response.text().then(text => {
-                        console.error('Response Text:', text);
-                        throw new Error(`HTTP error! Status: ${response.status}`);
-                    });
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Fetched threads:', data); 
-                setThreads(data);
-    
-                if (data.length > 0 && data[0].category) {
-                    setCategoryName(data[0].category.name);
-                } else {
-                    setCategoryName('No Category');
-                }
-            })
-            .catch(error => console.error('Error fetching threads:', error));
+
+        const csrfToken = getCookie('csrftoken'); // Retrieve CSRF token from cookie
+
+        fetch(`http://127.0.0.1:8888/api/threads/?category_id=${forumId}`, {
+            method: 'GET',
+            credentials: 'include', // Ensure cookies are sent
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken, // Add CSRF token to headers
+            },
+        })
+        .then(response => {
+            console.log('Response Status:', response.status);
+            if (!response.ok) {
+                return response.text().then(text => {
+                    console.error('Response Text:', text);
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Fetched threads:', data); 
+            setThreads(data);
+
+            if (data.length > 0 && data[0].category) {
+                setCategoryName(data[0].category.name);
+            } else {
+                setCategoryName('No Category');
+            }
+        })
+        .catch(error => console.error('Error fetching threads:', error));
     }, [forumId]);
-    
+
+    // Helper function to get the value of a cookie by name
+    const getCookie = (name) => {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
     return (
         <div className='community-page'>
             <div className="community-board">

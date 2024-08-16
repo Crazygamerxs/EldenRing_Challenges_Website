@@ -78,9 +78,7 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000",  # Ensure this matches your frontend's URL
-]
+CORS_EXPOSE_HEADERS = ['Content-Type','X-CSRFToken']  # Allow the frontend to access the 'auth_token' header
 
 ROOT_URLCONF = 'mybackend.urls'
 
@@ -169,15 +167,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SESSION_COOKIE_NAME = 'sessionid'
 SESSION_COOKIE_SECURE = True  # Set to True if using HTTPS
 SESSION_COOKIE_SAMESITE = 'None'  # Allow cross-site requests if needed
+SESSON_COOKIE_HTTPONLY = True  # Set to True to prevent JavaScript from accessing the session cookie
 
 # CSRF cookie settings
 CSRF_COOKIE_NAME = 'csrftoken'
-CSRF_COOKIE_SECURE = False  # Set to True if using HTTPS
-CSRF_COOKIE_SAMESITE = 'Lax'  # Allow cross-site requests if needed
+CSRF_COOKIE_SECURE = True  # Set to True if using HTTPS
+CSRF_COOKIE_SAMESITE = 'None'  # Allow cross-site requests if needed
+CSRF_COOKIE_HTTPONLY = True  # Set to True to prevent JavaScript from accessing the CSRF cookie
 
 # Token cookie settings
-AUTH_TOKEN_COOKIE_NAME = 'auth_token'
-AUTH_TOKEN_COOKIE_SECURE = False  # Set to True if using HTTPS
-AUTH_TOKEN_COOKIE_SAMESITE = 'Lax'  # Set to 'Lax' or 'Strict' if you don't need cross-site requests
-
+# AUTH_TOKEN_COOKIE_NAME = 'auth_token'
+# AUTH_TOKEN_COOKIE_SECURE = False  # Set to True if using HTTPS
+# AUTH_TOKEN_COOKIE_SAMESITE = 'Lax'  # Set to 'Lax' or 'Strict' if you don't need cross-site requests
 
