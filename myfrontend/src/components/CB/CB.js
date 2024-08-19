@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom'; // Import Link
 import images from '../../images';
+import { UserContext } from '../common/UserContext'; // Adjust the import path as needed
 import './CB.css';
 
 const CommunityBoard = () => {
+    const { user } = useContext(UserContext); // Get user context
+
     const forums = [
         { id: 1, name: 'Introduction', description: 'New to the Community? Introduce yourself here.', posts: '11,336', lastPostUser: 'Soda', lastPostAvatar: images.pp_1 },
         { id: 2, name: 'Challenges', description: 'For general discussion of challenges.', posts: '1,336', lastPostUser: 'Salty', lastPostAvatar: images.pp_2 },
@@ -22,9 +25,15 @@ const CommunityBoard = () => {
                         <div className="forum-column">Last Post</div>
                     </div>
                     {forums.map((forum) => (
-                        <Link to={`/forum/${forum.id}`} key={forum.id} className="forum-row">
+                        <div key={forum.id} className={`forum-row ${!user ? 'no-access' : ''}`}>
                             <div className="forum-column-1st">
-                                <strong>{forum.name}</strong>
+                                {user ? (
+                                    <Link to={`/forum/${forum.id}`} className="forum-name">
+                                        <strong>{forum.name}</strong>
+                                    </Link>
+                                ) : (
+                                    <strong>{forum.name}</strong>
+                                )}
                                 <span>{forum.description}</span>
                             </div>
                             <div className="forum-column">{forum.posts}</div>
@@ -32,7 +41,7 @@ const CommunityBoard = () => {
                                 <img src={forum.lastPostAvatar} alt={`${forum.lastPostUser} avatar`} className="avatar" />
                                 <span>{forum.lastPostUser}</span>
                             </div>
-                        </Link>
+                        </div>
                     ))}
                 </div>
             </div>

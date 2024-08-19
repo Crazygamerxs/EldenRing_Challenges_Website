@@ -1,11 +1,17 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import './common.css'; 
 import images from '../../images';
 import { UserContext } from '../common/UserContext'; 
 
 const TopBar = () => {
     const { user, loading, logout } = useContext(UserContext);
+    const navigate = useNavigate(); // Use useNavigate for redirection
+
+    const handleLogout = async () => {
+        await logout();
+        navigate('/login'); // Redirect to login page after logout
+    };
 
     if (loading) {
         return (
@@ -44,7 +50,7 @@ const TopBar = () => {
                 {user ? (
                     <>
                         <span className="nav-link">Hey, {user.username}</span>
-                        <button onClick={logout} className="logout-btn">Logout</button>
+                        <button onClick={handleLogout} className="logout-btn">Logout</button>
                     </>
                 ) : (
                     <>

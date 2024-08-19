@@ -1,25 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
-/* @font-face {
-  font-family: 'Komikax';
-  src: url('../../fonts/KOMIKAX_.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'milky_vintage';
-  src: url('../../fonts/MilkyVintage-Regular.ttf') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Minecraft';
-  src: url('../../fonts/Minecraft.ttf') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-} */
-
 /*-------- This is the common css file for all the components --------*/
 
 /*-------- Top Navigation Bar --------*/

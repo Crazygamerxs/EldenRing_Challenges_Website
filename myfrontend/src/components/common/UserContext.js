@@ -39,23 +39,26 @@ export const UserProvider = ({ children }) => {
     };
 
     const logout = async () => {
-        try {
-            const csrfToken = Cookies.get('csrftoken'); // Get the CSRF token from cookies
-    
-            await axios.post('http://127.0.0.1:8888/api/logout/', {}, {
+        try {  
+            const response = await axios.post('http://127.0.0.1:8888/api/logout/', {}, {
                 headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken, // Include CSRF token
+                    withCredentials: true, // Ensure cookies are sent with the request
                 },
-                withCredentials: true, // Ensure cookies are sent with the request
             });
-    
-            // Clear user state or handle post-logout actions
-            setUser(null); // Assuming you have setUser in your context
+            if(response.status === 200) {
+                // Clear user state or handle post-logout actions
+                setUser(null); // Clear the user state after logout
+                Cookies.remove('sessionid'); // Remove session ID cookie
+                Cookies.remove('csrftoken'); // Remove CSRF token cookie if necessary
+            
+            } else{
+                console.log('Error during logout');
+            }
         } catch (error) {
             console.error('Error during logout:', error);
         }
     };
+    
 
     return (
         <UserContext.Provider value={{ user, loading, login, logout }}>

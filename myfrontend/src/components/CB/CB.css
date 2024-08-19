@@ -112,7 +112,15 @@
     transition: background-color 0.3s ease;
     align-items: center;
     text-decoration: none !important;
+    cursor: pointer;
 }
+
+.forum-row.no-access {
+    /* Style for links that users don't have access to */
+    cursor: not-allowed;
+    opacity: 0.5; /* Optional: visually indicate restricted access */
+}
+
 
 .forum-row:last-child {
     border-bottom: none; 
