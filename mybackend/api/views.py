@@ -5,13 +5,13 @@ from .models import Challenge, User, Submission,  DiscussionThread, Comment
 from .serializers import ChallengeSerializer, SubmissionSerializer, DiscussionThreadSerializer, CommentSerializer, UserSerializer
 from django.contrib.auth import get_user_model, authenticate, login
 from django.contrib.auth.decorators import login_required
-import random
 from django.templatetags.static import static
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import logout as django_logout
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
+import random
 
 User = get_user_model()
 
@@ -72,11 +72,22 @@ class LoginAPIView(APIView):
             return Response({"error": "Invalid username or password"}, status=status.HTTP_401_UNAUTHORIZED)
 
 class LogoutAPIView(APIView):
-    permission_classes = [IsAuthenticated]
-    def post(self, request):
-        django_logout(request)
-        return Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
 
+    def post(self, request):
+        # Logout the user
+        django_logout(request)
+
+        # Create a response object
+        response = Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
+        
+        # Clear session ID cookie
+        response.delete_cookie('sessionid', path='/')  # Default path
+        
+        # Optionally clear CSRF token cookie
+        response.delete_cookie('csrftoken', path='/csrf-token')  # Path should match if set
+
+        return response
+    
 class UserProfileAPIView(APIView):
     permission_classes = [IsAuthenticated]
 

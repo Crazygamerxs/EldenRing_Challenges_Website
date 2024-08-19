@@ -78,7 +78,7 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_EXPOSE_HEADERS = ['Content-Type','X-CSRFToken']  # Allow the frontend to access the 'auth_token' header
+# CORS_EXPOSE_HEADERS = ['Content-Type','X-CSRFToken']  # Allow the frontend to access the 'auth_token' header
 
 ROOT_URLCONF = 'mybackend.urls'
 
@@ -162,6 +162,18 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'api', 'static')]
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.example.com'  # Replace with your SMTP server address
+EMAIL_PORT = 25  # Use 465 for SSL or 587 for TLS
+EMAIL_USE_TLS = False  # Set to False if using SSL (port 465)
+EMAIL_HOST_USER = 'your-email@example.com'
+EMAIL_HOST_PASSWORD = 'your-email-password'
+DEFAULT_FROM_EMAIL = 'noreply@example.com'  # Default sender email address
+
+
+
+
 
 # Session cookie settings
 SESSION_COOKIE_NAME = 'sessionid'
