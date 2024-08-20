@@ -2,25 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './SignUp.css';
+import CSRFTOKEN from "../common/CSRFToken"
 
 const SignUp = () => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [csrfToken, setCsrfToken] = useState('');
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const fetchCsrfToken = async () => {
-            try {
-                const response = await axios.get('http://127.0.0.1:8888/api/csrf-token/', { withCredentials: true });
-                setCsrfToken(response.data.csrfToken);
-            } catch (error) {
-                console.error('Error fetching CSRF token:', error);
-            }
-        };
-        fetchCsrfToken();
-    }, []);
+    const [csrfToken] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -51,6 +40,7 @@ const SignUp = () => {
             <div className="sign-up-content">
                 <h2>SIGN UP FOR ELDENRING.CA</h2>
                 <form onSubmit={handleSubmit}>
+                    <CSRFTOKEN />
                     <div className="form-group">
                         <label htmlFor="username">Username</label>
                         <input

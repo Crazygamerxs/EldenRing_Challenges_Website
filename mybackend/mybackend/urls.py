@@ -15,14 +15,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from api.views import SimpleAPIView, csrf_token, SignupAPIView, LoginAPIView, LogoutAPIView, HomeAPIView, ChallengeAPIView, ChallengeDetailView, ChallengeSubmissionsView, ThreadListView, ThreadDetailView, UserProfileAPIView, SubmitRunAPIView
-
+from django.urls import path, re_path
+from api.views import SimpleAPIView, GETCSRFToken, SignupAPIView, LoginAPIView, LogoutAPIView, HomeAPIView, ChallengeAPIView, ChallengeDetailView, ChallengeSubmissionsView, ThreadListView, ThreadDetailView, UserProfileAPIView, SubmitRunAPIView
+from django.views.generic import TemplateView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', SimpleAPIView.as_view()),
-    path('api/csrf-token/', csrf_token, name='csrf_token'),
+    path('api/csrf-token/', GETCSRFToken.as_view(), name='csrf_token'),
     path('api/signup/', SignupAPIView.as_view(), name='signup'),
     path('api/login/', LoginAPIView.as_view(), name='login'),
     path('api/logout/', LogoutAPIView.as_view(), name='logout'),
@@ -34,4 +36,10 @@ urlpatterns = [
     path('api/threads/<int:thread_id>/', ThreadDetailView.as_view(), name='thread-detail'),
     path('api/user-profile/', UserProfileAPIView.as_view(), name='user-profile'),
     path('api/submit_run/', SubmitRunAPIView.as_view(), name='submit-run'),
+
+    re_path(r'^.*$', TemplateView.as_view(template_name='index.html')),
+
     ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

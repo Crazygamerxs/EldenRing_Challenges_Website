@@ -1,56 +1,38 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../common/UserContext';
 import './Login.css';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const LogIn = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
     const { login } = useContext(UserContext);
-    const [csrfToken, setCsrfToken] = useState('');
 
-    const printCookies = () => {
-        console.log('Cookies:', document.cookie);
-      };
-
-
-      useEffect(() => {
-        const fetchCsrfToken = async () => {
-            try {
-                const response = await axios.get('http://127.0.0.1:8888/api/csrf-token/', { withCredentials: true });
-                setCsrfToken(response.data.csrfToken);
-            } catch (error) {
-                console.error('Error fetching CSRF token:', error);
-            }
-        };
-        fetchCsrfToken();
-    }, []);  
-      
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+    
         try {
-            const response = await fetch('http://127.0.0.1:8888/api/login/', {
+            const response = await fetch('http://127.0.0.1:8888/api/login/', { withCredentials: true }, {
                 method: 'POST',
                 headers: {
+                    'Accept': 'application/json',
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken, // Include CSRF token here
+                    'X-CSRFToken': Cookies.get('csrftoken'), // Use the retrieved CSRF token
                 },
-                credentials: 'include', 
+                credentials: 'include', // Make sure cookies are included in the request
                 body: JSON.stringify({ username, password }),
             });
-
+    
             const data = await response.json();
-
+    
             if (response.ok) {
                 console.log('Login successful:', data);
-                console.log('Logged in username:', username);
-                
-                printCookies(); // Print cookies to console
-                // Pass user data to the login context
                 login({ username });
-
                 navigate(data.redirect || '/home');
             } else {
                 alert(data.error);

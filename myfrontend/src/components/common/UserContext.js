@@ -1,12 +1,14 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios'; // Import axios
 import Cookies from 'js-cookie'; // Import js-cookie
+import CSRFTOKEN from "../common/CSRFToken"
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(true);    
+
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -39,25 +41,33 @@ export const UserProvider = ({ children }) => {
     };
 
     const logout = async () => {
-        try {  
+        try {
+            const csrfToken = Cookies.get('csrftoken');  // Retrieve the CSRF token
+            console.log('CSRF Token being sent:', csrfToken);  // Debugging
+    
             const response = await axios.post('http://127.0.0.1:8888/api/logout/', {}, {
+                withCredentials: true,  // Ensure cookies are sent with the request
                 headers: {
-                    withCredentials: true, // Ensure cookies are sent with the request
+                    'X-CSRFToken': csrfToken,  // Include CSRF token in headers
                 },
             });
-            if(response.status === 200) {
-                // Clear user state or handle post-logout actions
-                setUser(null); // Clear the user state after logout
-                Cookies.remove('sessionid'); // Remove session ID cookie
-                Cookies.remove('csrftoken'); // Remove CSRF token cookie if necessary
-            
-            } else{
+    
+            if (response.status === 200) {
+                // Handle successful logout
+                setUser(null);
+                Cookies.remove('sessionid');
+                Cookies.remove('csrftoken');
+            } else {
                 console.log('Error during logout');
             }
         } catch (error) {
             console.error('Error during logout:', error);
         }
     };
+    
+    
+    
+    
     
 
     return (

@@ -3,6 +3,7 @@ import './Home.css';
 import images from '../../images';
 import { categories } from '../../constants/categories';
 import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const Challenge = ({ filters }) => {
     const [challenges, setChallenges] = useState([]);
@@ -15,6 +16,7 @@ const Challenge = ({ filters }) => {
                 const response = await fetch('http://127.0.0.1:8888/api/challenge/', {
                     method: 'GET',
                     credentials: 'include',
+                    'X-CSRFToken': Cookies.get('csrftoken'), 
                 });
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status, generics
+from rest_framework import status, generics, permissions
 from .models import Challenge, User, Submission,  DiscussionThread, Comment
 from .serializers import ChallengeSerializer, SubmissionSerializer, DiscussionThreadSerializer, CommentSerializer, UserSerializer
 from django.contrib.auth import get_user_model, authenticate, login
@@ -8,15 +8,21 @@ from django.contrib.auth.decorators import login_required
 from django.templatetags.static import static
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import logout as django_logout
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, csrf_protect, ensure_csrf_cookie
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
 import random
+from django.utils.decorators import method_decorator
+from django.contrib.auth.models import Permission
 
 User = get_user_model()
 
-def csrf_token(request):
-    return JsonResponse({'csrfToken': get_token(request)})
+@method_decorator(ensure_csrf_cookie, name='dispatch')
+class GETCSRFToken(APIView):
+    permission_classes = [permissions.AllowAny]
+    
+    def get(self, request, format=None):
+        return Response({'csrftoken': get_token(request)})
 
 class SimpleAPIView(APIView):
     def get(self, request):
@@ -49,7 +55,7 @@ class SignupAPIView(APIView):
         
         return Response({"message": "Signup successful!"}, status=status.HTTP_201_CREATED)
 
-
+@method_decorator(csrf_protect, name='dispatch')
 class LoginAPIView(APIView):
     def post(self, request):
         print("Login View")
@@ -71,6 +77,7 @@ class LoginAPIView(APIView):
         else:
             return Response({"error": "Invalid username or password"}, status=status.HTTP_401_UNAUTHORIZED)
 
+@method_decorator(csrf_protect, name='dispatch')
 class LogoutAPIView(APIView):
 
     def post(self, request):
@@ -81,10 +88,10 @@ class LogoutAPIView(APIView):
         response = Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
         
         # Clear session ID cookie
-        response.delete_cookie('sessionid', path='/')  # Default path
+        response.delete_cookie('sessionid')  # Default path
         
         # Optionally clear CSRF token cookie
-        response.delete_cookie('csrftoken', path='/csrf-token')  # Path should match if set
+        response.delete_cookie('csrftoken')  # Path should match if set
 
         return response
     
@@ -101,7 +108,8 @@ class UserProfileAPIView(APIView):
 class HomeAPIView(APIView):
     def post(self, request):
         return Response({"message": "Home Page!"})
-    
+
+@method_decorator(csrf_protect, name='dispatch')
 class ChallengeAPIView(APIView):
     def get(self, request, challenge_id=None):
         if challenge_id:

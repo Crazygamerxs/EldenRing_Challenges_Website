@@ -17,7 +17,8 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'build/static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -66,6 +67,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
     ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
 }
 
 
@@ -74,18 +78,28 @@ REST_FRAMEWORK = {
 # Allow requests from localhost (adjust as necessary)
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://127.0.0.1:8888",
+    "http://localhost:8888",
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:8888",
+    "http://localhost:8888",
+]
+
 
 CORS_ALLOW_CREDENTIALS = True
 
-# CORS_EXPOSE_HEADERS = ['Content-Type','X-CSRFToken']  # Allow the frontend to access the 'auth_token' header
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'mybackend.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # point to the react build directory
+        'DIRS': [os.path.join(BASE_DIR, 'build')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -153,10 +167,6 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'api', 'static')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -183,7 +193,7 @@ SESSON_COOKIE_HTTPONLY = True  # Set to True to prevent JavaScript from accessin
 
 # CSRF cookie settings
 CSRF_COOKIE_NAME = 'csrftoken'
-CSRF_COOKIE_SECURE = True  # Set to True if using HTTPS
+CSRF_COOKIE_SECURE = False  # Set to True if using HTTPS
 CSRF_COOKIE_SAMESITE = 'None'  # Allow cross-site requests if needed
 CSRF_COOKIE_HTTPONLY = True  # Set to True to prevent JavaScript from accessing the CSRF cookie
 
@@ -192,3 +202,4 @@ CSRF_COOKIE_HTTPONLY = True  # Set to True to prevent JavaScript from accessing 
 # AUTH_TOKEN_COOKIE_SECURE = False  # Set to True if using HTTPS
 # AUTH_TOKEN_COOKIE_SAMESITE = 'Lax'  # Set to 'Lax' or 'Strict' if you don't need cross-site requests
 
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
