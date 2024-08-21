@@ -58,7 +58,9 @@ class SignupAPIView(APIView):
 @method_decorator(csrf_protect, name='dispatch')
 class LoginAPIView(APIView):
     def post(self, request):
-        print("Login View")
+        print("Login View - POST request")
+        print("Request Data:", request.data)  # Log request data
+
         username = request.data.get('username')
         password = request.data.get('password')
         
@@ -67,8 +69,6 @@ class LoginAPIView(APIView):
         
         if user is not None:
             login(request, user)
-            
-            # Create a response with a success message and redirect URL
             response = Response({
                 "message": "Login successful!",
                 "redirect": "/home"
@@ -76,6 +76,7 @@ class LoginAPIView(APIView):
             return response
         else:
             return Response({"error": "Invalid username or password"}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 @method_decorator(csrf_protect, name='dispatch')
 class LogoutAPIView(APIView):

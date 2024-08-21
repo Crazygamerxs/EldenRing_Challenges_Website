@@ -1,0 +1,3 @@
+## Csrf Token Cookie how it should be
+
+csrftoken	lxMVGVas0cSJVX5w1FQZiudpdV6nMYBI	localhost	/	Session	41					Medium

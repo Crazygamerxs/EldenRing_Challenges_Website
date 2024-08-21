@@ -2,8 +2,9 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../common/UserContext';
 import './Login.css';
-import axios from 'axios';
 import Cookies from 'js-cookie';
+import CSRFTOKEN from "../common/CSRFToken"
+import axios from 'axios';
 
 const LogIn = () => {
     const [username, setUsername] = useState('');
@@ -15,38 +16,38 @@ const LogIn = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
+        const csrfToken = Cookies.get('csrftoken');
+        console.log('Retrieved CSRF Token from Cookies:', csrfToken);
     
         try {
-            const response = await fetch('http://127.0.0.1:8888/api/login/', { withCredentials: true }, {
-                method: 'POST',
+            const response = await axios.post('http://localhost:8888/api/login/', {
+                username,
+                password
+            }, {
+                withCredentials: true,
                 headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': Cookies.get('csrftoken'), // Use the retrieved CSRF token
-                },
-                credentials: 'include', // Make sure cookies are included in the request
-                body: JSON.stringify({ username, password }),
+                    'X-CSRFToken': csrfToken,
+                }
             });
+            console.log('Fetching user login');
     
-            const data = await response.json();
-    
-            if (response.ok) {
-                console.log('Login successful:', data);
-                login({ username });
-                navigate(data.redirect || '/home');
-            } else {
-                alert(data.error);
-            }
+            console.log('Login successful:', response.data);
+            login({ username });
+            navigate(response.data.redirect || '/home');
         } catch (error) {
-            console.error('Error during login:', error);
+            console.error('Error during login:', error.response ? error.response.data : error.message);
         }
     };
+    
+    
+    
 
     return (
         <div className='login-page'>
             <div className="login-content">
                 <h2>LOGIN TO ELDENRING.CA</h2>
                 <form onSubmit={handleSubmit}>
+                    <CSRFTOKEN />
                     <div className="form-group">
                         <label htmlFor="username">Username</label>
                         <input

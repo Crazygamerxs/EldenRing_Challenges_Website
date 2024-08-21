@@ -1,7 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios'; // Import axios
 import Cookies from 'js-cookie'; // Import js-cookie
-import CSRFTOKEN from "../common/CSRFToken"
 
 export const UserContext = createContext();
 

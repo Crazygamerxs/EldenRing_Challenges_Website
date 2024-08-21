@@ -17,8 +17,8 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'build/static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'build/static')]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -67,9 +67,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
 }
 
 
@@ -99,8 +96,10 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # point to the react build directory
-        'DIRS': [os.path.join(BASE_DIR, 'build')],
+        # 'DIRS': [os.path.join(BASE_DIR, 'build')],
+        'DIRS': [],
         'APP_DIRS': True,
+
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -192,10 +191,13 @@ SESSION_COOKIE_SAMESITE = 'None'  # Allow cross-site requests if needed
 SESSON_COOKIE_HTTPONLY = True  # Set to True to prevent JavaScript from accessing the session cookie
 
 # CSRF cookie settings
-CSRF_COOKIE_NAME = 'csrftoken'
-CSRF_COOKIE_SECURE = False  # Set to True if using HTTPS
+CSRF_COOKIE_NAME = "csrftoken"
+CSRF_COOKIE_SECURE = True  # Set to True if using HTTPS
 CSRF_COOKIE_SAMESITE = 'None'  # Allow cross-site requests if needed
-CSRF_COOKIE_HTTPONLY = True  # Set to True to prevent JavaScript from accessing the CSRF cookie
+CSRF_COOKIE_HTTPONLY = False  # Set to True to prevent JavaScript from accessing the CSRF cookie
+# csrf cookie the localhost only not the other domain
+CSRF_COOKIE_DOMAIN = 'localhost'  # Ensures the cookie is valid only for localhost
+
 
 # Token cookie settings
 # AUTH_TOKEN_COOKIE_NAME = 'auth_token'
