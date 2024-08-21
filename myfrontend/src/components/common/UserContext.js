@@ -12,7 +12,7 @@ export const UserProvider = ({ children }) => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await axios.get('http://127.0.0.1:8888/api/user-profile/', {
+                const response = await axios.get('http://localhost:8888/api/user-profile/', {
                     withCredentials: true, // Ensure cookies are sent
                 });
                 if (response.status === 200) {
@@ -41,28 +41,34 @@ export const UserProvider = ({ children }) => {
 
     const logout = async () => {
         try {
-            const csrfToken = Cookies.get('csrftoken');  // Retrieve the CSRF token
+            // Retrieve the CSRF token from cookies
+            const csrfToken = Cookies.get('csrftoken');
             console.log('CSRF Token being sent:', csrfToken);  // Debugging
     
-            const response = await axios.post('http://127.0.0.1:8888/api/logout/', {}, {
+            // Send POST request to logout endpoint
+            const response = await axios.post('http://localhost:8888/api/logout/', {}, {
                 withCredentials: true,  // Ensure cookies are sent with the request
                 headers: {
                     'X-CSRFToken': csrfToken,  // Include CSRF token in headers
                 },
             });
     
+            // Handle response
             if (response.status === 200) {
-                // Handle successful logout
-                setUser(null);
-                Cookies.remove('sessionid');
-                Cookies.remove('csrftoken');
+                console.log('Logout successful');  // Debugging
+                setUser(null);  // Update user context or state
+    
+                // Remove cookies
+                Cookies.remove('sessionid');  // Clear session cookie
+                Cookies.remove('csrftoken');  // Clear CSRF token cookie
             } else {
-                console.log('Error during logout');
+                console.error('Error during logout, status:', response.status);  // Debugging
             }
         } catch (error) {
-            console.error('Error during logout:', error);
+            console.error('Error during logout:', error);  // Debugging
         }
     };
+    
     
     
     

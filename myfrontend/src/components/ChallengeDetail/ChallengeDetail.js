@@ -49,7 +49,7 @@ const ChallengeDetail = () => {
     useEffect(() => {
         const fetchChallenge = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:8888/api/challenge/${id}`);
+                const response = await fetch(`http://localhost:8888/api/challenge/${id}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -67,7 +67,7 @@ const ChallengeDetail = () => {
         if (challenge) {
             const fetchSubmissions = async () => {
                 try {
-                    const response = await fetch(`http://127.0.0.1:8888/api/submissions?challenge=${id}`);
+                    const response = await fetch(`http://localhost:8888/api/submissions?challenge=${id}`);
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }

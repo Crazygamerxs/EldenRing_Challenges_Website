@@ -18,7 +18,7 @@ const CommunityForum = () => {
 
         const csrfToken = getCookie('csrftoken'); // Retrieve CSRF token from cookie
 
-        fetch(`http://127.0.0.1:8888/api/threads/?category_id=${forumId}`, {
+        fetch(`http://localhost:8888/api/threads/?category_id=${forumId}`, {
             method: 'GET',
             credentials: 'include', // Ensure cookies are sent
             headers: {

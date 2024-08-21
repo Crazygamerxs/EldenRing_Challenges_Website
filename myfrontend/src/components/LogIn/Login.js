@@ -70,7 +70,8 @@ const LogIn = () => {
                     </div>
                     <div className="form-actions">
                         <button type="submit">Log In</button>
-                        <button type="button" onClick={() => navigate('/signup')}>Don't have an account?</button>
+                        <p className='forgot-password'>Forgot Password?</p>
+                        <button type="button" onClick={() => navigate('/signup')}>Sign up</button>
                     </div>
                 </form>
             </div>

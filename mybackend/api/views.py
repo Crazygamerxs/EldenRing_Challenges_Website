@@ -89,10 +89,10 @@ class LogoutAPIView(APIView):
         response = Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
         
         # Clear session ID cookie
-        response.delete_cookie('sessionid')  # Default path
+        response.delete_cookie('sessionid', path='/')  # Default path
         
         # Optionally clear CSRF token cookie
-        response.delete_cookie('csrftoken')  # Path should match if set
+        response.delete_cookie('csrftoken', path='/')  # Path should match if set
 
         return response
     

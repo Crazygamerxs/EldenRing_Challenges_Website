@@ -14,7 +14,7 @@ const ThreadPage = () => {
 
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://127.0.0.1:8888/api/threads/${threadId}/`, {
+                const response = await axios.get(`http://localhost:8888/api/threads/${threadId}/`, {
                     withCredentials: true // Ensure cookies are sent with the request
                 });
                 const data = response.data;

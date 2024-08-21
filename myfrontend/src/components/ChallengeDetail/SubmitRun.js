@@ -21,7 +21,7 @@ const SubmitRun = ({ challengeId, onClose }) => {
     console.log('Time Taken:', 0);
 
     try {
-      const response = await fetch('http://127.0.0.1:8888/api/submit_run/', {
+      const response = await fetch('http://localhost:8888/api/submit_run/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

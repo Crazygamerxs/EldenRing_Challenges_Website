@@ -13,7 +13,7 @@ const Challenge = ({ filters }) => {
     useEffect(() => {
         const fetchChallenges = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8888/api/challenge/', {
+                const response = await fetch('http://localhost:8888/api/challenge/', {
                     method: 'GET',
                     credentials: 'include',
                     'X-CSRFToken': Cookies.get('csrftoken'), 
