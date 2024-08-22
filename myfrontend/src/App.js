@@ -15,6 +15,7 @@ import BottomBar from './components/common/BottomBar';
 import { UserProvider } from './components/common/UserContext';
 import RouteLoader from './components/common/RouteLoader';
 import PrivateRoute from './components/common/PrivateRoute'; // Import PrivateRoute
+import CSRFTOKEN from "./components/common/CSRFToken"
 
 const App = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -23,6 +24,7 @@ const App = () => {
         <UserProvider>
             <Router>
                 <TopBar />
+                <CSRFTOKEN />
                 <LoadingIndicator isVisible={isLoading} />
                 <Routes>
                     <Route path="/home" element={<Home />} />

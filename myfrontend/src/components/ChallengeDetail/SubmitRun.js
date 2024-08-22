@@ -1,24 +1,20 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import './ChallengeDetail.css'; // Ensure you have the required CSS styles
 import { UserContext } from '../common/UserContext'; // Adjust the path to where UserProvider is located
+import Notification from '../common/Notification'; // Import the Notification component
 
 const SubmitRun = ({ challengeId, onClose }) => {
   const [fileUrl, setFileUrl] = useState('');
+  const [notification, setNotification] = useState(null); // State to manage notifications
   const { user } = useContext(UserContext); // Access user from context
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!user) {
-      alert('You need to be logged in to submit a run.');
+      setNotification({ message: 'You need to be logged in to submit a run.', type: 'error' });
       return;
     }
-
-    console.log('Submitting run with data:');
-    console.log('File URL:', fileUrl);
-    console.log('Challenge ID:', challengeId);
-    console.log('User ID:', user.id);
-    console.log('Time Taken:', 0);
 
     try {
       const response = await fetch('http://localhost:8888/api/submit_run/', {
@@ -35,16 +31,28 @@ const SubmitRun = ({ challengeId, onClose }) => {
       });
 
       if (response.ok) {
-        alert('Run submitted successfully!');
+        setNotification({ message: 'Run submitted successfully!', type: 'success' });
+        setFileUrl(''); // Clear the input
         onClose();
       } else {
         const errorData = await response.json();
-        alert(`Error: ${errorData.error || 'Failed to submit run'}`);
+        setNotification({ message: `Error: ${errorData.error || 'Failed to submit run'}`, type: 'error' });
       }
     } catch (error) {
       console.error('Error submitting run:', error);
-      alert('An error occurred while submitting the run');
+      setNotification({ message: 'An error occurred while submitting the run', type: 'error' });
     }
+  };
+
+  const handleShowNotification = () => {
+    setNotification({
+      message: ' Success This is a test notification triggered by the button!',
+      type: 'success',
+    });
+  };
+
+  const handleCloseNotification = () => {
+    setNotification(null);
   };
 
   return (
@@ -68,6 +76,16 @@ const SubmitRun = ({ challengeId, onClose }) => {
           </div>
           <button type="submit" className="submit-run-submit-btn">Submit Run</button>
         </form>
+        <button onClick={handleShowNotification} className="test-notification-btn">
+          Show Test Notification
+        </button>
+        {notification && (
+          <Notification
+            message={notification.message}
+            type={notification.type}
+            onClose={handleCloseNotification}
+          />
+        )}
       </div>
     </div>
   );

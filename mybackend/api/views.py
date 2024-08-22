@@ -171,7 +171,7 @@ class ChallengeAPIView(APIView):
             serializer = ChallengeSerializer(challenges, many=True)
             return Response(serializer.data)
         
-
+@method_decorator(csrf_protect, name='dispatch')
 class ChallengeDetailView(generics.RetrieveAPIView):
     queryset = Challenge.objects.all()
     serializer_class = ChallengeSerializer
@@ -181,8 +181,9 @@ class ChallengeSubmissionsView(generics.ListAPIView):
 
     def get_queryset(self):
         challenge_id = self.request.query_params.get('challenge')
-        return Submission.objects.filter(challenge_id=challenge_id)
-
+        return Submission.objects.filter(challenge_id=challenge_id, status='approved')
+    
+    
 class SubmitRunAPIView(APIView):
     def post(self, request):
         print("Submit Run View")

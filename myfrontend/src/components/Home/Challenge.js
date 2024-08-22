@@ -36,7 +36,9 @@ const Challenge = ({ challenges }) => {
                         {groupedChallenges[categoryName].map((challenge) => (
                             <div key={challenge.id} className="challenge-item">
                                 <div>
-                                    <p className="challenge-title">{challenge.name}</p>
+                                    <Link to={`/challenge/${challenge.id}`}>
+                                        <p className="challenge-title">{challenge.name}</p>
+                                    </Link>
                                     <p className="challenge-details">{challenge.details}</p>
                                     <div className="challenge-content">
                                         <div className="challenge-subdetails-container">

@@ -4,7 +4,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import { UserContext } from '../common/UserContext';
 import './Login.css';
 import Cookies from 'js-cookie';
-import CSRFTOKEN from "../common/CSRFToken";
 import axios from 'axios';
 
 const LogIn = () => {
@@ -43,7 +42,6 @@ const LogIn = () => {
             <div className="login-content">
                 <h2>LOGIN TO ELDENRING.CA</h2>
                 <form onSubmit={handleSubmit}>
-                    <CSRFTOKEN />
                     <div className="form-group">
                         <label htmlFor="username">Username</label>
                         <input

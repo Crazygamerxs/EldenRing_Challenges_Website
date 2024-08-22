@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './SignUp.css';
-import CSRFTOKEN from "../common/CSRFToken"
 
 const SignUp = () => {
     const [username, setUsername] = useState('');
@@ -40,7 +39,6 @@ const SignUp = () => {
             <div className="sign-up-content">
                 <h2>SIGN UP FOR ELDENRING.CA</h2>
                 <form onSubmit={handleSubmit}>
-                    <CSRFTOKEN />
                     <div className="form-group">
                         <label htmlFor="username">Username</label>
                         <input

@@ -59,11 +59,18 @@ class ChallengeDetail(models.Model):
         return f"Detail for {self.challenge.name}"
 
 class Submission(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    ]
+
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     challenge = models.ForeignKey(Challenge, on_delete=models.CASCADE)
     file_url = models.URLField()
     submitted_at = models.DateTimeField(auto_now_add=True)
-    time_taken = models.DurationField(default=timedelta())  # Default value set to timedelta of zero
+    time_taken = models.DurationField(default=timedelta())
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
 
     def __str__(self):
         return f"Submission by {self.user.email} for {self.challenge.name}"

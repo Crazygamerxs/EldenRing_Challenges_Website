@@ -38,10 +38,10 @@ urlpatterns = [
     path('api/threads/<int:thread_id>/', ThreadDetailView.as_view(), name='thread-detail'),
     path('api/user-profile/', UserProfileAPIView.as_view(), name='user-profile'),
     path('api/submit_run/', SubmitRunAPIView.as_view(), name='submit-run'),
-
-    re_path(r'^.*$', TemplateView.as_view(template_name='index.html')),
+    
+    # re_path(r'^.*$', TemplateView.as_view(template_name='index.html')),
 
     ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# if settings.DEBUG:
+    # urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
