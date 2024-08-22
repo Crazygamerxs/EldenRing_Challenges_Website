@@ -1,0 +1,8 @@
+## Important stuff to do before deploying the website
+
+1. Change the password variable for the smtp email server to be a variable
+2. Make sure the cookies are served over https
+3. Change the allowed hosts and cross site origin requests to be the IP Address of the prod website
+4. Make sure the not accessible views, have a page for them 
+5. Make sure each error and bug as an if statement and can handle it, without crashing the website
+6. Debug to False

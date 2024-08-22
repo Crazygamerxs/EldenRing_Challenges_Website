@@ -1,9 +1,10 @@
+// src/components/Login/LogIn.js
 import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { UserContext } from '../common/UserContext';
 import './Login.css';
 import Cookies from 'js-cookie';
-import CSRFTOKEN from "../common/CSRFToken"
+import CSRFTOKEN from "../common/CSRFToken";
 import axios from 'axios';
 
 const LogIn = () => {
@@ -12,7 +13,6 @@ const LogIn = () => {
     const navigate = useNavigate();
     const { login } = useContext(UserContext);
 
-    
     const handleSubmit = async (e) => {
         e.preventDefault();
         
@@ -29,18 +29,14 @@ const LogIn = () => {
                     'X-CSRFToken': csrfToken,
                 }
             });
-            console.log('Fetching user login');
-    
+
             console.log('Login successful:', response.data);
             login({ username });
-            navigate(response.data.redirect || '/home');
+            navigate('/home?loginSuccess=Login successful!');
         } catch (error) {
             console.error('Error during login:', error.response ? error.response.data : error.message);
         }
     };
-    
-    
-    
 
     return (
         <div className='login-page'>
@@ -70,7 +66,7 @@ const LogIn = () => {
                     </div>
                     <div className="form-actions">
                         <button type="submit">Log In</button>
-                        <p className='forgot-password'>Forgot Password?</p>
+                        <Link to="/password-reset" className='forgot-password'>Forgot Password?</Link>
                         <button type="button" onClick={() => navigate('/signup')}>Sign up</button>
                     </div>
                 </form>

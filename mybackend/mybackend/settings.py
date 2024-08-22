@@ -17,7 +17,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'build/static')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
@@ -169,17 +169,19 @@ USE_TZ = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+FRONTEND_URL = 'http://localhost:3000'
+
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.example.com'  # Replace with your SMTP server address
-EMAIL_PORT = 25  # Use 465 for SSL or 587 for TLS
-EMAIL_USE_TLS = False  # Set to False if using SSL (port 465)
-EMAIL_HOST_USER = 'your-email@example.com'
-EMAIL_HOST_PASSWORD = 'your-email-password'
-DEFAULT_FROM_EMAIL = 'noreply@example.com'  # Default sender email address
-
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587  # Use 465 for SSL or 587 for TLS
+EMAIL_USE_TLS = True  # Set to True if using TLS
+EMAIL_USE_SSL = False  # Set to True if using SSL instead of TLS
+EMAIL_HOST_USER = 'ringrunnerhelp@gmail.com'  # Your Gmail address
+EMAIL_HOST_PASSWORD = 'cyiqmpfvbomjvnkk'  # Your Gmail password
 
 
 

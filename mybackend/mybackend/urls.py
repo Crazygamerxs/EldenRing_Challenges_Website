@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path
-from api.views import SimpleAPIView, GETCSRFToken, SignupAPIView, LoginAPIView, LogoutAPIView, HomeAPIView, ChallengeAPIView, ChallengeDetailView, ChallengeSubmissionsView, ThreadListView, ThreadDetailView, UserProfileAPIView, SubmitRunAPIView
+from api.views import SimpleAPIView, GETCSRFToken, SignupAPIView, LoginAPIView, LogoutAPIView, HomeAPIView, ChallengeAPIView, ChallengeDetailView, ChallengeSubmissionsView, ThreadListView, ThreadDetailView, UserProfileAPIView, SubmitRunAPIView, PasswordResetConfirmView, PasswordResetRequestView
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
@@ -28,6 +28,8 @@ urlpatterns = [
     path('api/signup/', SignupAPIView.as_view(), name='signup'),
     path('api/login/', LoginAPIView.as_view(), name='login'),
     path('api/logout/', LogoutAPIView.as_view(), name='logout'),
+    path('api/password-reset/', PasswordResetRequestView.as_view(), name='password_reset_request'),
+    path('api/password-reset-confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
     path('api/home/', HomeAPIView.as_view(), name='home'),
     path('api/challenge/', ChallengeAPIView.as_view(), name='challenge'),
     path('api/challenge/<int:pk>/', ChallengeDetailView.as_view(), name='challenge-specific'),

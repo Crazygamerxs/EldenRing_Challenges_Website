@@ -103,7 +103,7 @@
     text-decoration: none;
     height: 10px;
     position: relative;
-    bottom: 5px;
+    top: 8px;
     right: 20px;
 }
 .form-actions .forgot-password:hover{

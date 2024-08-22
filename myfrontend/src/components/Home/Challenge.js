@@ -1,56 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './Home.css';
 import images from '../../images';
 import { categories } from '../../constants/categories';
 import { Link } from 'react-router-dom';
-import Cookies from 'js-cookie';
 
-const Challenge = ({ filters }) => {
-    const [challenges, setChallenges] = useState([]);
-    const [filteredChallenges, setFilteredChallenges] = useState([]);
-    const [loading, setLoading] = useState(true); // Add loading state
-
-    useEffect(() => {
-        const fetchChallenges = async () => {
-            try {
-                const response = await fetch('http://localhost:8888/api/challenge/', {
-                    method: 'GET',
-                    credentials: 'include',
-                    'X-CSRFToken': Cookies.get('csrftoken'), 
-                });
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                setChallenges(data);
-                setLoading(false); // Data has been loaded
-            } catch (error) {
-                console.error('Error fetching challenges:', error);
-                setLoading(false); // Even on error, stop loading
-            }
-        };
-
-        fetchChallenges();
-    }, []); // Empty dependency array
-
-    useEffect(() => {
-        const { difficulties, types } = filters;
-
-        const newFilteredChallenges = challenges.filter((challenge) => {
-            const isDifficultyMatch = difficulties.length === 0 || difficulties.includes(challenge.difficulty);
-            const isTypeMatch = types.length === 0 || types.includes(challenge.category);
-            return isDifficultyMatch && isTypeMatch;
-        });
-
-        setFilteredChallenges(newFilteredChallenges);
-    }, [challenges, filters]);
+const Challenge = ({ challenges }) => {
 
     const getCategoryName = (id) => {
         const category = categories.find(cat => cat.id === id);
         return category ? category.name : 'Unknown Category';
     };
 
-    const groupedChallenges = filteredChallenges.reduce((acc, challenge) => {
+    const groupedChallenges = challenges.reduce((acc, challenge) => {
         const categoryName = getCategoryName(challenge.category);
         if (!acc[categoryName]) {
             acc[categoryName] = [];
@@ -59,13 +20,9 @@ const Challenge = ({ filters }) => {
         return acc;
     }, {});
 
-    if (loading) {
-        return <div className="loading">Loading...</div>; // Show a loading indicator
-    }
-
     return (
         <div className="challenge-container">
-            {filteredChallenges.length === 0 ? (
+            {challenges.length === 0 ? (
                 <div className="no-data">
                     <img src={images.nodata} alt="No Data" className="no-data-icon" />
                     <p className="no-data-message">

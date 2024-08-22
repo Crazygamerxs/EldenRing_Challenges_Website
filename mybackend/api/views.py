@@ -14,6 +14,13 @@ from django.middleware.csrf import get_token
 import random
 from django.utils.decorators import method_decorator
 from django.contrib.auth.models import Permission
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.core.mail import send_mail
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
+from django.conf import settings
 
 User = get_user_model()
 
@@ -95,7 +102,49 @@ class LogoutAPIView(APIView):
         response.delete_cookie('csrftoken', path='/')  # Path should match if set
 
         return response
-    
+
+# Generate token for password reset
+token_generator = PasswordResetTokenGenerator()
+@method_decorator(csrf_protect, name='dispatch')
+class PasswordResetRequestView(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        if not email:
+            return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        user = get_object_or_404(User, email=email)
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        token = token_generator.make_token(user)
+        
+        # Use the configured frontend URL
+        reset_link = f"{settings.FRONTEND_URL}/password-reset-confirm/{uid}/{token}/"
+
+        send_mail(
+            'Password Reset Request',
+            f'Use the link below to reset your password:\n{reset_link}',
+            'no-reply@example.com',
+            [email],
+            fail_silently=False,
+        )
+        return Response({"message": "Password reset link sent"}, status=status.HTTP_200_OK)
+
+@method_decorator(csrf_protect, name='dispatch')
+class PasswordResetConfirmView(APIView):
+    def post(self, request, uidb64, token):
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=uid)
+            if token_generator.check_token(user, token):
+                new_password = request.data.get('password')
+                user.set_password(new_password)
+                user.save()
+                return Response({"message": "Password reset successful"}, status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
+        except User.DoesNotExist:
+            return Response({"error": "Invalid user"}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class UserProfileAPIView(APIView):
     permission_classes = [IsAuthenticated]
 

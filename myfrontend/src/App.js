@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignUp from './components/SignUp/SignUp';
 import Login from './components/Login/Login';
+import PasswordResetConfirm from './components/Login/PasswordResetConfirm';
+import PasswordResetRequest from './components/Login/PasswordResetRequest';
 import Home from './components/Home/Home';
 import ChallengeDetail from './components/ChallengeDetail/ChallengeDetail';
 import CommunityBoard from './components/CB/CB';
@@ -26,6 +28,8 @@ const App = () => {
                     <Route path="/home" element={<Home />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/login" element={<Login />} />
+                    <Route path="/password-reset" element={<PasswordResetRequest />} />
+                    <Route path="/password-reset-confirm/:uidb64/:token" element={<PasswordResetConfirm />} />
                     <Route path="/challenge/:id" element={<ChallengeDetail />} />
                     <Route path="/CB" element={<CommunityBoard />} />
                     <Route path="/forum/:forumId" element={<PrivateRoute element={<CommunityForum />} />} />

@@ -43,13 +43,13 @@ const TopBar = () => {
                 </Link>
             </div>
             <div className='middle-section'>
-                <Link to="/home" className="nav-link">Challenge</Link>
-                <Link to="/CB" className="nav-link">Community Board</Link>
+                <Link to="/home" className="nav-link hover-effect">Challenge</Link>
+                <Link to="/CB" className="nav-link hover-effect">Community Board</Link>
             </div>
             <div className="right-section">
                 {user ? (
                     <>
-                        <span className="nav-link">Hey, {user.username}</span>
+                        <span className="nav-link hover-effect">Hey, {user.username}</span>
                         <button onClick={handleLogout} className="logout-btn">Logout</button>
                     </>
                 ) : (
