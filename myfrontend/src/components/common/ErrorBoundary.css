@@ -1,0 +1,118 @@
+.error-boundary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #111618;
+  padding: 20px;
+}
+
+.error-container {
+  background-color: #1e262d;
+  border-radius: 10px;
+  padding: 30px;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  border-top: 4px solid #a98b2d;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-container h2 {
+  color: #a98b2d;
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.error-container p {
+  color: #f0f0f0;
+  margin-bottom: 25px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.error-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.error-reload-btn, .error-home-btn {
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.error-reload-btn {
+  background-color: #a98b2d;
+  color: #fff;
+}
+
+.error-reload-btn:hover {
+  background-color: #c9a43a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.error-home-btn {
+  background-color: transparent;
+  color: #f0f0f0;
+  border: 1px solid #a98b2d;
+}
+
+.error-home-btn:hover {
+  background-color: rgba(169, 139, 45, 0.1);
+  transform: translateY(-2px);
+}
+
+.error-details {
+  margin-top: 20px;
+  text-align: left;
+  background-color: #2c3b47;
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid #3a4a59;
+}
+
+.error-details summary {
+  cursor: pointer;
+  color: #a98b2d;
+  font-weight: 600;
+  padding: 5px 0;
+}
+
+.error-details p {
+  color: #f44336;
+  margin: 10px 0;
+  font-family: monospace;
+  font-size: 14px;
+}
+
+.error-details pre {
+  background-color: #24303e;
+  padding: 15px;
+  border-radius: 4px;
+  overflow-x: auto;
+  color: #f0f0f0;
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-top: 10px;
+}

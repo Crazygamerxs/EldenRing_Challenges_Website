@@ -72,6 +72,58 @@
   padding: 5px; /* Add some padding for better hover effect */
 }
 
+.notification-icon-link {
+  color: white;
+  text-decoration: none;
+  font-size: 20px;
+  position: relative;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.notification-icon-link i {
+  color: white;
+}
+
+.notification-icon-container {
+  position: relative;
+  display: inline-block;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #ff3b30;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  animation: pulse-notification 2s infinite;
+}
+
+@keyframes pulse-notification {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.7);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 6px rgba(255, 59, 48, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 59, 48, 0);
+  }
+}
+
 
 .signup-btn {
   background-color: #ffffff;
@@ -201,20 +253,35 @@
   justify-content: center;
   height: 100%;
   width: 100%;
+  padding: 20px;
 }
 
 .spinner {
-  border: 8px solid #f3f3f3; /* Light grey */
-  border-top: 8px solid #3498db; /* Blue */
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top: 4px solid #a98b2d; /* Gold color to match theme */
   border-radius: 50%;
   width: 50px;
   height: 50px;
-  animation: spin 1s linear infinite;
+  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Pulsating effect for the loading text */
+.loading-spinner p {
+  animation: pulse 1.5s ease-in-out infinite;
+  margin-top: 15px;
+  color: #f0f0f0;
+  font-weight: 500;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
 
 /*-------- Notification --------*/

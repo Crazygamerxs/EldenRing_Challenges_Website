@@ -146,12 +146,22 @@ class PasswordResetConfirmView(APIView):
 
 
 class UserProfileAPIView(APIView):
-    permission_classes = [IsAuthenticated]
-
+    """
+    Modified to work without the user profile feature
+    """
     def get(self, request):
-        user = request.user
-        serializer = UserSerializer(user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if request.user.is_authenticated:
+            user = request.user
+            # Return minimal user data needed for the app to function
+            data = {
+                'id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'is_staff': user.is_staff,
+                'is_superuser': user.is_superuser
+            }
+            return Response(data, status=status.HTTP_200_OK)
+        return Response({'error': 'Not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 
@@ -181,10 +191,12 @@ class ChallengeSubmissionsView(generics.ListAPIView):
 
     def get_queryset(self):
         challenge_id = self.request.query_params.get('challenge')
-        return Submission.objects.filter(challenge_id=challenge_id, status='approved')
+        return Submission.objects.filter(challenge_id=challenge_id, status='approved').order_by('time_taken')[:10]
     
     
+@method_decorator(csrf_protect, name='dispatch')
 class SubmitRunAPIView(APIView):
+    permission_classes = [IsAuthenticated]
     def post(self, request):
         print("Submit Run View")
         print(f"Request Headers: {request.headers}")

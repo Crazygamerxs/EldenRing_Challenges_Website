@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import './ChallengeDetail.css';
 import images from '../../images';
 import SubmitRun from './SubmitRun';
+import MultipleRunSubmit from './MultipleRunSubmit'; // Import the MultipleRunSubmit component
 import LoadingSpinner from '../common/LoadingSpinner'; // Import the LoadingSpinner component
 
 // Function to convert HH:MM:SS duration to a human-readable string
@@ -42,6 +43,7 @@ const ChallengeDetail = () => {
     const [submissions, setSubmissions] = useState([]);
     const [activeTab, setActiveTab] = useState('overview');
     const [isSubmitRunOpen, setIsSubmitRunOpen] = useState(false);
+    const [isMultiSubmitOpen, setIsMultiSubmitOpen] = useState(false); // State to control the multi-submit modal
     const [loadingChallenge, setLoadingChallenge] = useState(true);
     const [loadingSubmissions, setLoadingSubmissions] = useState(true);
 
@@ -71,30 +73,34 @@ const ChallengeDetail = () => {
         fetchChallenge();
     }, [id]);
 
+    // Function to fetch submissions - moved outside useEffect so it can be called from onClose
+    const fetchSubmissions = async () => {
+        if (!challenge) return;
+        
+        setLoadingSubmissions(true);
+        try {
+            const csrfToken = Cookies.get('csrftoken');
+            const response = await fetch(`http://localhost:8888/api/submissions?challenge=${id}`, {
+                method: 'GET',
+                credentials: 'include',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            setSubmissions(data);
+            setLoadingSubmissions(false);
+        } catch (error) {
+            console.error('Error fetching submissions:', error);
+            setLoadingSubmissions(false);
+        }
+    };
+
     useEffect(() => {
         if (challenge) {
-            const fetchSubmissions = async () => {
-                try {
-                    const csrfToken = Cookies.get('csrftoken');
-                    const response = await fetch(`http://localhost:8888/api/submissions?challenge=${id}`, {
-                        method: 'GET',
-                        credentials: 'include',
-                        headers: {
-                            'X-CSRFToken': csrfToken,
-                        },
-                    });
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    const data = await response.json();
-                    setSubmissions(data);
-                    setLoadingSubmissions(false);
-                } catch (error) {
-                    console.error('Error fetching submissions:', error);
-                    setLoadingSubmissions(false);
-                }
-            };
-
             fetchSubmissions();
         }
     }, [challenge, id]);
@@ -116,9 +122,12 @@ const ChallengeDetail = () => {
                             </div>
                             <p>{challenge.details}</p>
                             <p>Difficulty: {challenge.difficulty}</p>
+                            {/* Keep only the Overview tab for now */}
                             <div className="challenge-tabs">
                                 <button onClick={() => setActiveTab('overview')} className={activeTab === 'overview' ? 'active' : ''}>Overview</button>
+                                {/* Discussion tab hidden for future implementation 
                                 <button onClick={() => setActiveTab('discussion')} className={activeTab === 'discussion' ? 'active' : ''}>Discussion</button>
+                                */}
                             </div>
                         </>
                     )}
@@ -158,7 +167,25 @@ const ChallengeDetail = () => {
                     {/* Implement discussion tab functionality later */}
                 </div>
             </div>
-            {isSubmitRunOpen && <SubmitRun challengeId={id} onClose={() => setIsSubmitRunOpen(false)} />}
+            {isSubmitRunOpen && (
+                <SubmitRun
+                    challengeId={id}
+                    onClose={() => {
+                        setIsSubmitRunOpen(false);
+                        fetchSubmissions(); // Trigger a refresh of submissions
+                    }}
+                    onOpenMultiSubmit={() => {
+                        setIsSubmitRunOpen(false);
+                        setIsMultiSubmitOpen(true);
+                    }}
+                />
+            )}
+            {isMultiSubmitOpen && (
+                <MultipleRunSubmit
+                    challenges={[challenge]} // Replace with a list of challenges you want to allow for multi-submit
+                    onClose={() => setIsMultiSubmitOpen(false)}
+                />
+            )}
         </div>
     );
 };

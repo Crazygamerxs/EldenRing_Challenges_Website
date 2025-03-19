@@ -71,6 +71,7 @@ class Submission(models.Model):
     submitted_at = models.DateTimeField(auto_now_add=True)
     time_taken = models.DurationField(default=timedelta())
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+    reject_reason = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"Submission by {self.user.email} for {self.challenge.name}"
@@ -138,3 +139,32 @@ class UserChallenge(models.Model):
 
     def __str__(self):
         return f"User {self.user.email} - Challenge {self.challenge.name} - Status {self.status}"
+
+class Notification(models.Model):
+    TYPE_CHOICES = [
+        ('info', 'Information'),
+        ('success', 'Success'),
+        ('error', 'Error'),
+        ('warning', 'Warning'),
+    ]
+    
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected'),
+    ]
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    read = models.BooleanField(default=False)
+    type = models.CharField(max_length=10, choices=TYPE_CHOICES, default='info')
+    challenge = models.ForeignKey(Challenge, on_delete=models.SET_NULL, null=True, blank=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, null=True, blank=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"Notification for {self.user.username}: {self.title}"
