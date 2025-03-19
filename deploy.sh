@@ -81,6 +81,10 @@ fi
 # Create .env file for React
 create_env_file() {
     echo "Creating .env file for React..."
+    # Make sure the directory exists
+    mkdir -p myfrontend
+    
+    # Create the .env file
     cat > myfrontend/.env <<EOL
 REACT_APP_API_URL=$API_URL
 REACT_APP_ENV=$ENVIRONMENT
