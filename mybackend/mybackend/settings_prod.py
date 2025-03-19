@@ -25,10 +25,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# Set to True initially for debugging on Render, then disable
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 # Update this with your domain
-ALLOWED_HOSTS = ['eldenring.biz', 'www.eldenring.biz']
+ALLOWED_HOSTS = ['eldenring.biz', 'www.eldenring.biz', '.onrender.com']
 
 # Application definition
 INSTALLED_APPS = [
@@ -76,7 +77,8 @@ REST_FRAMEWORK = {
 }
 
 # Security settings
-SECURE_SSL_REDIRECT = True
+# Set to False initially for Render deployment, then enable once SSL is set up
+SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'False') == 'True'
 SECURE_HSTS_SECONDS = 31536000  # 1 year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
@@ -88,11 +90,15 @@ X_FRAME_OPTIONS = 'DENY'
 CORS_ALLOWED_ORIGINS = [
     "https://eldenring.biz",
     "https://www.eldenring.biz",
+    "https://*.onrender.com",
+    "http://*.onrender.com"  # Allow HTTP during development
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://eldenring.biz",
     "https://www.eldenring.biz",
+    "https://*.onrender.com",
+    "http://*.onrender.com"  # Allow HTTP during development
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -119,25 +125,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mybackend.wsgi.application'
 
 # Database
-# Use environment variables for database credentials
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# Use dj-database-url to handle database configuration
+import dj_database_url
 
-# For PostgreSQL (recommended for production)
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.environ.get('DB_NAME', ''),
-#         'USER': os.environ.get('DB_USER', ''),
-#         'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-#         'HOST': os.environ.get('DB_HOST', 'localhost'),
-#         'PORT': os.environ.get('DB_PORT', '5432'),
-#     }
-# }
+# Default to SQLite if DATABASE_URL is not provided
+DATABASES = {
+    'default': dj_database_url.config(
+        default=f'sqlite:///{os.path.join(BASE_DIR, "db.sqlite3")}',
+        conn_max_age=600
+    )
+}
 
 AUTH_USER_MODEL = 'api.User'
 
@@ -189,17 +186,17 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 # Session cookie settings
 SESSION_COOKIE_NAME = 'sessionid'
-SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = SECURE_SSL_REDIRECT  # Match SSL redirect setting
 SESSION_COOKIE_SAMESITE = 'Lax'
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_AGE = 1209600  # 2 weeks
 
 # CSRF cookie settings
 CSRF_COOKIE_NAME = "csrftoken"
-CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = SECURE_SSL_REDIRECT  # Match SSL redirect setting
 CSRF_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_HTTPONLY = False
-CSRF_COOKIE_DOMAIN = '.eldenring.biz'  # Include subdomain
+# CSRF_COOKIE_DOMAIN = '.eldenring.biz'  # Commented out for Render deployment
 
 # Logging configuration
 LOGGING = {
