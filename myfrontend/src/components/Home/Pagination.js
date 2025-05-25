@@ -2,17 +2,30 @@ import React from 'react';
 import './Home.css';
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+    // Scroll to top function
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     const handlePrevious = () => {
         if (currentPage > 1) {
             onPageChange(currentPage - 1);
-            window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top
+            scrollToTop();
         }
     };
 
     const handleNext = () => {
         if (currentPage < totalPages) {
             onPageChange(currentPage + 1);
-            window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top
+            scrollToTop();
+        }
+    };
+
+    // Handle page number click - FIXED VERSION
+    const handlePageClick = (page) => {
+        if (typeof page === 'number') {
+            onPageChange(page);
+            scrollToTop(); // Always scroll to top, regardless of current page
         }
     };
 
@@ -47,20 +60,28 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         return pageNumbers;
     };
 
+    // Don't render pagination if there's only one page or no pages
+    if (totalPages <= 1) {
+        return null;
+    }
+
     return (
         <div className="pagination-container">
             <button
                 className="pagination-button"
                 onClick={handlePrevious}
                 disabled={currentPage === 1}
+                title="Previous page"
             >
                 &lt;
             </button>
             {getPageNumbers().map((page, index) => (
                 <button
                     key={index}
-                    className={`pagination-button ${page === currentPage ? 'active' : ''}`}
-                    onClick={() => typeof page === 'number' && onPageChange(page)}
+                    className={`pagination-button ${page === currentPage ? 'active' : ''} ${page === '...' ? 'ellipsis' : ''}`}
+                    onClick={() => handlePageClick(page)}
+                    disabled={page === '...'}
+                    title={typeof page === 'number' ? `Go to page ${page}` : ''}
                 >
                     {page}
                 </button>
@@ -69,6 +90,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
                 className="pagination-button"
                 onClick={handleNext}
                 disabled={currentPage === totalPages}
+                title="Next page"
             >
                 &gt;
             </button>

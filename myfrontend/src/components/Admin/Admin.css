@@ -548,6 +548,548 @@
     height: 200px;
 }
 
+/* Time display styling */
+.time-display {
+    font-family: monospace;
+    font-size: 14px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.time-display.user-time {
+    background-color: rgba(33, 150, 243, 0.1);
+    color: #2196f3;
+    border: 1px solid rgba(33, 150, 243, 0.3);
+}
+
+.time-display.admin-time {
+    background-color: rgba(169, 139, 45, 0.1);
+    color: #a98b2d;
+    border: 1px solid rgba(169, 139, 45, 0.3);
+    font-weight: bold;
+}
+
+/* Challenge name styling */
+.challenge-name {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+/* Difficulty badges */
+.difficulty-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.difficulty-badge.easy {
+    background-color: rgba(76, 175, 80, 0.2);
+    color: #4caf50;
+}
+
+.difficulty-badge.medium {
+    background-color: rgba(255, 152, 0, 0.2);
+    color: #ff9800;
+}
+
+.difficulty-badge.hard {
+    background-color: rgba(244, 67, 54, 0.2);
+    color: #f44336;
+}
+
+.difficulty-badge.extreme {
+    background-color: rgba(156, 39, 176, 0.2);
+    color: #9c27b0;
+}
+
+/* Points display */
+.points-display {
+    font-weight: bold;
+    color: #a98b2d;
+}
+
+.points-display small {
+    color: #909090;
+    font-weight: normal;
+}
+
+/* Username display */
+.username-display {
+    font-weight: 500;
+    color: #f0f0f0;
+}
+
+.challenges-display {
+    font-weight: 500;
+    color: #4caf50;
+}
+
+/* Form improvements */
+.admin-form-input.time-input {
+    font-family: monospace;
+    letter-spacing: 1px;
+}
+
+.admin-form-input.url-input {
+    font-size: 14px;
+}
+
+.input-help {
+    display: block;
+    color: #909090;
+    font-size: 12px;
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+.error-text {
+    color: #f44336;
+    font-size: 12px;
+    margin-top: 4px;
+    display: block;
+}
+
+.required {
+    color: #f44336;
+}
+
+/* Modal enhancements */
+.admin-modal-body p {
+    margin-bottom: 12px;
+}
+
+.admin-modal-body p strong {
+    color: #a98b2d;
+}
+
+/* Table cell improvements */
+.admin-table td {
+    vertical-align: middle;
+}
+
+/* Loading and empty states */
+.admin-loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+}
+
+/* Responsive improvements */
+@media (max-width: 1200px) {
+    .admin-table {
+        font-size: 14px;
+    }
+    
+    .admin-action-buttons {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .admin-action-button {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-filters {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .admin-filter-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .admin-filter-group .admin-form-select {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .admin-table-container {
+        overflow-x: auto;
+    }
+    
+    .admin-table {
+        min-width: 800px;
+    }
+}
+/* Add these styles to your ChallengeDetail.css and Home.css files */
+
+/* Challenge badges and indicators */
+.challenge-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.challenge-badges {
+    display: flex;
+    gap: 5px;
+}
+
+.challenge-badge {
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.dlc-badge {
+    background-color: #ff6b35;
+    color: white;
+}
+
+.combo-badge {
+    background-color: #a98b2d;
+    color: white;
+}
+
+.challenge-item.dlc-content {
+    border-left: 3px solid #ff6b35;
+}
+
+.challenge-item.combination-challenge {
+    border-right: 3px solid #a98b2d;
+}
+
+.difficulty-easy {
+    color: #4caf50;
+}
+
+.difficulty-medium {
+    color: #ff9800;
+}
+
+.difficulty-hard {
+    color: #f44336;
+}
+
+.difficulty-extreme {
+    color: #9c27b0;
+}
+
+.combination-indicator {
+    color: #a98b2d;
+    font-weight: bold;
+}
+
+/* Multiple Run Submit Modal Styles */
+.combo-indicator, .dlc-indicator {
+    font-size: 11px;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.combo-indicator {
+    color: #a98b2d;
+}
+
+.dlc-indicator {
+    color: #ff6b35;
+}
+
+.combo-tag, .dlc-tag {
+    display: inline-block;
+    padding: 1px 4px;
+    margin-left: 5px;
+    border-radius: 2px;
+    font-size: 9px;
+    font-weight: bold;
+}
+
+.combo-tag {
+    background-color: #a98b2d;
+    color: white;
+}
+
+.dlc-tag {
+    background-color: #ff6b35;
+    color: white;
+}
+
+.multiple-run-form-label-time {
+    display: block;
+    color: #f0f0f0;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    font-weight: 600;
+}
+
+.multiple-run-input-help {
+    display: block;
+    color: #909090;
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.error-text {
+    display: block;
+    color: #f44336;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* Admin Users Page Enhancements */
+.username-display {
+    font-weight: 600;
+    color: #f0f0f0;
+}
+
+.points-display {
+    font-weight: bold;
+    color: #a98b2d;
+}
+
+.challenges-display {
+    font-weight: bold;
+    color: #4caf50;
+}
+
+/* Points display styling */
+.points-info {
+    color: #a98b2d;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.points-info strong {
+    color: #c9a43a;
+}
+
+/* Enhanced form styling for time input */
+.time-input {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+}
+
+.time-input:focus {
+    border-color: #a98b2d;
+    box-shadow: 0 0 0 2px rgba(169, 139, 45, 0.2);
+}
+
+/* Submission guidelines styling */
+.submission-guidelines {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: rgba(169, 139, 45, 0.1);
+    border-radius: 5px;
+    border-left: 4px solid #a98b2d;
+}
+
+.submission-guidelines h4 {
+    color: #a98b2d;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.submission-guidelines ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.submission-guidelines li {
+    margin-bottom: 5px;
+    color: #f0f0f0;
+}
+
+/* Enhanced multiple run modal styling */
+.multiple-run-modal {
+    background: linear-gradient(145deg, #1e262d, #222b33);
+    border: 1px solid rgba(169, 139, 45, 0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.multiple-run-selected-box {
+    background-color: rgba(169, 139, 45, 0.1);
+    border: 1px solid rgba(169, 139, 45, 0.3);
+    border-radius: 5px;
+    padding: 15px;
+    margin: 15px 0;
+}
+
+.multiple-run-selected-box h3 {
+    color: #a98b2d;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.multiple-run-selected-item {
+    display: inline-flex;
+    align-items: center;
+    background-color: #2c3b47;
+    border-radius: 15px;
+    padding: 5px 10px;
+    margin: 3px;
+    color: #f0f0f0;
+    font-size: 14px;
+}
+
+.multiple-run-remove-btn {
+    background: none;
+    border: none;
+    color: #f44336;
+    font-size: 16px;
+    margin-left: 8px;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.multiple-run-remove-btn:hover {
+    background-color: rgba(244, 67, 54, 0.2);
+}
+
+/* Dropdown menu enhancements */
+.multiple-run-dropdown-menu {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.multiple-run-dropdown-item {
+    padding: 8px 10px;
+    border-bottom: 1px solid #3a4a59;
+}
+
+.multiple-run-dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.multiple-run-dropdown-item:hover {
+    background-color: rgba(169, 139, 45, 0.1);
+}
+
+.multiple-run-dropdown-label {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+/* Admin table enhancements */
+.admin-table td .username-display,
+.admin-table td .points-display,
+.admin-table td .challenges-display {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+.admin-table td .points-display {
+    background-color: rgba(169, 139, 45, 0.2);
+}
+
+.admin-table td .challenges-display {
+    background-color: rgba(76, 175, 80, 0.2);
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    .challenge-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .multiple-run-modal {
+        width: 95%;
+        margin: 20px auto;
+        max-height: 85vh;
+    }
+    
+    .multiple-run-selected-item {
+        font-size: 12px;
+        padding: 3px 8px;
+    }
+    
+    .admin-table {
+        font-size: 14px;
+    }
+    
+    .admin-action-buttons {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .admin-action-button {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Animation for challenge badges */
+@keyframes badge-glow {
+    0% { box-shadow: 0 0 5px rgba(169, 139, 45, 0.5); }
+    50% { box-shadow: 0 0 10px rgba(169, 139, 45, 0.8); }
+    100% { box-shadow: 0 0 5px rgba(169, 139, 45, 0.5); }
+}
+
+.combo-badge:hover {
+    animation: badge-glow 1.5s infinite;
+}
+
+/* Loading state for buttons */
+.multiple-run-submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    position: relative;
+}
+
+.multiple-run-submit-btn:disabled::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    margin: auto;
+    border: 2px solid transparent;
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+}
+
+@keyframes spin {
+    0% { transform: translateY(-50%) rotate(0deg); }
+    100% { transform: translateY(-50%) rotate(360deg); }
+}
+
+/* Success/Error message styling */
+.multiple-run-success {
+    background-color: rgba(76, 175, 80, 0.2);
+    border: 1px solid #4caf50;
+    color: #4caf50;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
+.multiple-run-error {
+    background-color: rgba(244, 67, 54, 0.2);
+    border: 1px solid #f44336;
+    color: #f44336;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+}
+
 @media (max-width: 768px) {
     .admin-header h1 {
         font-size: 24px;

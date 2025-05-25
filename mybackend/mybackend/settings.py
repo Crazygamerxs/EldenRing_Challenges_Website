@@ -55,11 +55,12 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',  # Handles Cross-Origin Resource Sharing (CORS)
     'django.middleware.security.SecurityMiddleware',  # Adds security-related headers
     'django.contrib.sessions.middleware.SessionMiddleware',  # Manages sessions
+    'django.contrib.auth.middleware.AuthenticationMiddleware',  # Manages user authentication
     'django.middleware.csrf.CsrfViewMiddleware',  # Handles CSRF protection
     'django.middleware.common.CommonMiddleware',  # Adds various common middleware features
     'django.middleware.clickjacking.XFrameOptionsMiddleware',  # Protects against clickjacking
-    'django.contrib.auth.middleware.AuthenticationMiddleware',  # Manages user authentication
     'django.contrib.messages.middleware.MessageMiddleware',  # Manages messages for the user
+    'api.middleware.SiteSettingsMiddleware',  # Add this line
 ]
 
 

@@ -34,16 +34,41 @@ const Challenge = ({ challenges }) => {
                     <div key={index}>
                         <h2 className="challenge-heading">{categoryName}</h2>
                         {groupedChallenges[categoryName].map((challenge) => (
-                            <div key={challenge.id} className="challenge-item">
+                            <div 
+                                key={challenge.id} 
+                                className={`challenge-item ${challenge.is_dlc ? 'dlc-content' : ''} ${challenge.is_combination ? 'combination-challenge' : ''}`}
+                            >
                                 <div>
-                                    <Link to={`/challenge/${challenge.id}`}>
-                                        <p className="challenge-title">{challenge.name}</p>
-                                    </Link>
+                                    <div className="challenge-header">
+                                        <Link to={`/challenge/${challenge.id}`}>
+                                            <p className="challenge-title">{challenge.name}</p>
+                                        </Link>
+                                        <div className="challenge-badges">
+                                            {challenge.is_dlc && (
+                                                <span className="challenge-badge dlc-badge" title="Requires DLC Content">
+                                                    DLC
+                                                </span>
+                                            )}
+                                            {challenge.is_combination && (
+                                                <span className="challenge-badge combo-badge" title="Combination Challenge">
+                                                    COMBO
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
                                     <p className="challenge-details">{challenge.details}</p>
                                     <div className="challenge-content">
                                         <div className="challenge-subdetails-container">
                                             <p className="challenge-subdetails">
-                                                {challenge.completed ? 'Completed' : 'Not Completed'} | {challenge.difficulty}
+                                                <span className={challenge.completed ? 'completion-status completed' : 'completion-status not-completed'}>
+                                                    {challenge.completed ? 'Completed' : 'Not Completed'}
+                                                </span> | 
+                                                <span>
+                                                    {challenge.difficulty}
+                                                </span>
+                                                {challenge.is_combination && (
+                                                    <span className="combination-indicator"> | Multi-Challenge</span>
+                                                )}
                                             </p>
                                         </div>
                                         <div className="challenge-actions">

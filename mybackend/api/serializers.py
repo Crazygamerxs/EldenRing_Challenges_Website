@@ -9,10 +9,16 @@ class UserSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ChallengeSerializer(serializers.ModelSerializer):
+    completed = serializers.SerializerMethodField()
+    
     class Meta:
         model = Challenge
-        fields = ['id', 'name', 'difficulty', 'details', 'category']
-
+        fields = ['id', 'name', 'details', 'difficulty', 'category', 'is_dlc', 'is_combination', 'completed']
+    
+    def get_completed(self, obj):
+        # This will be overridden by the view when user context is available
+        return False
+    
 class ChallengeCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Challenge_Category

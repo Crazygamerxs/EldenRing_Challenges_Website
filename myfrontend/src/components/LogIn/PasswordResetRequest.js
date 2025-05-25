@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import './Login.css';
@@ -6,41 +6,138 @@ import './Login.css';
 const PasswordResetRequest = () => {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [csrfReady, setCsrfReady] = useState(false);
+
+    // Wait for CSRF token to be available
+    const waitForCsrfToken = async (maxWait = 5000) => {
+        const startTime = Date.now();
+        
+        while (Date.now() - startTime < maxWait) {
+            const token = Cookies.get('csrftoken');
+            if (token) {
+                return token;
+            }
+            await new Promise(resolve => setTimeout(resolve, 100));
+        }
+        
+        throw new Error('CSRF token not available after waiting');
+    };
+
+    // Ensure CSRF token is available when component mounts
+    useEffect(() => {
+        const ensureCsrfToken = async () => {
+            try {
+                let token = Cookies.get('csrftoken');
+                
+                if (!token) {
+                    console.log('No CSRF token found, fetching...');
+                    await axios.get('http://localhost:8888/api/csrf-token/', { 
+                        withCredentials: true,
+                        timeout: 10000
+                    });
+                    
+                    token = await waitForCsrfToken();
+                }
+                
+                setCsrfReady(true);
+                console.log('CSRF token ready for password reset page');
+            } catch (error) {
+                console.error('Error ensuring CSRF token:', error);
+                setError('Security initialization failed. Please refresh the page.');
+            }
+        };
+
+        ensureCsrfToken();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setError('');
+        setMessage('');
         
-        // Retrieve CSRF token from cookies
-        const csrfToken = Cookies.get('csrftoken');
-        console.log('Retrieved CSRF Token from Cookies:', csrfToken);
+        if (!csrfReady) {
+            setError('Security token not ready. Please wait a moment.');
+            return;
+        }
+        
+        setIsLoading(true);
         
         try {
-            // Send POST request for password reset
+            const csrfToken = await waitForCsrfToken();
+            console.log('Using CSRF Token for password reset:', csrfToken.substring(0, 10) + '...');
+            
             const response = await axios.post('http://localhost:8888/api/password-reset/', {
                 email,
             }, {
-                withCredentials: true, // Include credentials for cross-site requests
+                withCredentials: true,
                 headers: {
-                    'X-CSRFToken': csrfToken, // Send CSRF token in the headers
-                }
+                    'X-CSRFToken': csrfToken,
+                },
+                timeout: 10000
             });
             
-            // Handle the response message
             setMessage(response.data.message);
             console.log('Password reset request successful:', response.data.message);
             
         } catch (error) {
-            // Log the error for debugging purposes
-            console.error('Error during password reset request:', error.response ? error.response.data : error.message);
+            console.error('Error during password reset request:', error);
+            
+            if (error.response?.status === 403) {
+                setError('Security token expired. Please refresh the page and try again.');
+            } else if (error.message.includes('CSRF')) {
+                setError('Security token not available. Please refresh the page.');
+            } else {
+                setError('Failed to send reset link. Please try again.');
+            }
+        } finally {
+            setIsLoading(false);
         }
     };
-    
-    
 
     return (
         <div className='login-page'>
             <div className="login-content">
                 <h2>Password Reset</h2>
+                
+                {!csrfReady && (
+                    <div style={{ 
+                        background: '#a98b2d', 
+                        color: 'white', 
+                        padding: '10px', 
+                        borderRadius: '5px', 
+                        marginBottom: '15px',
+                        textAlign: 'center'
+                    }}>
+                        Initializing security...
+                    </div>
+                )}
+                
+                {error && (
+                    <div style={{ 
+                        background: '#f44336', 
+                        color: 'white', 
+                        padding: '10px', 
+                        borderRadius: '5px', 
+                        marginBottom: '15px' 
+                    }}>
+                        {error}
+                    </div>
+                )}
+                
+                {message && (
+                    <div style={{ 
+                        background: '#4caf50', 
+                        color: 'white', 
+                        padding: '10px', 
+                        borderRadius: '5px', 
+                        marginBottom: '15px' 
+                    }}>
+                        {message}
+                    </div>
+                )}
+                
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="email">Email</label>
@@ -50,13 +147,18 @@ const PasswordResetRequest = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
+                            disabled={!csrfReady || isLoading}
                         />
                     </div>
                     <div className="form-actions">
-                        <button type="submit">Send Reset Link</button>
+                        <button 
+                            type="submit"
+                            disabled={!csrfReady || isLoading}
+                        >
+                            {isLoading ? 'Sending...' : 'Send Reset Link'}
+                        </button>
                     </div>
                 </form>
-                {message && <p>{message}</p>}
             </div>
         </div>
     );

@@ -39,11 +39,11 @@ const AdminUsers = () => {
             }
 
             const data = await response.json();
+            console.log('Users data received:', data); // Debug log
             setUsers(data);
         } catch (error) {
             console.error('Error fetching users:', error);
-            // Use mock data for demonstration
-            setUsers(generateMockUsers());
+            alert('Failed to load users. Please refresh the page.');
         } finally {
             setLoading(false);
         }
@@ -83,22 +83,6 @@ const AdminUsers = () => {
         } catch (error) {
             console.error('Error updating user:', error);
             alert('Failed to update user. Please try again.');
-            
-            // For demo, update the user anyway
-            setUsers(prevUsers => 
-                prevUsers.map(user => 
-                    user.id === selectedUser.id 
-                        ? {
-                            ...user,
-                            username: formData.username,
-                            email: formData.email,
-                            is_active: formData.is_active,
-                            is_staff: formData.is_staff
-                        } 
-                        : user
-                )
-            );
-            setShowEditModal(false);
         } finally {
             setActionLoading(false);
         }
@@ -143,15 +127,6 @@ const AdminUsers = () => {
         } catch (error) {
             console.error('Error updating user status:', error);
             alert('Failed to update user status. Please try again.');
-            
-            // For demo, update the user status anyway
-            setUsers(prevUsers => 
-                prevUsers.map(user => 
-                    user.id === userId 
-                        ? { ...user, is_active: newStatus } 
-                        : user
-                )
-            );
         } finally {
             setActionLoading(false);
         }
@@ -166,62 +141,6 @@ const AdminUsers = () => {
             is_staff: user.is_staff
         });
         setShowEditModal(true);
-    };
-
-    // Mock data generator for demonstration purposes
-    const generateMockUsers = () => {
-        return [
-            {
-                id: 1,
-                username: 'admin',
-                email: 'admin@eldenring.com',
-                profile_image: '/static/main/images/profile_pic/pp_1.png',
-                date_joined: new Date(Date.now() - 1000 * 60 * 60 * 24 * 30).toISOString(), // 30 days ago
-                is_active: true,
-                is_staff: true,
-                completed_challenges: 15
-            },
-            {
-                id: 2,
-                username: 'TarnishedOne',
-                email: 'tarnished@example.com',
-                profile_image: '/static/main/images/profile_pic/pp_2.png',
-                date_joined: new Date(Date.now() - 1000 * 60 * 60 * 24 * 25).toISOString(), // 25 days ago
-                is_active: true,
-                is_staff: false,
-                completed_challenges: 12
-            },
-            {
-                id: 3,
-                username: 'EldenLord',
-                email: 'eldenlord@example.com',
-                profile_image: '/static/main/images/profile_pic/pp_3.png',
-                date_joined: new Date(Date.now() - 1000 * 60 * 60 * 24 * 20).toISOString(), // 20 days ago
-                is_active: true,
-                is_staff: false,
-                completed_challenges: 8
-            },
-            {
-                id: 4,
-                username: 'MaidenlessRun',
-                email: 'maidenless@example.com',
-                profile_image: '/static/main/images/profile_pic/pp_1.png',
-                date_joined: new Date(Date.now() - 1000 * 60 * 60 * 24 * 15).toISOString(), // 15 days ago
-                is_active: false,
-                is_staff: false,
-                completed_challenges: 5
-            },
-            {
-                id: 5,
-                username: 'LetMeSoloHer',
-                email: 'letmesolo@example.com',
-                profile_image: '/static/main/images/profile_pic/pp_2.png',
-                date_joined: new Date(Date.now() - 1000 * 60 * 60 * 24 * 10).toISOString(), // 10 days ago
-                is_active: true,
-                is_staff: false,
-                completed_challenges: 10
-            }
-        ];
     };
 
     const formatDate = (dateString) => {
@@ -287,6 +206,7 @@ const AdminUsers = () => {
                                     <th>Username</th>
                                     <th>Email</th>
                                     <th>Joined</th>
+                                    <th>Points</th>
                                     <th>Challenges</th>
                                     <th>Status</th>
                                     <th>Role</th>
@@ -297,22 +217,20 @@ const AdminUsers = () => {
                                 {filteredUsers.map(user => (
                                     <tr key={user.id}>
                                         <td>
-                                            <div className="player-cell">
-                                                <img 
-                                                    src={user.profile_image} 
-                                                    alt={user.username} 
-                                                    className="player-avatar"
-                                                    onError={(e) => {
-                                                        e.target.onerror = null;
-                                                        e.target.src = '/static/main/images/profile_pic/pp_1.png';
-                                                    }}
-                                                />
-                                                <span className="player-name">{user.username}</span>
-                                            </div>
+                                            <span className="username-display">{user.username}</span>
                                         </td>
                                         <td>{user.email}</td>
                                         <td>{formatDate(user.date_joined)}</td>
-                                        <td>{user.completed_challenges}</td>
+                                        <td>
+                                            <span className="points-display">
+                                                {user.total_points || 0}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span className="challenges-display">
+                                                {user.challenges_completed_count || user.challenges_completed || 0}
+                                            </span>
+                                        </td>
                                         <td>
                                             <span className={`admin-status ${user.is_active ? 'approved' : 'rejected'}`}>
                                                 {user.is_active ? 'Active' : 'Inactive'}

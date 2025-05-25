@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Challenge from './Challenge';
 import ChallengeFilter from './ChallengeFilter';
 import Pagination from './Pagination';
@@ -8,13 +8,18 @@ import Cookies from 'js-cookie';
 function Home() {
     const [filters, setFilters] = useState({
         difficulties: [],
-        types: []
+        types: [],
+        dlc: [],
+        combination: []
     });
 
     const [challenges, setChallenges] = useState([]);
     const [filteredChallenges, setFilteredChallenges] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const challengesPerPage = 10;
+    
+    // Use ref to track if filters actually changed
+    const prevFiltersRef = useRef();
 
     useEffect(() => {
         const fetchChallenges = async () => {
@@ -37,22 +42,65 @@ function Home() {
         };
     
         fetchChallenges();
-    }, []); // Ensure this effect only runs once on component mount
-    
+    }, []);
 
     useEffect(() => {
-        const { difficulties, types } = filters;
+        const { difficulties, types, dlc, combination } = filters;
     
         const newFilteredChallenges = challenges.filter((challenge) => {
+            // Difficulty filter
             const isDifficultyMatch = difficulties.length === 0 || difficulties.includes(challenge.difficulty);
+            
+            // Category/Type filter
             const isTypeMatch = types.length === 0 || types.includes(challenge.category);
-            return isDifficultyMatch && isTypeMatch;
+            
+            // DLC content filter
+            let isDLCMatch = true;
+            if (dlc.length > 0) {
+                if (dlc.includes('base') && dlc.includes('dlc')) {
+                    // Both selected, show all
+                    isDLCMatch = true;
+                } else if (dlc.includes('base')) {
+                    // Only base game
+                    isDLCMatch = !challenge.is_dlc;
+                } else if (dlc.includes('dlc')) {
+                    // Only DLC content
+                    isDLCMatch = challenge.is_dlc;
+                }
+            }
+            
+            // Challenge combination filter
+            let isCombinationMatch = true;
+            if (combination.length > 0) {
+                if (combination.includes('single') && combination.includes('combination')) {
+                    // Both selected, show all
+                    isCombinationMatch = true;
+                } else if (combination.includes('single')) {
+                    // Only single challenges
+                    isCombinationMatch = !challenge.is_combination;
+                } else if (combination.includes('combination')) {
+                    // Only combination challenges
+                    isCombinationMatch = challenge.is_combination;
+                }
+            }
+            
+            return isDifficultyMatch && isTypeMatch && isDLCMatch && isCombinationMatch;
         });
     
         setFilteredChallenges(newFilteredChallenges);
-        // setCurrentPage(1); // Reset to first page when filters change
-    }, [challenges, filters]); // Ensure dependencies are correct
-    
+        
+        // Only reset to page 1 if filters actually changed (not on initial load)
+        const filtersChanged = prevFiltersRef.current && 
+            JSON.stringify(prevFiltersRef.current) !== JSON.stringify(filters);
+        
+        if (filtersChanged) {
+            setCurrentPage(1);
+        }
+        
+        // Update the previous filters reference
+        prevFiltersRef.current = filters;
+        
+    }, [challenges, filters]);
 
     const handleFilterChange = (newFilters) => {
         setFilters(newFilters);
@@ -65,6 +113,7 @@ function Home() {
     const totalPages = Math.ceil(filteredChallenges.length / challengesPerPage);
 
     const handlePageChange = (page) => {
+        console.log('Changing to page:', page); // Debug log
         if (page >= 1 && page <= totalPages) {
             setCurrentPage(page);
         }

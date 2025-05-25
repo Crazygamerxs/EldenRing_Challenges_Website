@@ -1,30 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
 import './Leaderboard.css';
 import LoadingSpinner from '../common/LoadingSpinner';
-import { motion, AnimatePresence } from 'framer-motion';
 
 const Leaderboard = () => {
-    const [challengesLeaderboard, setChallengesLeaderboard] = useState([]);
-    const [pointsLeaderboard, setPointsLeaderboard] = useState([]);
+    const [activeTab, setActiveTab] = useState('challenges');
+    const [leaderboardData, setLeaderboardData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
-    const [activeTab, setActiveTab] = useState('challenges'); // 'challenges' or 'points'
-    const usersPerPage = 50;
-    const navigate = useNavigate();
+    const usersPerPage = 10;
 
     useEffect(() => {
         fetchLeaderboardData();
-    }, []);
+    }, [activeTab]);
 
     const fetchLeaderboardData = async () => {
         setLoading(true);
+        setError(null);
+        
         try {
             const csrfToken = Cookies.get('csrftoken');
+            const endpoint = activeTab === 'challenges' 
+                ? 'http://localhost:8888/api/leaderboard/challenges/'
+                : 'http://localhost:8888/api/leaderboard/points/';
             
-            // Fetch challenges leaderboard
-            const challengesResponse = await fetch('http://localhost:8888/api/leaderboard/challenges', {
+            const response = await fetch(endpoint, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -32,247 +33,215 @@ const Leaderboard = () => {
                 },
             });
 
-            // Fetch points leaderboard
-            const pointsResponse = await fetch('http://localhost:8888/api/leaderboard/points', {
-                method: 'GET',
-                credentials: 'include',
-                headers: {
-                    'X-CSRFToken': csrfToken,
-                },
-            });
-
-            if (!challengesResponse.ok || !pointsResponse.ok) {
+            if (!response.ok) {
                 throw new Error('Failed to fetch leaderboard data');
             }
 
-            const challengesData = await challengesResponse.json();
-            const pointsData = await pointsResponse.json();
-
-            setChallengesLeaderboard(challengesData);
-            setPointsLeaderboard(pointsData);
-        } catch (error) {
-            console.error('Error fetching leaderboard data:', error);
-            // If API fails, use mock data for demonstration
-            setChallengesLeaderboard(generateMockChallengesData());
-            setPointsLeaderboard(generateMockPointsData());
+            const data = await response.json();
+            setLeaderboardData(data);
+            setCurrentPage(1); // Reset to first page when switching tabs
+        } catch (err) {
+            console.error('Error fetching leaderboard:', err);
+            setError(err.message);
+            // Generate mock data for demonstration
+            generateMockLeaderboardData();
         } finally {
             setLoading(false);
         }
     };
 
-    // Mock data generator for demonstration purposes
-    const generateMockChallengesData = () => {
-        const mockUsers = [];
-        // Generate 100 mock users for pagination testing
-        for (let i = 1; i <= 100; i++) {
-            mockUsers.push({
+    const generateMockLeaderboardData = () => {
+        const mockData = [];
+        for (let i = 1; i <= 25; i++) { // Generate 25 mock users for pagination demo
+            mockData.push({
                 id: i,
                 username: `Player${i}`,
-                profile_image: `/static/main/images/profile_pic/pp_${(i % 3) + 1}.png`,
-                challenges_completed: 100 - i + 1,
-                points: Math.floor(Math.random() * 1000) + 500
+                challenges_completed: Math.max(1, 20 - i + Math.floor(Math.random() * 5)),
+                points: Math.max(100, 2000 - (i * 50) + Math.floor(Math.random() * 200))
             });
         }
-        return mockUsers;
+        setLeaderboardData(mockData);
+        setCurrentPage(1);
     };
 
-    const generateMockPointsData = () => {
-        const mockUsers = [];
-        // Generate 100 mock users for pagination testing, but sort by points
-        for (let i = 1; i <= 100; i++) {
-            mockUsers.push({
-                id: i,
-                username: `Player${i}`,
-                profile_image: `/static/main/images/profile_pic/pp_${(i % 3) + 1}.png`,
-                challenges_completed: Math.floor(Math.random() * 50) + 10,
-                points: 5000 - (i * 40) + Math.floor(Math.random() * 30)
-            });
-        }
-        return mockUsers;
-    };
-
-    // Get current leaderboard data based on active tab
-    const currentLeaderboard = activeTab === 'challenges' ? challengesLeaderboard : pointsLeaderboard;
-
-    // Get current users for pagination
-    const indexOfLastUser = currentPage * usersPerPage;
-    const indexOfFirstUser = indexOfLastUser - usersPerPage;
-    const currentUsers = currentLeaderboard.slice(indexOfFirstUser, indexOfLastUser);
-    const totalPages = Math.ceil(currentLeaderboard.length / usersPerPage);
-
-    // Change page
-    const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-    // Change tab
     const handleTabChange = (tab) => {
         setActiveTab(tab);
-        setCurrentPage(1); // Reset to first page when changing tabs
     };
 
-    const renderRankCell = (index) => {
-        // Calculate the actual rank based on pagination
-        const actualRank = indexOfFirstUser + index + 1;
-        
-        if (actualRank <= 3) {
-            return (
-                <div className={`top-rank rank-${actualRank}`}>
-                    {actualRank}
-                </div>
-            );
+    const getRankDisplay = (globalIndex) => {
+        const rank = globalIndex + 1;
+        if (rank === 1) return '🥇';
+        if (rank === 2) return '🥈';
+        if (rank === 3) return '🥉';
+        return `#${rank}`;
+    };
+
+    // Pagination logic
+    const indexOfLastUser = currentPage * usersPerPage;
+    const indexOfFirstUser = indexOfLastUser - usersPerPage;
+    const currentUsers = leaderboardData.slice(indexOfFirstUser, indexOfLastUser);
+    const totalPages = Math.ceil(leaderboardData.length / usersPerPage);
+
+    const handlePageChange = (page) => {
+        if (page >= 1 && page <= totalPages) {
+            setCurrentPage(page);
+            // Scroll to top of leaderboard content
+            const leaderboardContent = document.querySelector('.leaderboard-content');
+            if (leaderboardContent) {
+                leaderboardContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
-        return actualRank;
+    };
+
+    // Pagination component
+    const Pagination = () => {
+        const getPageNumbers = () => {
+            const pageNumbers = [];
+            const maxPagesToShow = 5;
+            const half = Math.floor(maxPagesToShow / 2);
+            
+            let start = Math.max(1, currentPage - half);
+            let end = Math.min(totalPages, currentPage + half);
+            
+            if (currentPage - half <= 1) {
+                end = Math.min(maxPagesToShow, totalPages);
+            } else if (currentPage + half >= totalPages) {
+                start = Math.max(totalPages - maxPagesToShow + 1, 1);
+            }
+
+            if (start > 1) {
+                pageNumbers.push(1);
+                if (start > 2) pageNumbers.push('...');
+            }
+            
+            for (let i = start; i <= end; i++) {
+                pageNumbers.push(i);
+            }
+            
+            if (end < totalPages) {
+                if (end < totalPages - 1) pageNumbers.push('...');
+                pageNumbers.push(totalPages);
+            }
+            
+            return pageNumbers;
+        };
+
+        if (totalPages <= 1) return null;
+
+        return (
+            <div className="leaderboard-pagination">
+                <button
+                    className="pagination-btn"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                >
+                    &lt;
+                </button>
+                {getPageNumbers().map((page, index) => (
+                    <button
+                        key={index}
+                        className={`pagination-btn ${page === currentPage ? 'active' : ''} ${page === '...' ? 'ellipsis' : ''}`}
+                        onClick={() => typeof page === 'number' && handlePageChange(page)}
+                        disabled={page === '...'}
+                    >
+                        {page}
+                    </button>
+                ))}
+                <button
+                    className="pagination-btn"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                >
+                    &gt;
+                </button>
+            </div>
+        );
     };
 
     return (
         <div className="leaderboard-container">
             <div className="leaderboard-header">
-                <h1>Global Leaderboard</h1>
+                <h1>Leaderboard</h1>
             </div>
 
             <div className="leaderboard-tabs">
-                <motion.button 
-                    className={`leaderboard-tab ${activeTab === 'challenges' ? 'active' : ''}`}
+                <button 
+                    className={activeTab === 'challenges' ? 'active' : ''}
                     onClick={() => handleTabChange('challenges')}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
                 >
-                    Most Completed Challenges
-                </motion.button>
-                <motion.button 
-                    className={`leaderboard-tab ${activeTab === 'points' ? 'active' : ''}`}
+                    By Challenges
+                </button>
+                <button 
+                    className={activeTab === 'points' ? 'active' : ''}
                     onClick={() => handleTabChange('points')}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
                 >
-                    Highest Points
-                </motion.button>
+                    By Points
+                </button>
             </div>
 
             <div className="leaderboard-content">
                 {loading ? (
-                    <div className="loading-container">
+                    <div className="leaderboard-loading">
                         <LoadingSpinner />
                     </div>
+                ) : error ? (
+                    <div className="leaderboard-error">
+                        <p>Failed to load leaderboard data</p>
+                        <button onClick={fetchLeaderboardData} className="retry-btn">
+                            Try Again
+                        </button>
+                    </div>
                 ) : (
-                    <AnimatePresence mode="wait">
-                        <motion.div 
-                            key={activeTab}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            transition={{ duration: 0.3 }}
-                            className="leaderboard-table-container"
-                        >
+                    <>
+                        <div className="leaderboard-table-container">
                             <table className="leaderboard-table">
                                 <thead>
                                     <tr>
                                         <th>Rank</th>
                                         <th>Player</th>
-                                        <th>
-                                            {activeTab === 'challenges' ? 'Challenges Completed' : 'Points'}
-                                        </th>
-                                        <th>
-                                            {activeTab === 'challenges' ? 'Points' : 'Challenges Completed'}
-                                        </th>
+                                        <th>Challenges</th>
+                                        <th>Points</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {currentUsers.map((player, index) => (
-                                        <motion.tr 
-                                            key={player.id}
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.2, delay: index * 0.03 }}
-                                        >
-                                            <td className="rank-cell">
-                                                {renderRankCell(index)}
-                                            </td>
-                                            <td>
-                                                <div className="player-cell">
-                                                <span className="player-name">
-                                                    {player.username}
-                                                </span>
-                                                </div>
-                                            </td>
-                                            <td className="value-cell">
-                                                {activeTab === 'challenges' 
-                                                    ? player.challenges_completed 
-                                                    : <span className="points">{player.points}</span>
-                                                }
-                                            </td>
-                                            <td className="value-cell">
-                                                {activeTab === 'challenges' 
-                                                    ? <span className="points">{player.points}</span>
-                                                    : player.challenges_completed
-                                                }
-                                            </td>
-                                        </motion.tr>
-                                    ))}
+                                    {currentUsers.map((player, index) => {
+                                        const globalIndex = indexOfFirstUser + index;
+                                        return (
+                                            <tr key={player.id} className="leaderboard-row">
+                                                <td className="rank-cell">
+                                                    <span className="rank-display">
+                                                        {getRankDisplay(globalIndex)}
+                                                    </span>
+                                                </td>
+                                                <td className="player-cell">
+                                                    <span className="player-name">{player.username}</span>
+                                                </td>
+                                                <td className="challenges-cell">
+                                                    <span className="challenges-completed">
+                                                        {player.challenges_completed}
+                                                    </span>
+                                                </td>
+                                                <td className="points-cell">
+                                                    <span className="points-earned">
+                                                        {player.points || 0}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
                                 </tbody>
                             </table>
-                        </motion.div>
-                    </AnimatePresence>
-                )}
-                
-                {!loading && totalPages > 1 && (
-                    <div className="pagination">
-                        <button 
-                            className="pagination-button"
-                            onClick={() => paginate(1)}
-                            disabled={currentPage === 1}
-                        >
-                            First
-                        </button>
-                        <button 
-                            className="pagination-button"
-                            onClick={() => paginate(currentPage - 1)}
-                            disabled={currentPage === 1}
-                        >
-                            Prev
-                        </button>
+                        </div>
                         
-                        {/* Show page numbers */}
-                        {[...Array(totalPages)].map((_, i) => {
-                            // Only show a few pages around the current page
-                            if (
-                                i === 0 || // First page
-                                i === totalPages - 1 || // Last page
-                                (i >= currentPage - 2 && i <= currentPage + 2) // Pages around current
-                            ) {
-                                return (
-                                    <button
-                                        key={i}
-                                        className={`pagination-button ${currentPage === i + 1 ? 'active' : ''}`}
-                                        onClick={() => paginate(i + 1)}
-                                    >
-                                        {i + 1}
-                                    </button>
-                                );
-                            } else if (
-                                i === currentPage - 3 || 
-                                i === currentPage + 3
-                            ) {
-                                // Show ellipsis for skipped pages
-                                return <span key={i} className="pagination-ellipsis">...</span>;
-                            }
-                            return null;
-                        })}
+                        <Pagination />
                         
-                        <button 
-                            className="pagination-button"
-                            onClick={() => paginate(currentPage + 1)}
-                            disabled={currentPage === totalPages}
-                        >
-                            Next
-                        </button>
-                        <button 
-                            className="pagination-button"
-                            onClick={() => paginate(totalPages)}
-                            disabled={currentPage === totalPages}
-                        >
-                            Last
-                        </button>
-                    </div>
+                        {leaderboardData.length === 0 && (
+                            <div className="no-data-message">
+                                <p>No leaderboard data available yet.</p>
+                                <p>Complete some challenges to appear on the leaderboard!</p>
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
         </div>

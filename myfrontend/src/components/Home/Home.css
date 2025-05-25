@@ -34,8 +34,6 @@ body {
     flex: 1; /* Take up the remaining space */
 }
 
-
-
 .challenge-container {
     background-color: #222b33;
     padding-left: 34px;
@@ -49,6 +47,15 @@ body {
     bottom: 0; 
     margin-bottom: 10px;
     min-height: 70px;
+    transition: opacity 0.2s ease; /* Smooth transition when content changes */
+}
+
+/* Remove difficulty colors - make them inherit parent color */
+.difficulty-easy,
+.difficulty-medium,
+.difficulty-hard,
+.difficulty-extreme {
+    color: inherit; /* This makes them inherit the parent's color */
 }
 
 .challenge-heading {
@@ -74,6 +81,7 @@ body {
     color: #909090;
     font-size: 14px;
 }
+
 .challenge-item {
     margin-bottom: 8px;
     padding: 8px;
@@ -86,6 +94,7 @@ body {
 .challenge-item:last-child {
     margin-bottom: 20px; /* Adjust the value as needed */
 }
+
 .challenge-content {
     display: flex;
     flex-direction: row; 
@@ -123,10 +132,27 @@ body {
     border-radius: 4px;
     display: flex;
     align-items: center;
+    transition: color 0.2s ease;
 }
 
 .challenge-btn:hover {
     color: #ce9e10;
+}
+/* Add this to your Home.css file */
+
+/* Completion status styling */
+.completion-status {
+    font-weight: 500;
+    padding: 2px 0;
+    transition: color 0.2s ease;
+}
+
+.completion-status.completed {
+    color: #e8e8e8; /* Slightly off-white color for completed */
+}
+
+.completion-status.not-completed {
+    color: inherit; /* Keeps the original color (#909090) */
 }
 
 .discussion-icon {
@@ -165,8 +191,7 @@ body {
     text-decoration: none;
 }
 
-
-/*--------- Challenge Filter       ----------*/
+/*--------- Challenge Filter ----------*/
 
 .challenge-filter {
     background-color: #222b33;
@@ -208,6 +233,8 @@ body {
     margin-bottom: 8px;
     padding-left: 0;
     width: 100%;
+    transition: color 0.2s ease;
+    cursor: pointer;
 }
 
 .filter-category label:hover {
@@ -220,6 +247,7 @@ body {
     padding: 0;
     display: inline-block;
     vertical-align: middle;
+    cursor: pointer;
 }
 
 .filter-category label {
@@ -228,52 +256,299 @@ body {
     margin-left: 0;
 }
 
-
-
-.filter-category label {
-    margin-left: 0; /* Ensures label starts at the container's edge */
-    padding-left: 0; /* Removes any padding that might affect alignment */
-}
-
 .challenge-filter h3, .filter-category h4 {
     margin-left: 0;
     padding-left: 0;
 }
 
+/* Add these styles to your Home.css file */
 
-/*-------------------- For the Pagination Componenet ------------------- */
+/* Filter header with clear button */
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.filter-header h3 {
+    margin-top: 16px;
+    color: #f0f0f0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.clear-filters-btn {
+    background: rgba(169, 139, 45, 0.1);
+    border: 1px solid #a98b2d;
+    color: #a98b2d;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.clear-filters-btn:hover {
+    background: rgba(169, 139, 45, 0.2);
+    color: #ce9e10;
+}
+
+/* Enhanced filter categories */
+.filter-category {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.filter-category:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.filter-category h4 {
+    color: #a98b2d;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    margin-left: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Special styling for DLC and combination filters */
+.filter-category label[for*="dlc"], 
+.filter-category label[for*="combination"] {
+    font-weight: 500;
+    padding: 4px 0;
+}
+
+/* Add icons or indicators for special filter types */
+.filter-category label:has(input[value="dlc"])::before {
+    content: "🗡️ ";
+    margin-right: 4px;
+}
+
+.filter-category label:has(input[value="combination"])::before {
+    content: "⚡ ";
+    margin-right: 4px;
+}
+
+/* Active filter indication */
+.filter-category input[type="checkbox"]:checked + label,
+.filter-category label:has(input[type="checkbox"]:checked) {
+    color: #ce9e10;
+    font-weight: 600;
+}
+
+/* Filter count indicator */
+.filter-category::after {
+    content: attr(data-count);
+    float: right;
+    color: #909090;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+/* Responsive adjustments for filters */
+@media (max-width: 968px) {
+    .filter-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .clear-filters-btn {
+        align-self: flex-end;
+    }
+    
+    .filter-category {
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+}
+
+/* Challenge item enhancements for DLC and combination indicators */
+.challenge-item {
+    position: relative;
+}
+
+.challenge-item.dlc-content::before {
+    content: "DLC";
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #a98b2d;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+}
+
+.challenge-item.combination-challenge::after {
+    content: "COMBO";
+    position: absolute;
+    top: 8px;
+    right: 50px;
+    background: #ce9e10;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+}
+
+.challenge-item.dlc-content.combination-challenge::before {
+    right: 70px;
+}
+
+/*-------------------- Pagination Component ------------------- */
 .pagination-container {
     display: flex;
     justify-content: center;
     margin-top: 10px;
     margin-bottom: 10px;
     position: relative;
+    gap: 5px; /* Add gap between buttons */
 }
 
 .pagination-button {
-    margin: 0 5px;
+    margin: 0;
     padding: 8px 12px;
     background-color: #333;
     color: #fff;
     border: none;
     border-radius: 3px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: 16px; /* Adjust font size if needed */
-    min-width: 40px; /* Ensure buttons are wide enough */
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    font-size: 16px;
+    min-width: 40px;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .pagination-button.active {
     background-color: #a98b2d;
     color: #fff;
+    font-weight: bold;
 }
 
-.pagination-button:hover {
+.pagination-button:hover:not(:disabled) {
     background-color: #555;
+    transform: translateY(-1px);
+}
+
+.pagination-button.active:hover {
+    background-color: #ce9e10;
 }
 
 .pagination-button:disabled {
     background-color: #222;
     cursor: not-allowed;
+    opacity: 0.5;
+    transform: none;
+}
+
+.pagination-button.ellipsis {
+    background-color: transparent;
+    cursor: default;
+    color: #909090;
+}
+
+.pagination-button.ellipsis:hover {
+    background-color: transparent;
+    transform: none;
+}
+
+/* Add loading state for pagination */
+.pagination-container.loading .pagination-button {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .challenge-container {
+        width: 70%;
+        left: 150px;
+    }
+    
+    .challenge-filter {
+        width: 25%;
+        right: 150px;
+    }
+}
+
+@media (max-width: 968px) {
+    .home-page {
+        flex-direction: column;
+        padding: 10px;
+    }
+    
+    .challenge-container {
+        width: 100%;
+        left: 0;
+        position: relative;
+        margin-bottom: 20px;
+    }
+    
+    .challenge-filter {
+        width: 100%;
+        right: 0;
+        position: relative;
+        order: -1; /* Move filter above challenges on mobile */
+    }
+    
+    .challenge-actions {
+        flex-direction: column;
+        gap: 10px;
+        margin-left: 0;
+        align-items: flex-start;
+    }
+    
+    .challenge-content {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .challenge-subdetails-container {
+        width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .challenge-container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .challenge-filter {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .challenge-heading {
+        font-size: 20px;
+    }
+    
+    .challenge-title {
+        font-size: 16px;
+    }
+    
+    .challenge-details {
+        font-size: 13px;
+    }
+    
+    .pagination-button {
+        padding: 6px 10px;
+        font-size: 14px;
+        min-width: 35px;
+    }
 }

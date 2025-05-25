@@ -21,6 +21,25 @@ from django.utils.encoding import force_bytes, force_str
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.conf import settings
+from datetime import timedelta  # ADD THIS IMPORT
+from django.utils import timezone  # ADD THIS IMPORT
+
+# Try to import SiteSettings, create a mock if it doesn't exist
+try:
+    from .models import SiteSettings
+except ImportError:
+    # Create a mock SiteSettings class if the model doesn't exist
+    class SiteSettings:
+        @classmethod
+        def get_settings(cls):
+            # Return default settings
+            class MockSettings:
+                enable_registrations = True
+                enable_submissions = True
+                maintenance_mode = False
+                max_submissions_per_day = 5
+                auto_approve_submissions = False
+            return MockSettings()
 
 User = get_user_model()
 
@@ -35,55 +54,126 @@ class SimpleAPIView(APIView):
     def get(self, request):
         return Response({"message": "Hello from Django!"})
     
+@method_decorator(csrf_protect, name='dispatch')
 class SignupAPIView(APIView):
     def post(self, request):
-        email = request.data.get('email').strip().lower()
-        username = request.data.get('username').strip().lower()
-        password = request.data.get('password')
+        # Check if registrations are enabled
+        try:
+            settings = SiteSettings.get_settings()
+            if not settings.enable_registrations:
+                return Response(
+                    {"error": "User registrations are currently disabled"}, 
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        except Exception as e:
+            print(f"Error checking settings: {e}")
+            # Continue with default behavior if settings check fails
+        
+        # Get and validate input
+        email = request.data.get('email', '').strip().lower()
+        username = request.data.get('username', '').strip().lower()
+        password = request.data.get('password', '')
+
+        # Basic validation
+        if not username or not email or not password:
+            return Response(
+                {"error": "Username, email, and password are required"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Username validation
+        if len(username) < 3 or len(username) > 30:
+            return Response(
+                {"error": "Username must be between 3 and 30 characters"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Email validation (basic)
+        if '@' not in email or '.' not in email:
+            return Response(
+                {"error": "Please enter a valid email address"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Password validation
+        if len(password) < 8:
+            return Response(
+                {"error": "Password must be at least 8 characters long"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         # Check if the email or username already exists
         if User.objects.filter(email=email).exists():
-            return Response({"error": "Email is already in use"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "Email is already in use"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
         if User.objects.filter(username=username).exists():
-            return Response({"error": "Username is already in use"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "Username is already in use"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
-        # Define your profile pictures URLs
-        profile_pics = [
-            static('main/images/profile_pic/pp_1.png'),
-            static('main/images/profile_pic/pp_2.png'),
-            static('main/images/profile_pic/pp_3.png'),
-        ]
-
-        # Randomly select a profile picture
-        profile_pic_url = random.choice(profile_pics)
-
-        # Create a new user with the selected profile picture
-        user = User.objects.create_user(email=email, username=username, password=password, profile_image=profile_pic_url)
-        
-        return Response({"message": "Signup successful!"}, status=status.HTTP_201_CREATED)
-
+        try:
+            # Create a new user
+            user = User.objects.create_user(
+                email=email, 
+                username=username, 
+                password=password
+            )
+            
+            print(f"User created successfully: {user.username} ({user.email})")
+            
+            return Response({
+                "message": "Signup successful!",
+                "user": {
+                    "username": user.username,
+                    "email": user.email
+                }
+            }, status=status.HTTP_201_CREATED)
+            
+        except Exception as e:
+            print(f"Error creating user: {e}")
+            return Response(
+                {"error": "Failed to create account. Please try again."}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+            
 @method_decorator(csrf_protect, name='dispatch')
 class LoginAPIView(APIView):
     def post(self, request):
         print("Login View - POST request")
         print("Request Data:", request.data)  # Log request data
 
-        username = request.data.get('username')
-        password = request.data.get('password')
+        username = request.data.get('username', '').strip().lower()  # Convert to lowercase and strip whitespace
+        password = request.data.get('password', '')
+        
+        # Validate input
+        if not username or not password:
+            return Response({"error": "Username and password are required"}, status=status.HTTP_400_BAD_REQUEST)
         
         # Authenticate the user
         user = authenticate(request, username=username, password=password)
         
         if user is not None:
+            if not user.is_active:
+                return Response({"error": "Account is disabled"}, status=status.HTTP_401_UNAUTHORIZED)
+            
             login(request, user)
             response = Response({
                 "message": "Login successful!",
+                "user": {
+                    "id": user.id,
+                    "username": user.username,
+                    "email": user.email,
+                    "is_staff": user.is_staff,
+                    "is_superuser": user.is_superuser
+                },
                 "redirect": "/home"
             }, status=status.HTTP_200_OK)
             return response
         else:
             return Response({"error": "Invalid username or password"}, status=status.HTTP_401_UNAUTHORIZED)
-
 
 @method_decorator(csrf_protect, name='dispatch')
 class LogoutAPIView(APIView):
@@ -175,11 +265,46 @@ class ChallengeAPIView(APIView):
         if challenge_id:
             challenge = Challenge.objects.get(id=challenge_id)
             serializer = ChallengeSerializer(challenge)
-            return Response(serializer.data)
+            
+            # Check if the user has completed this challenge
+            completed = False
+            if request.user.is_authenticated:
+                completed = Submission.objects.filter(
+                    user=request.user,
+                    challenge=challenge,
+                    status='approved'
+                ).exists()
+            
+            data = serializer.data
+            data['completed'] = completed
+            return Response(data)
         else:
             challenges = Challenge.objects.all()
             serializer = ChallengeSerializer(challenges, many=True)
-            return Response(serializer.data)
+            
+            # If user is authenticated, check completion status for each challenge
+            if request.user.is_authenticated:
+                user_completed_challenges = set(
+                    Submission.objects.filter(
+                        user=request.user,
+                        status='approved'
+                    ).values_list('challenge_id', flat=True)
+                )
+                
+                # Add completion status to each challenge
+                data = serializer.data
+                for challenge_data in data:
+                    challenge_data['completed'] = challenge_data['id'] in user_completed_challenges
+                
+                return Response(data)
+            else:
+                # For non-authenticated users, all challenges are not completed
+                data = serializer.data
+                for challenge_data in data:
+                    challenge_data['completed'] = False
+                
+                return Response(data)
+
         
 @method_decorator(csrf_protect, name='dispatch')
 class ChallengeDetailView(generics.RetrieveAPIView):
@@ -197,30 +322,164 @@ class ChallengeSubmissionsView(generics.ListAPIView):
 @method_decorator(csrf_protect, name='dispatch')
 class SubmitRunAPIView(APIView):
     permission_classes = [IsAuthenticated]
+    
     def post(self, request):
         print("Submit Run View")
         print(f"Request Headers: {request.headers}")
         print(f"Request Data: {request.data}")
 
+        # Check if submissions are enabled
+        try:
+            settings = SiteSettings.get_settings()
+            if not settings.enable_submissions:
+                return Response(
+                    {"error": "Challenge submissions are currently disabled"}, 
+                    status=status.HTTP_403_FORBIDDEN
+                )
+            
+            # Check daily submission limit
+            today = timezone.now().date()
+            user_submissions_today = Submission.objects.filter(
+                user=request.user,
+                submitted_at__date=today
+            ).count()
+            
+            if user_submissions_today >= settings.max_submissions_per_day:
+                return Response(
+                    {"error": f"Daily submission limit reached ({settings.max_submissions_per_day} per day)"}, 
+                    status=status.HTTP_429_TOO_MANY_REQUESTS
+                )
+            
+            auto_approve = settings.auto_approve_submissions
+            
+        except Exception as e:
+            print(f"Error checking settings: {e}")
+            # Continue with default behavior if settings check fails
+            auto_approve = False
+
+        # Get and validate request data
         challenge_id = request.data.get('challenge')
         file_url = request.data.get('file_url')
-        user_id = request.data.get('user')  # Get the user ID from the request
+        user_id = request.data.get('user')
+        completion_time = request.data.get('completion_time')
 
+        # Validate required fields
         if not challenge_id or not file_url or not user_id:
-            return Response({"error": "Challenge ID, file URL, and user ID are required."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "Challenge ID, file URL, and user ID are required."}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        if not completion_time:
+            return Response(
+                {"error": "Completion time is required."}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Validate and parse completion time
+        try:
+            time_parts = completion_time.split(':')
+            if len(time_parts) != 3:
+                return Response(
+                    {"error": "Invalid time format. Use HH:MM:SS"}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            hours = int(time_parts[0])
+            minutes = int(time_parts[1])
+            seconds = int(time_parts[2])
+            
+            # Validate time values
+            if minutes >= 60 or seconds >= 60 or hours < 0 or minutes < 0 or seconds < 0:
+                return Response(
+                    {"error": "Invalid time values."}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            time_taken = timedelta(hours=hours, minutes=minutes, seconds=seconds)
+            
+        except (ValueError, IndexError):
+            return Response(
+                {"error": "Invalid time format. Use HH:MM:SS"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Validate URL format
+        try:
+            from urllib.parse import urlparse
+            result = urlparse(file_url)
+            if not all([result.scheme, result.netloc]):
+                raise ValueError("Invalid URL")
+        except ValueError:
+            return Response(
+                {"error": "Please provide a valid URL."}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         try:
-            # Create the submission
+            # Verify the challenge exists
+            challenge = Challenge.objects.get(id=challenge_id)
+            
+            # Verify the user exists and matches the authenticated user
+            if int(user_id) != request.user.id:
+                return Response(
+                    {"error": "User ID mismatch."}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            # Create the submission with time tracking
             submission = Submission.objects.create(
-                challenge_id=challenge_id,
+                challenge=challenge,
                 file_url=file_url,
-                user_id=user_id,  # Include the user ID
-                # time_taken will use the default value (timedelta())
+                user=request.user,
+                time_taken=time_taken
             )
-            return Response({"message": "Submission successful!"}, status=status.HTTP_201_CREATED)
+            
+            # Handle auto-approval if enabled
+            if auto_approve:
+                submission.status = 'approved'
+                submission.save()
+                
+                # Create notification for auto-approval (if Notification model exists)
+                try:
+                    from .models import Notification
+                    Notification.objects.create(
+                        user=submission.user,
+                        title='Run Automatically Approved',
+                        content=f'Your submission for "{challenge.name}" was automatically approved!',
+                        type='success',
+                        challenge=challenge,
+                        status='approved'
+                    )
+                except ImportError:
+                    print("Notification model not available")
+                except Exception as notification_error:
+                    print(f"Error creating notification: {notification_error}")
+                
+                return Response({
+                    "message": "Submission automatically approved!",
+                    "submission_id": submission.id,
+                    "status": "approved"
+                }, status=status.HTTP_201_CREATED)
+            else:
+                # Normal submission flow - pending review
+                return Response({
+                    "message": "Submission successful! Your submission is now pending admin review.",
+                    "submission_id": submission.id,
+                    "status": "pending"
+                }, status=status.HTTP_201_CREATED)
+            
+        except Challenge.DoesNotExist:
+            return Response(
+                {"error": "Challenge not found."}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
         except Exception as e:
             print(f"Error creating submission: {e}")
-            return Response({"error": "Failed to create submission"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                {"error": "Failed to create submission"}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 class ThreadListView(APIView):
     permission_classes = [IsAuthenticated]

@@ -1,31 +1,27 @@
 """
 URL configuration for mybackend project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
 from django.urls import path, re_path
 from api.views import SimpleAPIView, GETCSRFToken, SignupAPIView, LoginAPIView, LogoutAPIView, HomeAPIView, ChallengeAPIView, ChallengeDetailView, ChallengeSubmissionsView, ThreadListView, ThreadDetailView, UserProfileAPIView, SubmitRunAPIView, PasswordResetConfirmView, PasswordResetRequestView
-from api.views_leaderboard import LeaderboardChallengesView, LeaderboardPointsView
+
+# Import leaderboard views
+from api.views_leaderboard import LeaderboardChallengesView, LeaderboardPointsView, LeaderboardStatsView, UserLeaderboardStatsView
+
+# Import admin views
 from api.views_admin import (
     AdminStatsView, AdminRecentSubmissionsView, AdminSubmissionsView, 
     AdminApproveSubmissionView, AdminRejectSubmissionView, AdminChallengesView,
     AdminChallengeDetailView, AdminCategoriesView, AdminUsersView, 
     AdminUserDetailView, AdminUserStatusView, AdminSettingsView
 )
+
+# Import notification views
 from api.views_notifications import NotificationsView, MarkNotificationReadView, MarkAllNotificationsReadView, UnreadNotificationsCountView
+
+# Import profile views
 from api.views_profile import UserProfilePlaceholder
+
 from django.views.generic import TemplateView
 from django.conf import settings
 from django.conf.urls.static import static
@@ -48,9 +44,11 @@ urlpatterns = [
     path('api/user-profile/', UserProfileAPIView.as_view(), name='user-profile'),
     path('api/submit_run/', SubmitRunAPIView.as_view(), name='submit-run'),
     
-    # Leaderboard endpoints
+    # Leaderboard endpoints - NEWLY ADDED
     path('api/leaderboard/challenges/', LeaderboardChallengesView.as_view(), name='leaderboard-challenges'),
     path('api/leaderboard/points/', LeaderboardPointsView.as_view(), name='leaderboard-points'),
+    path('api/leaderboard/stats/', LeaderboardStatsView.as_view(), name='leaderboard-stats'),
+    path('api/leaderboard/user/<int:user_id>/', UserLeaderboardStatsView.as_view(), name='user-leaderboard-stats'),
     
     # Admin endpoints
     path('api/admin/stats/', AdminStatsView.as_view(), name='admin-stats'),

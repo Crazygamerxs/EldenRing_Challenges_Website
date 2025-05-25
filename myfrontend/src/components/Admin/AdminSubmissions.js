@@ -13,8 +13,10 @@ const AdminSubmissions = () => {
     const [users, setUsers] = useState([]);
     const [challenges, setChallenges] = useState([]);
     const [selectedSubmission, setSelectedSubmission] = useState(null);
-    const [showModal, setShowModal] = useState(false);
+    const [showRejectModal, setShowRejectModal] = useState(false);
+    const [showApproveModal, setShowApproveModal] = useState(false);
     const [rejectReason, setRejectReason] = useState('');
+    const [adminVerifiedTime, setAdminVerifiedTime] = useState('');
     const [actionLoading, setActionLoading] = useState(false);
 
     useEffect(() => {
@@ -57,62 +59,75 @@ const AdminSubmissions = () => {
             setSubmissions(data);
         } catch (error) {
             console.error('Error fetching submissions:', error);
-            // Use mock data for demonstration
-            setSubmissions(generateMockSubmissions(statusFilter, userFilter, challengeFilter));
+            alert('Failed to load submissions. Please refresh the page.');
         } finally {
             setLoading(false);
         }
     };
 
-    const handleApprove = async (submissionId) => {
-        setActionLoading(true);
-        try {
-            const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch(`http://localhost:8888/api/admin/submissions/${submissionId}/approve/`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'X-CSRFToken': csrfToken,
-                    'Content-Type': 'application/json',
-                },
-            });
+    // Replace your handleApprove method with this fixed version:
 
-            if (!response.ok) {
-                throw new Error('Failed to approve submission');
-            }
-
-            // Update local state
-            setSubmissions(prevSubmissions => 
-                prevSubmissions.map(submission => 
-                    submission.id === submissionId 
-                        ? { ...submission, status: 'approved' } 
-                        : submission
-                )
-            );
-
-            // Show success message
-            alert('Submission approved successfully!');
-        } catch (error) {
-            console.error('Error approving submission:', error);
-            alert('Failed to approve submission. Please try again.');
-            
-            // For demo, update the UI anyway
-            setSubmissions(prevSubmissions => 
-                prevSubmissions.map(submission => 
-                    submission.id === submissionId 
-                        ? { ...submission, status: 'approved' } 
-                        : submission
-                )
-            );
-        } finally {
-            setActionLoading(false);
+const handleApprove = async (submissionId, adminTime = '') => {
+    setActionLoading(true);
+    try {
+        const csrfToken = Cookies.get('csrftoken');
+        const requestBody = {};
+        
+        if (adminTime) {
+            requestBody.admin_verified_time = adminTime;
         }
+        
+        const response = await fetch(`http://localhost:8888/api/admin/submissions/${submissionId}/approve/`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestBody),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to approve submission');
+        }
+
+        const result = await response.json();
+        
+        // Update local state
+        setSubmissions(prevSubmissions => 
+            prevSubmissions.map(submission => 
+                submission.id === submissionId 
+                    ? { 
+                        ...submission, 
+                        status: 'approved',
+                        points_awarded: result.pointsAwarded,
+                        admin_verified_time: result.adminVerifiedTime || adminTime || null
+                    } 
+                    : submission
+            )
+        );
+
+        alert(`Submission approved successfully! ${result.pointsAwarded} points awarded.`);
+        setShowApproveModal(false);
+        setAdminVerifiedTime('');
+    } catch (error) {
+        console.error('Error approving submission:', error);
+        alert('Failed to approve submission. Please try again.');
+    } finally {
+        setActionLoading(false);
+    }
+};
+
+    const openApproveModal = (submission) => {
+        setSelectedSubmission(submission);
+        setAdminVerifiedTime('');
+        setShowApproveModal(true);
     };
 
     const openRejectModal = (submission) => {
         setSelectedSubmission(submission);
         setRejectReason('');
-        setShowModal(true);
+        setShowRejectModal(true);
     };
 
     const handleReject = async () => {
@@ -144,33 +159,22 @@ const AdminSubmissions = () => {
             setSubmissions(prevSubmissions => 
                 prevSubmissions.map(submission => 
                     submission.id === selectedSubmission.id 
-                        ? { ...submission, status: 'rejected' } 
+                        ? { ...submission, status: 'rejected', reject_reason: rejectReason } 
                         : submission
                 )
             );
 
-            // Close modal and show success message
-            setShowModal(false);
+            setShowRejectModal(false);
             alert('Submission rejected successfully!');
         } catch (error) {
             console.error('Error rejecting submission:', error);
             alert('Failed to reject submission. Please try again.');
-            
-            // For demo, update the UI anyway
-            setSubmissions(prevSubmissions => 
-                prevSubmissions.map(submission => 
-                    submission.id === selectedSubmission.id 
-                        ? { ...submission, status: 'rejected' } 
-                        : submission
-                )
-            );
         } finally {
             setActionLoading(false);
-            setShowModal(false);
+            setShowRejectModal(false);
         }
     };
 
-    // Functions to fetch users and challenges for filtering
     const fetchUsers = async () => {
         try {
             const csrfToken = Cookies.get('csrftoken');
@@ -182,16 +186,12 @@ const AdminSubmissions = () => {
                 },
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch users');
+            if (response.ok) {
+                const data = await response.json();
+                setUsers(data);
             }
-
-            const data = await response.json();
-            setUsers(data);
         } catch (error) {
             console.error('Error fetching users:', error);
-            // Use mock data for demonstration
-            setUsers(generateMockUsers());
         }
     };
 
@@ -206,148 +206,13 @@ const AdminSubmissions = () => {
                 },
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch challenges');
+            if (response.ok) {
+                const data = await response.json();
+                setChallenges(data);
             }
-
-            const data = await response.json();
-            setChallenges(data);
         } catch (error) {
             console.error('Error fetching challenges:', error);
-            // Use mock data for demonstration
-            setChallenges(generateMockChallenges());
         }
-    };
-
-    // Mock data generators for demonstration purposes
-    const generateMockUsers = () => {
-        return [
-            { id: 1, username: 'TarnishedOne' },
-            { id: 2, username: 'EldenLord' },
-            { id: 3, username: 'MaidenlessRun' },
-            { id: 4, username: 'LetMeSoloHer' },
-            { id: 5, username: 'RingBearer' },
-            { id: 6, username: 'BleedBuilder' },
-            { id: 7, username: 'UngaBunga' }
-        ];
-    };
-
-    const generateMockChallenges = () => {
-        return [
-            { id: 1, name: 'No Hit Run' },
-            { id: 2, name: 'Level 1 Weapon Only' },
-            { id: 3, name: 'No Armor Run' },
-            { id: 4, name: 'Fists Only' },
-            { id: 5, name: 'No Healing' },
-            { id: 6, name: 'No Damage' },
-            { id: 7, name: 'No Rolling' }
-        ];
-    };
-
-    const generateMockSubmissions = (statusFilter, userFilter, challengeFilter) => {
-        let allSubmissions = [
-            {
-                id: 1,
-                username: 'TarnishedOne',
-                challenge_name: 'No Hit Run',
-                challenge_id: 1,
-                file_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                submitted_at: new Date(Date.now() - 1000 * 60 * 30).toISOString(), // 30 minutes ago
-                status: 'pending',
-                time_taken: '01:45:30'
-            },
-            {
-                id: 2,
-                username: 'EldenLord',
-                challenge_name: 'Level 1 Weapon Only',
-                challenge_id: 2,
-                file_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                submitted_at: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2 hours ago
-                status: 'approved',
-                time_taken: '02:15:10'
-            },
-            {
-                id: 3,
-                username: 'MaidenlessRun',
-                challenge_name: 'No Armor Run',
-                challenge_id: 3,
-                file_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                submitted_at: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(), // 5 hours ago
-                status: 'rejected',
-                time_taken: '01:30:45',
-                reject_reason: 'Video does not show the entire run'
-            },
-            {
-                id: 4,
-                username: 'LetMeSoloHer',
-                challenge_name: 'Fists Only',
-                challenge_id: 4,
-                file_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                submitted_at: new Date(Date.now() - 1000 * 60 * 60 * 8).toISOString(), // 8 hours ago
-                status: 'pending',
-                time_taken: '03:20:15'
-            },
-            {
-                id: 5,
-                username: 'RingBearer',
-                challenge_name: 'No Healing',
-                challenge_id: 5,
-                file_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                submitted_at: new Date(Date.now() - 1000 * 60 * 60 * 12).toISOString(), // 12 hours ago
-                status: 'pending',
-                time_taken: '02:45:30'
-            },
-            {
-                id: 6,
-                username: 'BleedBuilder',
-                challenge_name: 'No Damage',
-                challenge_id: 6,
-                file_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                submitted_at: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago
-                status: 'approved',
-                time_taken: '01:55:20'
-            },
-            {
-                id: 7,
-                username: 'UngaBunga',
-                challenge_name: 'No Rolling',
-                challenge_id: 7,
-                file_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-                submitted_at: new Date(Date.now() - 1000 * 60 * 60 * 36).toISOString(), // 1.5 days ago
-                status: 'rejected',
-                time_taken: '02:10:45',
-                reject_reason: 'Player rolled multiple times during the run'
-            }
-        ];
-
-        // Apply status filter
-        if (statusFilter !== 'all') {
-            allSubmissions = allSubmissions.filter(submission => submission.status === statusFilter);
-        }
-        
-        // Apply user filter
-        if (userFilter) {
-            const userId = parseInt(userFilter);
-            allSubmissions = allSubmissions.filter(submission => {
-                // For mock data, we'll match by username since we don't have user IDs in the mock data
-                if (userId === 1) return submission.username === 'TarnishedOne';
-                if (userId === 2) return submission.username === 'EldenLord';
-                if (userId === 3) return submission.username === 'MaidenlessRun';
-                if (userId === 4) return submission.username === 'LetMeSoloHer';
-                if (userId === 5) return submission.username === 'RingBearer';
-                if (userId === 6) return submission.username === 'BleedBuilder';
-                if (userId === 7) return submission.username === 'UngaBunga';
-                return false;
-            });
-        }
-        
-        // Apply challenge filter
-        if (challengeFilter) {
-            const challengeId = parseInt(challengeFilter);
-            allSubmissions = allSubmissions.filter(submission => submission.challenge_id === challengeId);
-        }
-        
-        return allSubmissions;
     };
 
     const formatDate = (dateString) => {
@@ -363,6 +228,11 @@ const AdminSubmissions = () => {
 
     const getStatusBadge = (status) => {
         return <span className={`admin-status ${status}`}>{status.charAt(0).toUpperCase() + status.slice(1)}</span>;
+    };
+
+    const validateTimeFormat = (timeString) => {
+        const timePattern = /^\d{2}:\d{2}:\d{2}$/;
+        return timePattern.test(timeString);
     };
 
     return (
@@ -461,7 +331,9 @@ const AdminSubmissions = () => {
                                 <tr>
                                     <th>User</th>
                                     <th>Challenge</th>
-                                    <th>Time Taken</th>
+                                    <th>User Time</th>
+                                    <th>Admin Time</th>
+                                    <th>Points</th>
                                     <th>Submitted</th>
                                     <th>Status</th>
                                     <th>Actions</th>
@@ -470,9 +342,33 @@ const AdminSubmissions = () => {
                             <tbody>
                                 {submissions.map(submission => (
                                     <tr key={submission.id}>
-                                        <td>{submission.username}</td>
-                                        <td>{submission.challenge_name}</td>
-                                        <td>{submission.time_taken}</td>
+                                        <td>
+                                            <span className="username-display">{submission.username}</span>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <span className="challenge-name">{submission.challenge_name}</span>
+                                                <span className={`difficulty-badge ${submission.challenge_difficulty.toLowerCase()}`}>
+                                                    {submission.challenge_difficulty}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span className="time-display user-time">
+                                                {submission.user_time}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span className="time-display admin-time">
+                                                {submission.admin_verified_time || '-'}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span className="points-display">
+                                                {submission.status === 'approved' ? submission.points_awarded : submission.challenge_points}
+                                                {submission.status !== 'approved' && <small> (potential)</small>}
+                                            </span>
+                                        </td>
                                         <td>{formatDate(submission.submitted_at)}</td>
                                         <td>{getStatusBadge(submission.status)}</td>
                                         <td>
@@ -489,7 +385,7 @@ const AdminSubmissions = () => {
                                                 {submission.status === 'pending' && (
                                                     <>
                                                         <button 
-                                                            onClick={() => handleApprove(submission.id)}
+                                                            onClick={() => openApproveModal(submission)}
                                                             className="admin-action-button approve"
                                                             disabled={actionLoading}
                                                         >
@@ -514,15 +410,78 @@ const AdminSubmissions = () => {
                 )}
             </div>
 
+            {/* Approve Modal with Time Override */}
+            {showApproveModal && (
+                <div className="admin-modal-overlay" onClick={() => !actionLoading && setShowApproveModal(false)}>
+                    <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
+                        <div className="admin-modal-header">
+                            <h3 className="admin-modal-title">Approve Submission</h3>
+                            <button 
+                                className="admin-modal-close" 
+                                onClick={() => !actionLoading && setShowApproveModal(false)}
+                                disabled={actionLoading}
+                            >
+                                ×
+                            </button>
+                        </div>
+                        <div className="admin-modal-body">
+                            <p>You are about to approve the following submission:</p>
+                            <p><strong>User:</strong> {selectedSubmission?.username}</p>
+                            <p><strong>Challenge:</strong> {selectedSubmission?.challenge_name}</p>
+                            <p><strong>User's Time:</strong> {selectedSubmission?.user_time}</p>
+                            <p><strong>Points to Award:</strong> {selectedSubmission?.challenge_points}</p>
+                            
+                            <div className="admin-form-group">
+                                <label className="admin-form-label">
+                                    Admin Verified Time (Optional):
+                                    <small style={{ display: 'block', color: '#909090', fontWeight: 'normal' }}>
+                                        Override the user's time if needed (format: HH:MM:SS)
+                                    </small>
+                                </label>
+                                <input 
+                                    type="text"
+                                    className="admin-form-input"
+                                    value={adminVerifiedTime}
+                                    onChange={(e) => setAdminVerifiedTime(e.target.value)}
+                                    placeholder="HH:MM:SS (e.g., 01:30:45)"
+                                    disabled={actionLoading}
+                                />
+                                {adminVerifiedTime && !validateTimeFormat(adminVerifiedTime) && (
+                                    <small style={{ color: '#f44336', marginTop: '5px', display: 'block' }}>
+                                        Invalid time format. Use HH:MM:SS
+                                    </small>
+                                )}
+                            </div>
+                        </div>
+                        <div className="admin-modal-footer">
+                            <button 
+                                className="admin-button secondary"
+                                onClick={() => !actionLoading && setShowApproveModal(false)}
+                                disabled={actionLoading}
+                            >
+                                Cancel
+                            </button>
+                            <button 
+                                className="admin-button"
+                                onClick={() => handleApprove(selectedSubmission?.id, adminVerifiedTime)}
+                                disabled={actionLoading || (adminVerifiedTime && !validateTimeFormat(adminVerifiedTime))}
+                            >
+                                {actionLoading ? 'Approving...' : 'Approve Submission'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Reject Modal */}
-            {showModal && (
-                <div className="admin-modal-overlay" onClick={() => !actionLoading && setShowModal(false)}>
+            {showRejectModal && (
+                <div className="admin-modal-overlay" onClick={() => !actionLoading && setShowRejectModal(false)}>
                     <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
                         <div className="admin-modal-header">
                             <h3 className="admin-modal-title">Reject Submission</h3>
                             <button 
                                 className="admin-modal-close" 
-                                onClick={() => !actionLoading && setShowModal(false)}
+                                onClick={() => !actionLoading && setShowRejectModal(false)}
                                 disabled={actionLoading}
                             >
                                 ×
@@ -548,7 +507,7 @@ const AdminSubmissions = () => {
                         <div className="admin-modal-footer">
                             <button 
                                 className="admin-button secondary"
-                                onClick={() => !actionLoading && setShowModal(false)}
+                                onClick={() => !actionLoading && setShowRejectModal(false)}
                                 disabled={actionLoading}
                             >
                                 Cancel
