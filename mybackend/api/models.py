@@ -19,15 +19,19 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=30, unique=True)
     email = models.EmailField(unique=True)
-    
-    # Points system
-    total_points = models.IntegerField(default=0)
-    challenges_completed_count = models.IntegerField(default=0)
+    profile_image = models.URLField(blank=True, null=True)
+    completed_challenges = models.JSONField(default=list, blank=True)  # Optional
+    badges = models.JSONField(default=list, blank=True)  # Optional
+
+    # Points tracking fields
+    total_points = models.PositiveIntegerField(default=0)
+    challenges_completed_count = models.PositiveIntegerField(default=0)
 
     # Required fields for Django admin
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=False)
+    
     date_joined = models.DateTimeField(auto_now_add=True)
 
     USERNAME_FIELD = 'email'
@@ -35,15 +39,26 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    def update_points_and_challenges(self):
-        """Update user's total points and challenge count based on approved submissions"""
-        approved_submissions = Submission.objects.filter(user=self, status='approved')
-        self.total_points = sum(sub.points_awarded for sub in approved_submissions if sub.points_awarded)
-        self.challenges_completed_count = approved_submissions.count()
-        self.save()
-
     def __str__(self):
         return self.email
+    
+    def update_points_and_challenges(self):
+        """Update user's total points and completed challenges count"""
+        from django.db.models import Sum
+        
+        # Calculate total points from approved submissions
+        approved_submissions = Submission.objects.filter(user=self, status='approved')
+        total_points = approved_submissions.aggregate(
+            total=Sum('points_awarded')
+        )['total'] or 0
+        
+        # Count completed challenges (approved submissions)
+        completed_count = approved_submissions.count()
+        
+        # Update fields
+        self.total_points = total_points
+        self.challenges_completed_count = completed_count
+        self.save(update_fields=['total_points', 'challenges_completed_count'])
 
 class Challenge_Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -253,14 +268,16 @@ class Notification(models.Model):
         return f"Notification for {self.user.username}: {self.title}"
 
 class SiteSettings(models.Model):
-    """Site-wide settings model"""
+    """
+    Site-wide settings model - only one instance should exist
+    """
     site_name = models.CharField(max_length=100, default='Elden Ring Challenges')
     site_description = models.TextField(default='A platform for Elden Ring challenge runs')
     enable_registrations = models.BooleanField(default=True)
     enable_submissions = models.BooleanField(default=True)
     maintenance_mode = models.BooleanField(default=False)
     notification_email = models.EmailField(default='admin@eldenring.com')
-    max_submissions_per_day = models.IntegerField(default=5)
+    max_submissions_per_day = models.PositiveIntegerField(default=5)
     auto_approve_submissions = models.BooleanField(default=False)
     
     created_at = models.DateTimeField(auto_now_add=True)
@@ -270,22 +287,18 @@ class SiteSettings(models.Model):
         verbose_name = 'Site Settings'
         verbose_name_plural = 'Site Settings'
     
+    def __str__(self):
+        return f"Site Settings - {self.site_name}"
+    
     @classmethod
     def get_settings(cls):
-        """Get or create the site settings instance"""
+        """
+        Get the single settings instance, create if doesn't exist
+        """
         settings, created = cls.objects.get_or_create(pk=1)
-        if created:
-            print("Created new SiteSettings instance with default values")
         return settings
     
     def save(self, *args, **kwargs):
         # Ensure only one settings instance exists
         self.pk = 1
         super().save(*args, **kwargs)
-    
-    def delete(self, *args, **kwargs):
-        # Prevent deletion of settings
-        pass
-    
-    def __str__(self):
-        return f"Site Settings - {self.site_name}"

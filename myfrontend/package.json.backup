@@ -45,8 +45,5 @@
   "devDependencies": {
     "rollup": "^4.41.1",
     "webpack": "^5.99.9"
-  },
-  "overrides": {
-    "nth-check": "^2.1.1"
   }
 }

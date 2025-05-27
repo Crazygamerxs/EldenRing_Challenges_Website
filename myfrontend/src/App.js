@@ -21,6 +21,7 @@ import LoadingIndicator from './components/common/LoadingIndicator';
 import TopBar from './components/common/TopBar';
 import BottomBar from './components/common/BottomBar';
 import { UserProvider } from './components/common/UserContext';
+import { NotificationProvider } from './components/common/NotificationContext';
 import RouteLoader from './components/common/RouteLoader';
 import PrivateRoute from './components/common/PrivateRoute';
 import AdminRoute from './components/common/AdminRoute';
@@ -33,37 +34,39 @@ const App = () => {
     return (
         <ErrorBoundary showDetails={process.env.NODE_ENV === 'development'}>
             <UserProvider>
-                <Router>
-                    <TopBar />
-                    <CSRFTOKEN />
-                    <LoadingIndicator isVisible={isLoading} />
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/home" element={<Home />} />
-                        <Route path="/signup" element={<SignUp />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/password-reset" element={<PasswordResetRequest />} />
-                        <Route path="/password-reset-confirm/:uidb64/:token" element={<PasswordResetConfirm />} />
-                        <Route path="/challenge/:id" element={<ChallengeDetail />} />
-                        <Route path="/leaderboard" element={<Leaderboard />} />
-        {/* UserProfile route removed */}
-                        <Route path="/notifications" element={<PrivateRoute element={<Notifications />} />} />
-                        
-                        {/* Admin Routes - Protected with AdminRoute */}
-                        <Route path="/admin" element={<AdminRoute element={<AdminPanel />} />} />
-                        <Route path="/admin/submissions" element={<AdminRoute element={<AdminSubmissions />} />} />
-                        <Route path="/admin/challenges" element={<AdminRoute element={<AdminChallenges />} />} />
-                        <Route path="/admin/users" element={<AdminRoute element={<AdminUsers />} />} />
-                        <Route path="/admin/settings" element={<AdminRoute element={<AdminSettings />} />} />
-                        
-                        {/* Community Board Routes - Hidden but kept for future use */}
-                        <Route path="/CB" element={<CommunityBoard />} />
-                        <Route path="/forum/:forumId" element={<PrivateRoute element={<CommunityForum />} />} />
-                        <Route path="/thread/:threadId" element={<PrivateRoute element={<ThreadPage />} />} />
-                    </Routes>
-                    <BottomBar />
-                    <RouteLoader setIsLoading={setIsLoading} />
-                </Router>
+                <NotificationProvider>
+                    <Router>
+                        <TopBar />
+                        <CSRFTOKEN />
+                        <LoadingIndicator isVisible={isLoading} />
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/home" element={<Home />} />
+                            <Route path="/signup" element={<SignUp />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/password-reset" element={<PasswordResetRequest />} />
+                            <Route path="/password-reset-confirm/:uidb64/:token" element={<PasswordResetConfirm />} />
+                            <Route path="/challenge/:id" element={<ChallengeDetail />} />
+                            <Route path="/leaderboard" element={<Leaderboard />} />
+            {/* UserProfile route removed */}
+                            <Route path="/notifications" element={<PrivateRoute element={<Notifications />} />} />
+                            
+                            {/* Admin Routes - Protected with AdminRoute */}
+                            <Route path="/admin" element={<AdminRoute element={<AdminPanel />} />} />
+                            <Route path="/admin/submissions" element={<AdminRoute element={<AdminSubmissions />} />} />
+                            <Route path="/admin/challenges" element={<AdminRoute element={<AdminChallenges />} />} />
+                            <Route path="/admin/users" element={<AdminRoute element={<AdminUsers />} />} />
+                            <Route path="/admin/settings" element={<AdminRoute element={<AdminSettings />} />} />
+                            
+                            {/* Community Board Routes - Hidden but kept for future use */}
+                            <Route path="/CB" element={<CommunityBoard />} />
+                            <Route path="/forum/:forumId" element={<PrivateRoute element={<CommunityForum />} />} />
+                            <Route path="/thread/:threadId" element={<PrivateRoute element={<ThreadPage />} />} />
+                        </Routes>
+                        <BottomBar />
+                        <RouteLoader setIsLoading={setIsLoading} />
+                    </Router>
+                </NotificationProvider>
             </UserProvider>
         </ErrorBoundary>
     );

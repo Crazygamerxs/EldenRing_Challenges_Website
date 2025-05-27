@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './common.css'; 
 import images from '../../images';
@@ -10,13 +10,8 @@ const TopBar = () => {
     const navigate = useNavigate();
     const [unreadCount, setUnreadCount] = useState(0);
 
-    useEffect(() => {
-        if (user) {
-            fetchUnreadNotificationsCount();
-        }
-    }, [user]);
-
-    const fetchUnreadNotificationsCount = async () => {
+    // Memoized function to fetch unread count
+    const fetchUnreadNotificationsCount = useCallback(async () => {
         try {
             const csrfToken = Cookies.get('csrftoken');
             const response = await fetch('http://localhost:8888/api/notifications/unread-count/', {
@@ -38,7 +33,34 @@ const TopBar = () => {
             // For demo, set a random count
             setUnreadCount(Math.floor(Math.random() * 5));
         }
-    };
+    }, []);
+
+    useEffect(() => {
+        if (user) {
+            fetchUnreadNotificationsCount();
+            
+            // Set up interval to refresh count every 30 seconds
+            const interval = setInterval(fetchUnreadNotificationsCount, 30000);
+            
+            return () => clearInterval(interval);
+        }
+    }, [user, fetchUnreadNotificationsCount]);
+
+    // Listen for custom events to update notification count
+    useEffect(() => {
+        const handleNotificationUpdate = () => {
+            fetchUnreadNotificationsCount();
+        };
+
+        // Listen for custom events
+        window.addEventListener('notificationMarkedRead', handleNotificationUpdate);
+        window.addEventListener('notificationAllMarkedRead', handleNotificationUpdate);
+        
+        return () => {
+            window.removeEventListener('notificationMarkedRead', handleNotificationUpdate);
+            window.removeEventListener('notificationAllMarkedRead', handleNotificationUpdate);
+        };
+    }, [fetchUnreadNotificationsCount]);
 
     const handleLogout = async () => {
         await logout();

@@ -68,6 +68,9 @@ const Notifications = () => {
                         : notification
                 )
             );
+
+            // Dispatch custom event to update TopBar notification count
+            window.dispatchEvent(new CustomEvent('notificationMarkedRead'));
         } catch (error) {
             console.error('Error marking notification as read:', error);
             // For demo, update the UI anyway
@@ -78,6 +81,8 @@ const Notifications = () => {
                         : notification
                 )
             );
+            // Still dispatch event for demo
+            window.dispatchEvent(new CustomEvent('notificationMarkedRead'));
         }
     };
 
@@ -101,12 +106,17 @@ const Notifications = () => {
             setNotifications(prevNotifications => 
                 prevNotifications.map(notification => ({ ...notification, read: true }))
             );
+
+            // Dispatch custom event to update TopBar notification count
+            window.dispatchEvent(new CustomEvent('notificationAllMarkedRead'));
         } catch (error) {
             console.error('Error marking all notifications as read:', error);
             // For demo, update the UI anyway
             setNotifications(prevNotifications => 
                 prevNotifications.map(notification => ({ ...notification, read: true }))
             );
+            // Still dispatch event for demo
+            window.dispatchEvent(new CustomEvent('notificationAllMarkedRead'));
         }
     };
 
@@ -187,7 +197,7 @@ const Notifications = () => {
             <div className="notifications-header">
                 <h1>Notifications</h1>
                 <div className="notifications-actions">
-                    {notifications.length > 0 && (
+                    {notifications.length > 0 && notifications.some(n => !n.read) && (
                         <button 
                             onClick={markAllAsRead}
                             className="notification-mark-all-read"

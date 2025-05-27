@@ -216,7 +216,7 @@
   width: 0;
   background: rgba(255, 255, 255, 0.6);
   transition: width 0.5s ease, opacity 2s ease; /* Smooth transition effect */
-  z-index: 1000; /* Ensure it’s on top */
+  z-index: 1000; /* Ensure it's on top */
   opacity: 1; /* Start fully visible */
 }
 
@@ -284,74 +284,192 @@
   50% { opacity: 1; }
 }
 
-/*-------- Notification --------*/
-.notification {
+/*-------- Modern Toast Notification --------*/
+.notification-toast {
   position: fixed;
   top: 20px;
   right: 20px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  color: #fff;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 16px;
+  width: 400px;
+  max-width: calc(100vw - 40px);
+  background: #1e262d;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  z-index: 10000;
+  transform: translateX(100%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-.notification.success {
-  background-color: #2f404f;
+.notification-toast.show {
+  transform: translateX(0);
 }
 
-.notification.error {
-  background-color: #2f404f;
+.notification-toast.success {
+  border-left: 4px solid #10b981;
+}
+
+.notification-toast.error {
+  border-left: 4px solid #ef4444;
+}
+
+.notification-toast.warning {
+  border-left: 4px solid #f59e0b;
+}
+
+.notification-toast.info {
+  border-left: 4px solid #3b82f6;
 }
 
 .notification-content {
   display: flex;
-  flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
+  padding: 16px;
+  gap: 12px;
 }
 
-.notification-header {
+.notification-icon-wrapper {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
   display: flex;
-  align-items: start;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  margin-top: 2px;
+}
+
+.notification-toast.success .notification-icon-wrapper {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.notification-toast.error .notification-icon-wrapper {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.notification-toast.warning .notification-icon-wrapper {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+
+.notification-toast.info .notification-icon-wrapper {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
 }
 
 .notification-icon {
-  width: 20px;
-  height: 20px;
-  margin-right: 5px;
-  position: relative;
-  top: 2px;
+  width: 16px;
+  height: 16px;
+  stroke-width: 2;
+}
+
+.notification-text {
+  flex: 1;
+  min-width: 0;
 }
 
 .notification-title {
-  font-weight: bold;
+  font-size: 14px;
+  font-weight: 600;
+  color: #f9fafb;
+  margin: 0 0 4px 0;
+  line-height: 1.4;
 }
 
 .notification-message {
-  text-align: center;
-  margin-top: 5px;
+  font-size: 14px;
+  color: #d1d5db;
+  margin: 0;
+  line-height: 1.4;
+  word-wrap: break-word;
 }
 
-.notification-close-btn {
-  background: none;
+.notification-close {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
   border: none;
-  color: #fff;
-  font-size: 16px;
+  background: none;
+  color: #9ca3af;
   cursor: pointer;
-  position: absolute;
-  bottom: 25px;
-  right: 3px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
 }
 
-.notification-progress-bar {
+.notification-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f9fafb;
+}
+
+.notification-close svg {
+  width: 14px;
+  height: 14px;
+}
+
+.notification-progress {
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 4px;
-  background: #fff;
-  transition: width 0.01s linear; /* Adjust timing for progress bar animation */
+  height: 2px;
+  background: linear-gradient(90deg, #a98b2d, #c9a43a);
+  transition: width 0.1s linear;
+  border-radius: 0 0 12px 12px;
+}
+
+.notification-toast.success .notification-progress {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.notification-toast.error .notification-progress {
+  background: linear-gradient(90deg, #ef4444, #f87171);
+}
+
+.notification-toast.warning .notification-progress {
+  background: linear-gradient(90deg, #f59e0b, #fbbf24);
+}
+
+.notification-toast.info .notification-progress {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .notification-toast {
+    width: calc(100vw - 20px);
+    right: 10px;
+    top: 10px;
+  }
+  
+  .notification-content {
+    padding: 12px;
+  }
+  
+  .notification-title {
+    font-size: 13px;
+  }
+  
+  .notification-message {
+    font-size: 13px;
+  }
+}
+
+/* Animation for multiple notifications */
+.notification-toast:nth-child(2) {
+  top: 100px;
+}
+
+.notification-toast:nth-child(3) {
+  top: 180px;
+}
+
+.notification-toast:nth-child(4) {
+  top: 260px;
 }

@@ -23,7 +23,7 @@ from django.urls import reverse
 from django.conf import settings
 from datetime import timedelta  # ADD THIS IMPORT
 from django.utils import timezone  # ADD THIS IMPORT
-
+from .models import Challenge, User, Submission, DiscussionThread, Comment, Notification
 # Try to import SiteSettings, create a mock if it doesn't exist
 try:
     from .models import SiteSettings
@@ -328,159 +328,90 @@ class SubmitRunAPIView(APIView):
         print(f"Request Headers: {request.headers}")
         print(f"Request Data: {request.data}")
 
-        # Check if submissions are enabled
-        try:
-            settings = SiteSettings.get_settings()
-            if not settings.enable_submissions:
-                return Response(
-                    {"error": "Challenge submissions are currently disabled"}, 
-                    status=status.HTTP_403_FORBIDDEN
-                )
-            
-            # Check daily submission limit
-            today = timezone.now().date()
-            user_submissions_today = Submission.objects.filter(
-                user=request.user,
-                submitted_at__date=today
-            ).count()
-            
-            if user_submissions_today >= settings.max_submissions_per_day:
-                return Response(
-                    {"error": f"Daily submission limit reached ({settings.max_submissions_per_day} per day)"}, 
-                    status=status.HTTP_429_TOO_MANY_REQUESTS
-                )
-            
-            auto_approve = settings.auto_approve_submissions
-            
-        except Exception as e:
-            print(f"Error checking settings: {e}")
-            # Continue with default behavior if settings check fails
-            auto_approve = False
-
-        # Get and validate request data
         challenge_id = request.data.get('challenge')
         file_url = request.data.get('file_url')
         user_id = request.data.get('user')
-        completion_time = request.data.get('completion_time')
 
-        # Validate required fields
         if not challenge_id or not file_url or not user_id:
-            return Response(
-                {"error": "Challenge ID, file URL, and user ID are required."}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        if not completion_time:
-            return Response(
-                {"error": "Completion time is required."}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        # Validate and parse completion time
-        try:
-            time_parts = completion_time.split(':')
-            if len(time_parts) != 3:
-                return Response(
-                    {"error": "Invalid time format. Use HH:MM:SS"}, 
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            
-            hours = int(time_parts[0])
-            minutes = int(time_parts[1])
-            seconds = int(time_parts[2])
-            
-            # Validate time values
-            if minutes >= 60 or seconds >= 60 or hours < 0 or minutes < 0 or seconds < 0:
-                return Response(
-                    {"error": "Invalid time values."}, 
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            
-            time_taken = timedelta(hours=hours, minutes=minutes, seconds=seconds)
-            
-        except (ValueError, IndexError):
-            return Response(
-                {"error": "Invalid time format. Use HH:MM:SS"}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        # Validate URL format
-        try:
-            from urllib.parse import urlparse
-            result = urlparse(file_url)
-            if not all([result.scheme, result.netloc]):
-                raise ValueError("Invalid URL")
-        except ValueError:
-            return Response(
-                {"error": "Please provide a valid URL."}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"error": "Challenge ID, file URL, and user ID are required."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            # Verify the challenge exists
+            # Get the challenge and user objects
             challenge = Challenge.objects.get(id=challenge_id)
+            user = User.objects.get(id=user_id)
             
-            # Verify the user exists and matches the authenticated user
-            if int(user_id) != request.user.id:
-                return Response(
-                    {"error": "User ID mismatch."}, 
-                    status=status.HTTP_400_BAD_REQUEST
-                )
+            # Check if user has reached daily submission limit
+            settings = SiteSettings.get_settings()
+            today = timezone.now().date()
+            daily_submissions = Submission.objects.filter(
+                user=user, 
+                submitted_at__date=today
+            ).count()
+            
+            if daily_submissions >= settings.max_submissions_per_day:
+                return Response({
+                    "error": f"Daily submission limit reached ({settings.max_submissions_per_day} per day)"
+                }, status=status.HTTP_429_TOO_MANY_REQUESTS)
 
-            # Create the submission with time tracking
+            # Create the submission
             submission = Submission.objects.create(
                 challenge=challenge,
                 file_url=file_url,
-                user=request.user,
-                time_taken=time_taken
+                user=user,
+                time_taken=request.data.get('time_taken', timedelta())  # Use provided time or default
             )
             
-            # Handle auto-approval if enabled
-            if auto_approve:
+            # Check if auto-approval is enabled
+            if settings.auto_approve_submissions:
+                # Auto-approve the submission
+                points_to_award = challenge.get_total_points()  # Uses your existing method
                 submission.status = 'approved'
+                submission.points_awarded = points_to_award
+                submission.approved_at = timezone.now()
                 submission.save()
                 
-                # Create notification for auto-approval (if Notification model exists)
-                try:
-                    from .models import Notification
-                    Notification.objects.create(
-                        user=submission.user,
-                        title='Run Automatically Approved',
-                        content=f'Your submission for "{challenge.name}" was automatically approved!',
-                        type='success',
-                        challenge=challenge,
-                        status='approved'
-                    )
-                except ImportError:
-                    print("Notification model not available")
-                except Exception as notification_error:
-                    print(f"Error creating notification: {notification_error}")
+                # Update user's total points and challenge count
+                user.update_points_and_challenges()
+                
+                # Create a success notification
+                Notification.objects.create(
+                    user=user,
+                    title='Run Submission Auto-Approved',
+                    content=f'Your submission for "{challenge.name}" has been automatically approved and added to the leaderboard! You earned {points_to_award} points.',
+                    type='success',
+                    challenge=challenge,
+                    status='approved'
+                )
                 
                 return Response({
                     "message": "Submission automatically approved!",
-                    "submission_id": submission.id,
+                    "points_awarded": points_to_award,
                     "status": "approved"
                 }, status=status.HTTP_201_CREATED)
             else:
-                # Normal submission flow - pending review
+                # Manual approval required
+                # Create a pending notification
+                Notification.objects.create(
+                    user=user,
+                    title='Run Submission Received',
+                    content=f'Your submission for "{challenge.name}" has been received and is pending admin review.',
+                    type='info',
+                    challenge=challenge,
+                    status='pending'
+                )
+                
                 return Response({
-                    "message": "Submission successful! Your submission is now pending admin review.",
-                    "submission_id": submission.id,
+                    "message": "Submission received and pending approval!",
                     "status": "pending"
                 }, status=status.HTTP_201_CREATED)
-            
+                
         except Challenge.DoesNotExist:
-            return Response(
-                {"error": "Challenge not found."}, 
-                status=status.HTTP_404_NOT_FOUND
-            )
+            return Response({"error": "Challenge not found"}, status=status.HTTP_404_NOT_FOUND)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             print(f"Error creating submission: {e}")
-            return Response(
-                {"error": "Failed to create submission"}, 
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-
+            return Response({"error": "Failed to create submission"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 class ThreadListView(APIView):
     permission_classes = [IsAuthenticated]
 
