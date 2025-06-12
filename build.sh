@@ -14,7 +14,7 @@ pip install -r requirements.txt
 # Install Node.js dependencies and build React
 echo "⚛️ Building React frontend..."
 cd ../myfrontend
-npm ci --only=production
+npm install --only=production
 npm run build
 
 # Copy React build to Django static directory
