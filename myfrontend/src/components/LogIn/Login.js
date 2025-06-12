@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 
 import { API_ENDPOINTS } from '../../utils/api';
-const LogIn = () => {
+const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -188,4 +188,4 @@ const LogIn = () => {
     );
 };
 
-export default LogIn;
+export default Login;
