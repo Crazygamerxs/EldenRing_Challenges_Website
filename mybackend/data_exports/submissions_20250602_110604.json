@@ -1,0 +1,2602 @@
+[
+  {
+    "model": "api.submission",
+    "pk": 1,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/file_1",
+      "submitted_at": "2024-08-14T13:57:28.669Z",
+      "time_taken": "1 16:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 2,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/file_1_30hours",
+      "submitted_at": "2024-08-14T13:57:28.676Z",
+      "time_taken": "1 06:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 3,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/file_1_22minutes",
+      "submitted_at": "2024-08-14T13:57:28.684Z",
+      "time_taken": "00:22:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 4,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 2,
+      "file_url": "https://example.com/file_2",
+      "submitted_at": "2024-08-14T13:57:28.692Z",
+      "time_taken": "1 16:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 5,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 2,
+      "file_url": "https://example.com/file_2_30hours",
+      "submitted_at": "2024-08-14T13:57:28.699Z",
+      "time_taken": "1 06:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 6,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 2,
+      "file_url": "https://example.com/file_2_22minutes",
+      "submitted_at": "2024-08-14T13:57:28.708Z",
+      "time_taken": "00:22:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 7,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 3,
+      "file_url": "https://example.com/file_3",
+      "submitted_at": "2024-08-14T13:57:28.716Z",
+      "time_taken": "1 16:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 8,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 3,
+      "file_url": "https://example.com/file_3_30hours",
+      "submitted_at": "2024-08-14T13:57:28.726Z",
+      "time_taken": "1 06:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 9,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 3,
+      "file_url": "https://example.com/file_3_22minutes",
+      "submitted_at": "2024-08-14T13:57:28.733Z",
+      "time_taken": "00:22:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 10,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 4,
+      "file_url": "https://example.com/file_4",
+      "submitted_at": "2024-08-14T13:57:28.742Z",
+      "time_taken": "1 16:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 11,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 4,
+      "file_url": "https://example.com/file_4_30hours",
+      "submitted_at": "2024-08-14T13:57:28.750Z",
+      "time_taken": "1 06:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 12,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 4,
+      "file_url": "https://example.com/file_4_22minutes",
+      "submitted_at": "2024-08-14T13:57:28.758Z",
+      "time_taken": "00:22:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 13,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 5,
+      "file_url": "https://example.com/file_5",
+      "submitted_at": "2024-08-14T13:57:28.768Z",
+      "time_taken": "1 16:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 14,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 5,
+      "file_url": "https://example.com/file_5_30hours",
+      "submitted_at": "2024-08-14T13:57:28.778Z",
+      "time_taken": "1 06:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 15,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 5,
+      "file_url": "https://example.com/file_5_22minutes",
+      "submitted_at": "2024-08-14T13:57:28.786Z",
+      "time_taken": "00:22:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 16,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 6,
+      "file_url": "https://example.com/file_6",
+      "submitted_at": "2024-08-14T13:57:28.794Z",
+      "time_taken": "1 16:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 17,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 6,
+      "file_url": "https://example.com/file_6_30hours",
+      "submitted_at": "2024-08-14T13:57:28.803Z",
+      "time_taken": "1 06:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 18,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 6,
+      "file_url": "https://example.com/file_6_22minutes",
+      "submitted_at": "2024-08-14T13:57:28.812Z",
+      "time_taken": "00:22:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 19,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 7,
+      "file_url": "https://example.com/file_7",
+      "submitted_at": "2024-08-14T13:57:28.821Z",
+      "time_taken": "1 16:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 20,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 7,
+      "file_url": "https://example.com/file_7_30hours",
+      "submitted_at": "2024-08-14T13:57:28.829Z",
+      "time_taken": "1 06:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 21,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 7,
+      "file_url": "https://example.com/file_7_22minutes",
+      "submitted_at": "2024-08-14T13:57:28.836Z",
+      "time_taken": "00:22:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 22,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 8,
+      "file_url": "https://example.com/file_8",
+      "submitted_at": "2024-08-14T13:57:28.844Z",
+      "time_taken": "1 16:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 23,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 8,
+      "file_url": "https://example.com/file_8_30hours",
+      "submitted_at": "2024-08-14T13:57:28.851Z",
+      "time_taken": "1 06:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 24,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 8,
+      "file_url": "https://example.com/file_8_22minutes",
+      "submitted_at": "2024-08-14T13:57:28.860Z",
+      "time_taken": "00:22:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 25,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 9,
+      "file_url": "https://example.com/file_9",
+      "submitted_at": "2024-08-14T13:57:28.870Z",
+      "time_taken": "1 16:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 26,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 9,
+      "file_url": "https://example.com/file_9_30hours",
+      "submitted_at": "2024-08-14T13:57:28.877Z",
+      "time_taken": "1 06:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 27,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 9,
+      "file_url": "https://example.com/file_9_22minutes",
+      "submitted_at": "2024-08-14T13:57:28.883Z",
+      "time_taken": "00:22:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 28,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 10,
+      "file_url": "https://example.com/file_10",
+      "submitted_at": "2024-08-14T13:57:28.892Z",
+      "time_taken": "1 16:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 29,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 10,
+      "file_url": "https://example.com/file_10_30hours",
+      "submitted_at": "2024-08-14T13:57:28.902Z",
+      "time_taken": "1 06:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 30,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 10,
+      "file_url": "https://example.com/file_10_22minutes",
+      "submitted_at": "2024-08-14T13:57:28.909Z",
+      "time_taken": "00:22:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 31,
+    "fields": {
+      "user": [
+        "test@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/file",
+      "submitted_at": "2024-08-15T18:43:25.333Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 32,
+    "fields": {
+      "user": [
+        "test@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/file",
+      "submitted_at": "2024-08-15T19:16:07.587Z",
+      "time_taken": "00:02:09",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 33,
+    "fields": {
+      "user": [
+        "rocket@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "fadfadf",
+      "submitted_at": "2024-08-16T13:31:41.423Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 34,
+    "fields": {
+      "user": [
+        "rocket@gmail.com"
+      ],
+      "challenge": 7,
+      "file_url": "this is a test link",
+      "submitted_at": "2024-08-16T13:42:04.551Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 35,
+    "fields": {
+      "user": [
+        "salty@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "fafasfaf",
+      "submitted_at": "2024-08-16T14:01:19.394Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 36,
+    "fields": {
+      "user": [
+        "salty@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "dafadsfas",
+      "submitted_at": "2024-08-16T17:09:59.392Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 37,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "This is a test email",
+      "submitted_at": "2024-08-22T19:15:38.889Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 38,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "This is a test run ",
+      "submitted_at": "2024-08-22T19:41:02.994Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 39,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "Test run",
+      "submitted_at": "2024-08-22T20:19:24.970Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 40,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "test",
+      "submitted_at": "2024-08-22T20:19:49.916Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 41,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "testy",
+      "submitted_at": "2024-08-22T20:20:46.527Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 42,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_3_0.png",
+      "submitted_at": "2024-08-24T14:35:10.619Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 43,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_3_1.png",
+      "submitted_at": "2024-08-24T14:35:10.627Z",
+      "time_taken": "01:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 44,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_3_2.png",
+      "submitted_at": "2024-08-24T14:35:10.634Z",
+      "time_taken": "02:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 45,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_3_3.png",
+      "submitted_at": "2024-08-24T14:35:10.639Z",
+      "time_taken": "03:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 46,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_3_4.png",
+      "submitted_at": "2024-08-24T14:35:10.643Z",
+      "time_taken": "04:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 47,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_3_5.png",
+      "submitted_at": "2024-08-24T14:35:10.648Z",
+      "time_taken": "05:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 48,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_3_6.png",
+      "submitted_at": "2024-08-24T14:35:10.653Z",
+      "time_taken": "06:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 49,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_3_7.png",
+      "submitted_at": "2024-08-24T14:35:10.657Z",
+      "time_taken": "07:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 50,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_3_8.png",
+      "submitted_at": "2024-08-24T14:35:10.662Z",
+      "time_taken": "08:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 51,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_3_9.png",
+      "submitted_at": "2024-08-24T14:35:10.667Z",
+      "time_taken": "09:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 52,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_3_10.png",
+      "submitted_at": "2024-08-24T14:35:10.673Z",
+      "time_taken": "10:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 53,
+    "fields": {
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_3_11.png",
+      "submitted_at": "2024-08-24T14:35:10.677Z",
+      "time_taken": "11:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 54,
+    "fields": {
+      "user": [
+        "test@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_4_0.png",
+      "submitted_at": "2024-08-24T14:35:10.682Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 55,
+    "fields": {
+      "user": [
+        "test@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_4_1.png",
+      "submitted_at": "2024-08-24T14:35:10.688Z",
+      "time_taken": "01:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 56,
+    "fields": {
+      "user": [
+        "test@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_4_2.png",
+      "submitted_at": "2024-08-24T14:35:10.692Z",
+      "time_taken": "02:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 57,
+    "fields": {
+      "user": [
+        "test@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_4_3.png",
+      "submitted_at": "2024-08-24T14:35:10.697Z",
+      "time_taken": "03:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 58,
+    "fields": {
+      "user": [
+        "test@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_4_4.png",
+      "submitted_at": "2024-08-24T14:35:10.701Z",
+      "time_taken": "04:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 59,
+    "fields": {
+      "user": [
+        "test@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_4_5.png",
+      "submitted_at": "2024-08-24T14:35:10.706Z",
+      "time_taken": "05:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 60,
+    "fields": {
+      "user": [
+        "test@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_4_6.png",
+      "submitted_at": "2024-08-24T14:35:10.711Z",
+      "time_taken": "06:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 61,
+    "fields": {
+      "user": [
+        "test@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_4_7.png",
+      "submitted_at": "2024-08-24T14:35:10.716Z",
+      "time_taken": "07:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 62,
+    "fields": {
+      "user": [
+        "test@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_4_8.png",
+      "submitted_at": "2024-08-24T14:35:10.721Z",
+      "time_taken": "08:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 63,
+    "fields": {
+      "user": [
+        "test@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_4_9.png",
+      "submitted_at": "2024-08-24T14:35:10.726Z",
+      "time_taken": "09:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 64,
+    "fields": {
+      "user": [
+        "test@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_4_10.png",
+      "submitted_at": "2024-08-24T14:35:10.730Z",
+      "time_taken": "10:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 65,
+    "fields": {
+      "user": [
+        "test@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_4_11.png",
+      "submitted_at": "2024-08-24T14:35:10.735Z",
+      "time_taken": "11:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 66,
+    "fields": {
+      "user": [
+        "salty@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_5_0.png",
+      "submitted_at": "2024-08-24T14:35:10.740Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 67,
+    "fields": {
+      "user": [
+        "salty@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_5_1.png",
+      "submitted_at": "2024-08-24T14:35:10.745Z",
+      "time_taken": "01:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 68,
+    "fields": {
+      "user": [
+        "salty@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_5_2.png",
+      "submitted_at": "2024-08-24T14:35:10.749Z",
+      "time_taken": "02:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 69,
+    "fields": {
+      "user": [
+        "salty@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_5_3.png",
+      "submitted_at": "2024-08-24T14:35:10.754Z",
+      "time_taken": "03:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 70,
+    "fields": {
+      "user": [
+        "salty@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_5_4.png",
+      "submitted_at": "2024-08-24T14:35:10.759Z",
+      "time_taken": "04:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 71,
+    "fields": {
+      "user": [
+        "salty@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_5_5.png",
+      "submitted_at": "2024-08-24T14:35:10.764Z",
+      "time_taken": "05:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 72,
+    "fields": {
+      "user": [
+        "salty@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_5_6.png",
+      "submitted_at": "2024-08-24T14:35:10.769Z",
+      "time_taken": "06:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 73,
+    "fields": {
+      "user": [
+        "salty@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_5_7.png",
+      "submitted_at": "2024-08-24T14:35:10.773Z",
+      "time_taken": "07:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 74,
+    "fields": {
+      "user": [
+        "salty@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_5_8.png",
+      "submitted_at": "2024-08-24T14:35:10.778Z",
+      "time_taken": "08:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 75,
+    "fields": {
+      "user": [
+        "salty@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_5_9.png",
+      "submitted_at": "2024-08-24T14:35:10.782Z",
+      "time_taken": "09:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 76,
+    "fields": {
+      "user": [
+        "salty@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_5_10.png",
+      "submitted_at": "2024-08-24T14:35:10.786Z",
+      "time_taken": "10:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 77,
+    "fields": {
+      "user": [
+        "salty@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_5_11.png",
+      "submitted_at": "2024-08-24T14:35:10.791Z",
+      "time_taken": "11:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 78,
+    "fields": {
+      "user": [
+        "shadid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_6_0.png",
+      "submitted_at": "2024-08-24T14:35:10.796Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 79,
+    "fields": {
+      "user": [
+        "shadid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_6_1.png",
+      "submitted_at": "2024-08-24T14:35:10.800Z",
+      "time_taken": "01:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 80,
+    "fields": {
+      "user": [
+        "shadid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_6_2.png",
+      "submitted_at": "2024-08-24T14:35:10.805Z",
+      "time_taken": "02:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 81,
+    "fields": {
+      "user": [
+        "shadid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_6_3.png",
+      "submitted_at": "2024-08-24T14:35:10.809Z",
+      "time_taken": "03:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 82,
+    "fields": {
+      "user": [
+        "shadid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_6_4.png",
+      "submitted_at": "2024-08-24T14:35:10.814Z",
+      "time_taken": "04:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 83,
+    "fields": {
+      "user": [
+        "shadid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_6_5.png",
+      "submitted_at": "2024-08-24T14:35:10.819Z",
+      "time_taken": "05:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 84,
+    "fields": {
+      "user": [
+        "shadid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_6_6.png",
+      "submitted_at": "2024-08-24T14:35:10.823Z",
+      "time_taken": "06:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 85,
+    "fields": {
+      "user": [
+        "shadid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_6_7.png",
+      "submitted_at": "2024-08-24T14:35:10.828Z",
+      "time_taken": "07:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 86,
+    "fields": {
+      "user": [
+        "shadid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_6_8.png",
+      "submitted_at": "2024-08-24T14:35:10.833Z",
+      "time_taken": "08:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 87,
+    "fields": {
+      "user": [
+        "shadid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_6_9.png",
+      "submitted_at": "2024-08-24T14:35:10.837Z",
+      "time_taken": "09:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 88,
+    "fields": {
+      "user": [
+        "shadid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_6_10.png",
+      "submitted_at": "2024-08-24T14:35:10.841Z",
+      "time_taken": "10:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 89,
+    "fields": {
+      "user": [
+        "shadid@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_6_11.png",
+      "submitted_at": "2024-08-24T14:35:10.846Z",
+      "time_taken": "11:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 90,
+    "fields": {
+      "user": [
+        "rocket@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_7_0.png",
+      "submitted_at": "2024-08-24T14:35:10.851Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 91,
+    "fields": {
+      "user": [
+        "rocket@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_7_1.png",
+      "submitted_at": "2024-08-24T14:35:10.856Z",
+      "time_taken": "01:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 92,
+    "fields": {
+      "user": [
+        "rocket@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_7_2.png",
+      "submitted_at": "2024-08-24T14:35:10.860Z",
+      "time_taken": "02:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 93,
+    "fields": {
+      "user": [
+        "rocket@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_7_3.png",
+      "submitted_at": "2024-08-24T14:35:10.864Z",
+      "time_taken": "03:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 94,
+    "fields": {
+      "user": [
+        "rocket@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_7_4.png",
+      "submitted_at": "2024-08-24T14:35:10.869Z",
+      "time_taken": "04:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 95,
+    "fields": {
+      "user": [
+        "rocket@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_7_5.png",
+      "submitted_at": "2024-08-24T14:35:10.874Z",
+      "time_taken": "05:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 96,
+    "fields": {
+      "user": [
+        "rocket@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_7_6.png",
+      "submitted_at": "2024-08-24T14:35:10.879Z",
+      "time_taken": "06:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 97,
+    "fields": {
+      "user": [
+        "rocket@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_7_7.png",
+      "submitted_at": "2024-08-24T14:35:10.883Z",
+      "time_taken": "07:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 98,
+    "fields": {
+      "user": [
+        "rocket@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_7_8.png",
+      "submitted_at": "2024-08-24T14:35:10.887Z",
+      "time_taken": "08:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 99,
+    "fields": {
+      "user": [
+        "rocket@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_7_9.png",
+      "submitted_at": "2024-08-24T14:35:10.893Z",
+      "time_taken": "09:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 100,
+    "fields": {
+      "user": [
+        "rocket@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_7_10.png",
+      "submitted_at": "2024-08-24T14:35:10.897Z",
+      "time_taken": "10:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 101,
+    "fields": {
+      "user": [
+        "rocket@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://example.com/submission_7_11.png",
+      "submitted_at": "2024-08-24T14:35:10.901Z",
+      "time_taken": "11:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 102,
+    "fields": {
+      "user": [
+        "skbidiwarrior@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "blah blah blah",
+      "submitted_at": "2025-03-19T16:56:20.090Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "rejected",
+      "reject_reason": "Dont like you",
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 103,
+    "fields": {
+      "user": [
+        "skbidiwarrior@gmail.com"
+      ],
+      "challenge": 2,
+      "file_url": "dafag",
+      "submitted_at": "2025-03-19T18:50:45.958Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 104,
+    "fields": {
+      "user": [
+        "blahblah@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https:://google.com",
+      "submitted_at": "2025-05-24T19:48:23.061Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 105,
+    "fields": {
+      "user": [
+        "blahblah@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-24T19:59:25.680Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 106,
+    "fields": {
+      "user": [
+        "blahblah@gmail.com"
+      ],
+      "challenge": 2,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-24T19:59:25.696Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 107,
+    "fields": {
+      "user": [
+        "blahblah@gmail.com"
+      ],
+      "challenge": 3,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-24T19:59:25.711Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 108,
+    "fields": {
+      "user": [
+        "blahblah@gmail.com"
+      ],
+      "challenge": 4,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-24T19:59:25.727Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "rejected",
+      "reject_reason": "Don't like u creepy man",
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 109,
+    "fields": {
+      "user": [
+        "blahblah@gmail.com"
+      ],
+      "challenge": 5,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-24T19:59:25.743Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 110,
+    "fields": {
+      "user": [
+        "blahblah@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-24T20:15:11.438Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 111,
+    "fields": {
+      "user": [
+        "blahblah@gmail.com"
+      ],
+      "challenge": 2,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-24T20:15:11.460Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 112,
+    "fields": {
+      "user": [
+        "blahblah@gmail.com"
+      ],
+      "challenge": 3,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-24T20:15:11.476Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 113,
+    "fields": {
+      "user": [
+        "blahblah@gmail.com"
+      ],
+      "challenge": 4,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-24T20:15:11.493Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": "2025-05-24T21:57:09.676Z",
+      "approved_by": [
+        "admin@eldenring.com"
+      ]
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 114,
+    "fields": {
+      "user": [
+        "blahblah@gmail.com"
+      ],
+      "challenge": 5,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-24T20:15:11.509Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": "2025-05-24T21:53:10.476Z",
+      "approved_by": [
+        "admin@eldenring.com"
+      ]
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 115,
+    "fields": {
+      "user": [
+        "inshalca@gmail.com"
+      ],
+      "challenge": 27,
+      "file_url": "https://www.youtube.com/watch?v=7jrKjkrX3Gw&list=RDU0TXIXTzJEY&index=8",
+      "submitted_at": "2025-05-24T21:53:43.926Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": "2025-05-24T21:54:26.131Z",
+      "approved_by": [
+        "admin@eldenring.com"
+      ]
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 116,
+    "fields": {
+      "user": [
+        "inshalca@gmail.com"
+      ],
+      "challenge": 120,
+      "file_url": "https://www.youtube.com/watch?v=7jrKjkrX3Gw&list=RDU0TXIXTzJEY&index=8",
+      "submitted_at": "2025-05-24T21:55:16.388Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 200,
+      "approved_at": "2025-05-24T21:55:34.964Z",
+      "approved_by": [
+        "admin@eldenring.com"
+      ]
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 117,
+    "fields": {
+      "user": [
+        "inshalca@gmail.com"
+      ],
+      "challenge": 27,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-25T01:11:08.712Z",
+      "time_taken": "01:30:22",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 118,
+    "fields": {
+      "user": [
+        "inshalca@gmail.com"
+      ],
+      "challenge": 27,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-25T01:11:31.355Z",
+      "time_taken": "01:19:12",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 119,
+    "fields": {
+      "user": [
+        "inshalca@gmail.com"
+      ],
+      "challenge": 29,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-25T01:11:31.374Z",
+      "time_taken": "01:19:12",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 120,
+    "fields": {
+      "user": [
+        "inshalca@gmail.com"
+      ],
+      "challenge": 7,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-25T01:11:31.393Z",
+      "time_taken": "01:19:12",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 121,
+    "fields": {
+      "user": [
+        "inshalca@gmail.com"
+      ],
+      "challenge": 28,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-25T01:11:31.413Z",
+      "time_taken": "01:19:12",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 122,
+    "fields": {
+      "user": [
+        "inshalca@gmail.com"
+      ],
+      "challenge": 2,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-25T01:11:31.433Z",
+      "time_taken": "01:19:12",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 123,
+    "fields": {
+      "user": [
+        "inshalca@gmail.com"
+      ],
+      "challenge": 4,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-25T01:11:31.454Z",
+      "time_taken": "01:19:12",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 124,
+    "fields": {
+      "user": [
+        "inshalca@gmail.com"
+      ],
+      "challenge": 6,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-25T01:11:31.474Z",
+      "time_taken": "01:19:12",
+      "admin_verified_time": "01:12:12",
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": "2025-05-25T01:51:08.805Z",
+      "approved_by": [
+        "admin@eldenring.com"
+      ]
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 125,
+    "fields": {
+      "user": [
+        "inshalca@gmail.com"
+      ],
+      "challenge": 5,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-25T01:11:31.493Z",
+      "time_taken": "01:19:12",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 126,
+    "fields": {
+      "user": [
+        "inshalca@gmail.com"
+      ],
+      "challenge": 1,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-25T01:11:31.515Z",
+      "time_taken": "01:19:12",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": "2025-05-25T01:39:58.113Z",
+      "approved_by": [
+        "admin@eldenring.com"
+      ]
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 127,
+    "fields": {
+      "user": [
+        "blahblah@gmail.com"
+      ],
+      "challenge": 130,
+      "file_url": "https://youtube.com",
+      "submitted_at": "2025-05-25T01:38:33.397Z",
+      "time_taken": "01:01:12",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 200,
+      "approved_at": "2025-05-25T01:39:06.744Z",
+      "approved_by": [
+        "admin@eldenring.com"
+      ]
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 128,
+    "fields": {
+      "user": [
+        "admin@eldenring.com"
+      ],
+      "challenge": 27,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-25T02:12:14.791Z",
+      "time_taken": "01:19:12",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 129,
+    "fields": {
+      "user": [
+        "admin@eldenring.com"
+      ],
+      "challenge": 29,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-25T02:12:42.863Z",
+      "time_taken": "01:10:12",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 130,
+    "fields": {
+      "user": [
+        "admin@eldenring.com"
+      ],
+      "challenge": 29,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-27T14:04:07.825Z",
+      "time_taken": "01:01:20",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 131,
+    "fields": {
+      "user": [
+        "admin@eldenring.com"
+      ],
+      "challenge": 27,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-27T14:04:07.856Z",
+      "time_taken": "01:01:20",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 132,
+    "fields": {
+      "user": [
+        "admin@eldenring.com"
+      ],
+      "challenge": 28,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-27T14:04:07.888Z",
+      "time_taken": "01:01:20",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 133,
+    "fields": {
+      "user": [
+        "admin@eldenring.com"
+      ],
+      "challenge": 4,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-27T14:16:21.511Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 134,
+    "fields": {
+      "user": [
+        "admin@eldenring.com"
+      ],
+      "challenge": 4,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-27T14:16:33.988Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "pending",
+      "reject_reason": null,
+      "points_awarded": 0,
+      "approved_at": null,
+      "approved_by": null
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 135,
+    "fields": {
+      "user": [
+        "admin@eldenring.com"
+      ],
+      "challenge": 4,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-27T14:40:55.315Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": "2025-05-27T14:41:32.647Z",
+      "approved_by": [
+        "admin@eldenring.com"
+      ]
+    }
+  },
+  {
+    "model": "api.submission",
+    "pk": 136,
+    "fields": {
+      "user": [
+        "admin@eldenring.com"
+      ],
+      "challenge": 2,
+      "file_url": "https://google.com",
+      "submitted_at": "2025-05-27T14:42:31.555Z",
+      "time_taken": "00:00:00",
+      "admin_verified_time": null,
+      "status": "approved",
+      "reject_reason": null,
+      "points_awarded": 50,
+      "approved_at": "2025-05-27T14:42:31.565Z",
+      "approved_by": null
+    }
+  }
+]

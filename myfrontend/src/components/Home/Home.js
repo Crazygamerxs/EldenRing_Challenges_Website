@@ -5,6 +5,7 @@ import Pagination from './Pagination';
 import './Home.css';
 import Cookies from 'js-cookie';
 
+import { API_ENDPOINTS } from '../../utils/api';
 function Home() {
     const [filters, setFilters] = useState({
         difficulties: [],
@@ -24,7 +25,7 @@ function Home() {
     useEffect(() => {
         const fetchChallenges = async () => {
             try {
-                const response = await fetch('http://localhost:8888/api/challenge/', {
+                const response = await fetch(API_ENDPOINTS.CHALLENGES, {
                     method: 'GET',
                     credentials: 'include',
                     headers: {

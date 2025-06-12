@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import { UserContext } from './UserContext'; // Adjust the import path as needed
 
+import { API_ENDPOINTS } from '../../utils/api';
 const PrivateRoute = ({ element: Component, ...rest }) => {
     const { user, loading } = useContext(UserContext);
 

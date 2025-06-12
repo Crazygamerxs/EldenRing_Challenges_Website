@@ -2,114 +2,198 @@
 Production settings for mybackend project.
 """
 
-from pathlib import Path
 import os
-from django.core.management.utils import get_random_secret_key
-import sys
-from dotenv import load_dotenv
+from pathlib import Path
+from .settings import *
 
-# Load environment variables from .env file
-load_dotenv()
-
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Build paths inside the project.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-# Generate a random secret key or get it from environment variable
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', get_random_secret_key())
-
 # SECURITY WARNING: don't run with debug turned on in production!
-# Set to True initially for debugging on Render, then disable
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+DEBUG = False
 
-# Update this with your domain
-ALLOWED_HOSTS = ['eldenring.biz', 'www.eldenring.biz', '.onrender.com']
-
-# Application definition
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'rest_framework',
-    'api',
-    'corsheaders',
+# Production hosts - configurable via environment variable
+ALLOWED_HOSTS = [
+    os.environ.get('DOMAIN_NAME', 'localhost'),
+    f"www.{os.environ.get('DOMAIN_NAME', 'localhost')}",
+    'localhost',  # For local testing
+    '127.0.0.1',
+    '0.0.0.0',  # For Docker/container deployments
 ]
 
-MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add whitenoise for static files
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-]
-
-# Whitenoise configuration
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-    ),
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-    ),
-    'DEFAULT_THROTTLE_CLASSES': [
-        'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle'
-    ],
-    'DEFAULT_THROTTLE_RATES': {
-        'anon': '100/day',
-        'user': '1000/day'
+# Database - PostgreSQL for production
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME', 'eldenring_prod'),
+        'USER': os.environ.get('DB_USER', 'eldenring_user'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
+        'OPTIONS': {
+            'sslmode': 'prefer',  # Use SSL if available
+        },
     }
 }
 
-# Security settings
-# Set to False initially for Render deployment, then enable once SSL is set up
-SECURE_SSL_REDIRECT = os.environ.get('SECURE_SSL_REDIRECT', 'False') == 'True'
-SECURE_HSTS_SECONDS = 31536000  # 1 year
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_BROWSER_XSS_FILTER = True
-X_FRAME_OPTIONS = 'DENY'
+# Static files configuration for production
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'  # Where collectstatic puts files
 
-# Update with your domain
-CORS_ALLOWED_ORIGINS = [
-    "https://eldenring.biz",
-    "https://www.eldenring.biz",
-    "https://*.onrender.com",
-    "http://*.onrender.com"  # Allow HTTP during development
+# Additional static files directories
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',  # Your custom static files
+    BASE_DIR / 'build' / 'static',  # React build static files
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://eldenring.biz",
-    "https://www.eldenring.biz",
-    "https://*.onrender.com",
-    "http://*.onrender.com"  # Allow HTTP during development
+# Media files configuration
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# WhiteNoise for serving static files
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Add this for static files
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'api.middleware.SiteSettingsMiddleware',
 ]
+
+# WhiteNoise configuration
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# CORS settings for production
+domain_name = os.environ.get('DOMAIN_NAME', 'localhost')
+if domain_name != 'localhost':
+    CORS_ALLOWED_ORIGINS = [
+        f"https://{domain_name}",
+        f"https://www.{domain_name}",
+        f"http://{domain_name}",  # For development/testing
+        f"http://www.{domain_name}",
+    ]
+else:
+    # Local development/testing
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+    ]
 
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_ALLOW_ALL = False
 
-ROOT_URLCONF = 'mybackend.urls'
+# CSRF settings for production
+if domain_name != 'localhost':
+    CSRF_TRUSTED_ORIGINS = [
+        f"https://{domain_name}",
+        f"https://www.{domain_name}",
+        f"http://{domain_name}",
+        f"http://www.{domain_name}",
+    ]
+else:
+    CSRF_TRUSTED_ORIGINS = [
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+    ]
 
+# Security settings
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+
+# HTTPS settings (enable when you have SSL certificate)
+USE_HTTPS = os.environ.get('USE_HTTPS', 'False').lower() == 'true'
+if USE_HTTPS:
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Session and CSRF cookie settings
+SESSION_COOKIE_NAME = 'sessionid'
+SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_HTTPONLY = True
+
+CSRF_COOKIE_NAME = "csrftoken"
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_HTTPONLY = False
+
+# Logging configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'logs' / 'django.log',
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'root': {
+        'handlers': ['file', 'console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'api': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
+
+# Create logs directory if it doesn't exist
+(BASE_DIR / 'logs').mkdir(exist_ok=True)
+
+# Email configuration (reuse your existing Gmail setup)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'ringrunnerhelp@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'cyiqmpfvbomjvnkk')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', f'noreply@{domain_name}')
+
+# Cache configuration (optional but recommended)
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
+
+# Template configuration for React
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'build')],
+        'DIRS': [BASE_DIR / 'templates'],  # React build templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,132 +206,16 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'mybackend.wsgi.application'
+# Performance optimizations
+if not DEBUG:
+    # Disable admin docs in production
+    INSTALLED_APPS = [app for app in INSTALLED_APPS if app != 'django.contrib.admindocs']
+    
+    # Add compression middleware
+    MIDDLEWARE.insert(1, 'django.middleware.gzip.GZipMiddleware')
 
-# Database
-# Use dj-database-url to handle database configuration
-import dj_database_url
+# Secret key from environment variable
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-_)qm!2+p2^e_ilfm-#3rwvbs!(d&l&e-t18-nk75iky5#n0lz(')
 
-# Default to SQLite if DATABASE_URL is not provided
-DATABASES = {
-    'default': dj_database_url.config(
-        default=f'sqlite:///{os.path.join(BASE_DIR, "db.sqlite3")}',
-        conn_max_age=600
-    )
-}
-
-AUTH_USER_MODEL = 'api.User'
-
-AUTHENTICATION_BACKENDS = [
-    'api.backends.UsernameBackend',
-    'django.contrib.auth.backends.ModelBackend',
-]
-
-LOGIN_URL = '/api/login/'
-
-# Password validation
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        'OPTIONS': {
-            'min_length': 10,
-        }
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
-
-# Internationalization
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_TZ = True
-
-# Frontend URL
-FRONTEND_URL = 'https://eldenring.biz'
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Email settings - use environment variables
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
-EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
-EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
-EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', 'False') == 'True'
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
-
-# Session cookie settings
-SESSION_COOKIE_NAME = 'sessionid'
-SESSION_COOKIE_SECURE = SECURE_SSL_REDIRECT  # Match SSL redirect setting
-SESSION_COOKIE_SAMESITE = 'Lax'
-SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_AGE = 1209600  # 2 weeks
-
-# CSRF cookie settings
-CSRF_COOKIE_NAME = "csrftoken"
-CSRF_COOKIE_SECURE = SECURE_SSL_REDIRECT  # Match SSL redirect setting
-CSRF_COOKIE_SAMESITE = 'Lax'
-CSRF_COOKIE_HTTPONLY = False
-# CSRF_COOKIE_DOMAIN = '.eldenring.biz'  # Commented out for Render deployment
-
-# Logging configuration
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
-            'style': '{',
-        },
-    },
-    'handlers': {
-        'file': {
-            'level': 'WARNING',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'errors.log'),
-            'formatter': 'verbose',
-        },
-        'console': {
-            'level': 'INFO',
-            'class': 'logging.StreamHandler',
-            'stream': sys.stdout,
-            'formatter': 'verbose',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file', 'console'],
-            'level': 'WARNING',
-            'propagate': True,
-        },
-        'api': {
-            'handlers': ['file', 'console'],
-            'level': 'WARNING',
-            'propagate': True,
-        },
-    },
-}
-
-# Cache settings
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'LOCATION': 'unique-snowflake',
-    }
-}
-
-# For production, consider using Redis or Memcached
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-#         'LOCATION': 'redis://127.0.0.1:6379/1',
-#     }
-# }
+# Frontend URL for production
+FRONTEND_URL = f"http://{domain_name}:8000" if domain_name == 'localhost' else f"https://{domain_name}"

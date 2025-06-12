@@ -6,6 +6,7 @@ import './Login.css';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
+import { API_ENDPOINTS } from '../../utils/api';
 const LogIn = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -42,7 +43,7 @@ const LogIn = () => {
                 if (!token) {
                     console.log('No CSRF token found, fetching...');
                     // Fetch CSRF token
-                    await axios.get('http://localhost:8888/api/csrf-token/', { 
+                    await axios.get(API_ENDPOINTS.CSRF_TOKEN, { 
                         withCredentials: true,
                         timeout: 10000
                     });
@@ -78,7 +79,7 @@ const LogIn = () => {
             const csrfToken = await waitForCsrfToken();
             console.log('Using CSRF Token for login:', csrfToken.substring(0, 10) + '...');
     
-            const response = await axios.post('http://localhost:8888/api/login/', {
+            const response = await axios.post(API_ENDPOINTS.LOGIN, {
                 username: username.trim().toLowerCase(), // Ensure lowercase
                 password
             }, {

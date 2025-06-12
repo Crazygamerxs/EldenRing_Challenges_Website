@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './common.css'; // Ensure this file is correctly imported
 
+import { API_ENDPOINTS } from '../../utils/api';
 const LoadingIndicator = ({ isVisible }) => {
   const [show, setShow] = useState(false); // Track if indicator should be shown
 

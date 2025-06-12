@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './CB.css';
 
+import { API_ENDPOINTS } from '../../utils/api';
 const CommunityForum = () => {
     const { forumId } = useParams(); // Get forum ID from URL params
     const [threads, setThreads] = useState([]);
@@ -18,7 +19,7 @@ const CommunityForum = () => {
 
         const csrfToken = getCookie('csrftoken'); // Retrieve CSRF token from cookie
 
-        fetch(`http://localhost:8888/api/threads/?category_id=${forumId}`, {
+        fetch(`API_ENDPOINTS.THREADS_BY_CATEGORY(forumId)`, {
             method: 'GET',
             credentials: 'include', // Ensure cookies are sent
             headers: {

@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import './SignUp.css';
+import { validateUsername, validateEmail, validatePassword, sanitizeInput } from '../../utils/security';
+import { API_ENDPOINTS } from '../../utils/api';
 
 const SignUp = () => {
     const [username, setUsername] = useState('');
@@ -41,7 +43,7 @@ const SignUp = () => {
                 if (!token) {
                     console.log('No CSRF token found, fetching...');
                     // Fetch CSRF token
-                    await axios.get('http://localhost:8888/api/csrf-token/', { 
+                    await axios.get(API_ENDPOINTS.CSRF_TOKEN, { 
                         withCredentials: true,
                         timeout: 10000
                     });
@@ -112,7 +114,7 @@ const SignUp = () => {
             const csrfToken = await waitForCsrfToken();
             console.log('Using CSRF Token for signup:', csrfToken.substring(0, 10) + '...');
 
-            const response = await fetch('http://localhost:8888/api/signup/', {
+            const response = await fetch(API_ENDPOINTS.SIGNUP, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

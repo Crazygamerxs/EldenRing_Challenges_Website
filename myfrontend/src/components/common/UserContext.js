@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios'; // Import axios
 import Cookies from 'js-cookie'; // Import js-cookie
 
+import { API_ENDPOINTS } from '../../utils/api';
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
@@ -12,7 +13,7 @@ export const UserProvider = ({ children }) => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await axios.get('http://localhost:8888/api/user-profile/', {
+                const response = await axios.get(API_ENDPOINTS.USER_PROFILE, {
                     withCredentials: true, // Ensure cookies are sent
                 });
                 if (response.status === 200) {
@@ -46,7 +47,7 @@ export const UserProvider = ({ children }) => {
             console.log('CSRF Token being sent:', csrfToken);  // Debugging
     
             // Send POST request to logout endpoint
-            const response = await axios.post('http://localhost:8888/api/logout/', {}, {
+            const response = await axios.post(API_ENDPOINTS.LOGOUT, {}, {
                 withCredentials: true,  // Ensure cookies are sent with the request
                 headers: {
                     'X-CSRFToken': csrfToken,  // Include CSRF token in headers

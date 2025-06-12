@@ -8,7 +8,11 @@ import pp_2 from '../images/profile_pic/pp_2.png';
 import pp_3 from '../images/profile_pic/pp_3.png';
 import pin from './pin.png';
 import success_icon from './success_icon.png';
+import ranni_icon from './ranni_icon.png';
+import tarnished_icon from './tarnished_icon.png';
 
+
+import { API_ENDPOINTS } from '../utils/api';
 const images = { 
 cat_logo,
 google,
@@ -19,7 +23,9 @@ pp_1,
 pp_2,
 pp_3,
 pin,
-success_icon
+success_icon,
+tarnished_icon,
+ranni_icon
 };
 
 export default images;

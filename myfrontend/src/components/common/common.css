@@ -201,9 +201,84 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 10px; /* Adjust spacing between links as needed */
+    gap: 15px; /* Adjust spacing between links as needed */
     position: relative;
-    left: 45%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+
+  .bottom-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 5px;
+  }
+
+  .site-name {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    color: white;
+  }
+
+  .disclaimer {
+    font-size: 12px;
+    font-weight: 400;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 800px;
+    line-height: 1.4;
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+  }
+
+  /* Responsive design for bottom bar */
+  @media (max-width: 768px) {
+    .bottom-bar {
+      height: auto;
+      padding: 15px 0;
+    }
+    
+    .center-content {
+      flex-direction: column;
+      gap: 10px;
+      left: 0;
+      transform: none;
+      padding: 0 15px;
+    }
+    
+    .disclaimer {
+      font-size: 11px;
+      max-width: 100%;
+    }
+    
+    .site-name {
+      font-size: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .disclaimer {
+      font-size: 10px;
+    }
+    
+    .site-name {
+      font-size: 14px;
+    }
+    
+    .logo {
+      width: 30px;
+      height: 30px;
+    }
   }
 
 
@@ -472,4 +547,363 @@
 
 .notification-toast:nth-child(4) {
   top: 260px;
+}
+/* Elden Ring themed donation button - Fixed width with better alignment */
+.elden-coffee-btn {
+    color: #f0f0f0; /* Normal navbar text color */
+    border: 2px solid #a98b2d; /* Back to gold border like other elements */
+    padding: 12px 16px; /* Adjusted padding */
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center; /* Perfect vertical alignment */
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'poppins', sans-serif;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(169, 139, 45, 0.3); /* Back to gold shadow */
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    margin-right: 12px; /* Reduced margin to bring logout closer */
+    white-space: nowrap;
+    gap: 6px; /* Reduced gap for better proportions */
+    background: linear-gradient(135deg, #222b33 0%, #2c3b47 50%, #3a4a59 100%); /* Navbar-like background */
+    min-width: 340px; /* Dynamic width with minimum */
+    max-width: 320px; /* Maximum width to prevent oversizing */
+}
+
+/* Tarnished theme - subtle before hover */
+.elden-coffee-btn.tarnished {
+    background: linear-gradient(135deg, #222b33 0%, #2c3b47 50%, #3a4a59 100%);
+    border-color: #a98b2d;
+    color: #f0f0f0;
+}
+
+.elden-coffee-btn.tarnished:hover {
+    background: linear-gradient(135deg, #5c3317 0%, #8b4513 50%, #daa520 100%);
+    border-color: #ffd700;
+    box-shadow: 0 5px 15px rgba(218, 165, 32, 0.6);
+    color: #ffffff;
+}
+
+/* Ranni theme - subtle before hover */
+.elden-coffee-btn.ranni {
+    background: linear-gradient(135deg, #222b33 0%, #2c3b47 50%, #3a4a59 100%);
+    border-color: #a98b2d;
+    color: #f0f0f0;
+}
+
+.elden-coffee-btn.ranni:hover {
+    background: linear-gradient(135deg, #2d2b5a 0%, #4a4a8a 50%, #6a5acd 100%);
+    border-color: #8a2be2;
+    box-shadow: 0 5px 15px rgba(138, 43, 226, 0.6);
+    color: #e6e6fa;
+}
+
+/* Weary theme - new madness/grace theme */
+.elden-coffee-btn.weary {
+    background: linear-gradient(135deg, #222b33 0%, #2c3b47 50%, #3a4a59 100%);
+    border-color: #a98b2d;
+    color: #f0f0f0;
+}
+
+.elden-coffee-btn.weary:hover {
+    background: linear-gradient(135deg, #8b0000 0%, #dc143c 50%, #ff6347 100%);
+    border-color: #ff4500;
+    box-shadow: 0 5px 15px rgba(255, 69, 0, 0.6);
+    color: #ffffff;
+}
+
+.elden-coffee-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(169, 139, 45, 0.5);
+    background: linear-gradient(135deg, #4a7c3a 0%, #6b9c5a 50%, #8bc270 100%);
+    border-color: #ce9e10;
+    color: #ffffff;
+}
+
+.elden-coffee-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(169, 139, 45, 0.4);
+}
+
+.elden-icon {
+    font-size: 16px; /* Consistent size */
+    filter: grayscale(0.3) brightness(0.8); /* Slightly muted before hover */
+    transition: all 0.3s ease;
+    line-height: 1; /* Ensures proper vertical alignment */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.elden-coffee-btn.tarnished .elden-icon {
+    animation: subtle-sword-pulse 3s ease-in-out infinite;
+}
+
+.elden-coffee-btn.ranni .elden-icon {
+    animation: subtle-moon-float 4s ease-in-out infinite;
+}
+
+.elden-coffee-btn.weary .elden-icon {
+    animation: subtle-flame-flicker 2.5s ease-in-out infinite;
+}
+
+/* On hover - vibrant colors */
+.elden-coffee-btn.tarnished:hover .elden-icon {
+    filter: drop-shadow(0 0 8px #ffd700) brightness(1.2);
+    animation: sword-glow-hover 2s ease-in-out infinite;
+}
+
+.elden-coffee-btn.ranni:hover .elden-icon {
+    filter: drop-shadow(0 0 8px #8a2be2) brightness(1.2);
+    animation: moon-glow-hover 3s ease-in-out infinite;
+}
+
+.elden-coffee-btn.weary:hover .elden-icon {
+    filter: drop-shadow(0 0 8px #ff4500) brightness(1.3);
+    animation: flame-madness-hover 1.8s ease-in-out infinite;
+}
+
+.elden-text {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    line-height: 1; /* Ensures proper vertical alignment */
+    display: flex;
+    align-items: center;
+}
+
+/* Subtle animations before hover */
+@keyframes subtle-sword-pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.02);
+        opacity: 0.9;
+    }
+}
+
+@keyframes subtle-moon-float {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.8;
+    }
+    25% {
+        transform: translateY(-1px) rotate(-1deg);
+        opacity: 0.85;
+    }
+    50% {
+        transform: translateY(-2px) rotate(0deg);
+        opacity: 0.9;
+    }
+    75% {
+        transform: translateY(-1px) rotate(1deg);
+        opacity: 0.85;
+    }
+}
+
+@keyframes subtle-flame-flicker {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 0.8;
+    }
+    25% {
+        transform: scale(1.01) rotate(-0.5deg);
+        opacity: 0.85;
+    }
+    50% {
+        transform: scale(1.02) rotate(0.5deg);
+        opacity: 0.9;
+    }
+    75% {
+        transform: scale(1.01) rotate(-0.5deg);
+        opacity: 0.88;
+    }
+}
+
+/* Vibrant hover animations */
+@keyframes sword-glow-hover {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        transform: scale(1.1) rotate(2deg);
+    }
+}
+
+@keyframes moon-glow-hover {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+    }
+    25% {
+        transform: scale(1.05) rotate(-3deg);
+    }
+    50% {
+        transform: scale(1.1) rotate(0deg);
+    }
+    75% {
+        transform: scale(1.05) rotate(3deg);
+    }
+}
+
+@keyframes flame-madness-hover {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+    }
+    20% {
+        transform: scale(1.08) rotate(-2deg);
+    }
+    40% {
+        transform: scale(1.12) rotate(1deg);
+    }
+    60% {
+        transform: scale(1.06) rotate(-1deg);
+    }
+    80% {
+        transform: scale(1.1) rotate(2deg);
+    }
+}
+
+/* Rowa fruit glow animation */
+@keyframes rowa-glow {
+    0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 3px rgba(169, 139, 45, 0.6));
+    }
+    50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 8px rgba(169, 139, 45, 0.9));
+    }
+}
+
+/* Grace-like shimmer effect - subtle before hover, vibrant on hover */
+.elden-coffee-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.1), 
+        transparent
+    );
+    transition: 0.6s;
+}
+
+.elden-coffee-btn.tarnished:hover::before {
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 215, 0, 0.4), 
+        transparent
+    );
+}
+
+.elden-coffee-btn.ranni:hover::before {
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(138, 43, 226, 0.4), 
+        transparent
+    );
+}
+
+.elden-coffee-btn.weary:hover::before {
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 69, 0, 0.4), 
+        transparent
+    );
+}
+
+.elden-coffee-btn:hover::before {
+    left: 100%;
+}
+
+.elden-coffee-btn:active {
+    transform: translateY(1px);
+}
+
+/* Alternative funny tooltips that rotate randomly - DISABLED */
+.elden-coffee-btn[title]:hover::after {
+    display: none; /* Hide all hover tooltips */
+}
+
+@keyframes fadeInTooltip {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Pulsing grace effect for extra attention */
+.elden-coffee-btn.grace-pulse {
+    animation: grace-pulse 4s ease-in-out infinite;
+}
+
+@keyframes grace-pulse {
+    0%, 100% {
+        box-shadow: 0 3px 10px rgba(169, 139, 45, 0.3);
+        border-color: #a98b2d;
+    }
+    50% {
+        box-shadow: 0 6px 20px rgba(169, 139, 45, 0.7);
+        border-color: #ce9e10;
+    }
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    .elden-coffee-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+        gap: 5px;
+    }
+    
+    .elden-icon {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .elden-text {
+        font-size: 12px;
+    }
+}
+
+/* Very small screens - shorter text */
+@media (max-width: 480px) {
+    .elden-coffee-btn {
+        padding: 5px 8px;
+        font-size: 11px;
+        gap: 4px;
+    }
+    
+    .elden-icon {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .elden-text {
+        font-size: 11px;
+    }
+}
+
+/* Logout button adjustments to match spacing */
+.logout-btn {
+    margin-left: 0;
+}
+
+/* Notification icon spacing adjustment */
+.notification-icon-link {
+    margin-right: 10px;
 }

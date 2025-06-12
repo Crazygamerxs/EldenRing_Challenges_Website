@@ -1,0 +1,290 @@
+[
+  {
+    "model": "api.notification",
+    "pk": 18,
+    "fields": {
+      "user": [
+        "admin@eldenring.com"
+      ],
+      "title": "Run Submission Auto-Approved",
+      "content": "Your submission for \"Off The Sauce\" has been automatically approved and added to the leaderboard! You earned 50 points.",
+      "created_at": "2025-05-27T14:42:31.575Z",
+      "read": true,
+      "type": "success",
+      "challenge": 2,
+      "status": "approved"
+    }
+  },
+  {
+    "model": "api.notification",
+    "pk": 17,
+    "fields": {
+      "user": [
+        "admin@eldenring.com"
+      ],
+      "title": "Run Submission Approved",
+      "content": "Your submission for \"No Armor Challenge\" has been approved and added to the leaderboard! You earned 50 points.",
+      "created_at": "2025-05-27T14:41:32.659Z",
+      "read": true,
+      "type": "success",
+      "challenge": 4,
+      "status": "approved"
+    }
+  },
+  {
+    "model": "api.notification",
+    "pk": 16,
+    "fields": {
+      "user": [
+        "admin@eldenring.com"
+      ],
+      "title": "Run Submission Received",
+      "content": "Your submission for \"No Armor Challenge\" has been received and is pending admin review.",
+      "created_at": "2025-05-27T14:40:55.320Z",
+      "read": true,
+      "type": "info",
+      "challenge": 4,
+      "status": "pending"
+    }
+  },
+  {
+    "model": "api.notification",
+    "pk": 15,
+    "fields": {
+      "user": [
+        "admin@eldenring.com"
+      ],
+      "title": "Run Automatically Approved",
+      "content": "Your submission for \"Intrepid Infantry\" was automatically approved!",
+      "created_at": "2025-05-27T14:04:07.899Z",
+      "read": true,
+      "type": "success",
+      "challenge": 28,
+      "status": "approved"
+    }
+  },
+  {
+    "model": "api.notification",
+    "pk": 14,
+    "fields": {
+      "user": [
+        "admin@eldenring.com"
+      ],
+      "title": "Run Automatically Approved",
+      "content": "Your submission for \"Daring Disrobement\" was automatically approved!",
+      "created_at": "2025-05-27T14:04:07.868Z",
+      "read": true,
+      "type": "success",
+      "challenge": 27,
+      "status": "approved"
+    }
+  },
+  {
+    "model": "api.notification",
+    "pk": 13,
+    "fields": {
+      "user": [
+        "admin@eldenring.com"
+      ],
+      "title": "Run Automatically Approved",
+      "content": "Your submission for \"Great Rune Restriction\" was automatically approved!",
+      "created_at": "2025-05-27T14:04:07.837Z",
+      "read": true,
+      "type": "success",
+      "challenge": 29,
+      "status": "approved"
+    }
+  },
+  {
+    "model": "api.notification",
+    "pk": 12,
+    "fields": {
+      "user": [
+        "admin@eldenring.com"
+      ],
+      "title": "Run Automatically Approved",
+      "content": "Your submission for \"Great Rune Restriction\" was automatically approved!",
+      "created_at": "2025-05-25T02:12:42.878Z",
+      "read": true,
+      "type": "success",
+      "challenge": 29,
+      "status": "approved"
+    }
+  },
+  {
+    "model": "api.notification",
+    "pk": 11,
+    "fields": {
+      "user": [
+        "admin@eldenring.com"
+      ],
+      "title": "Run Automatically Approved",
+      "content": "Your submission for \"Daring Disrobement\" was automatically approved!",
+      "created_at": "2025-05-25T02:12:14.807Z",
+      "read": true,
+      "type": "success",
+      "challenge": 27,
+      "status": "approved"
+    }
+  },
+  {
+    "model": "api.notification",
+    "pk": 10,
+    "fields": {
+      "user": [
+        "inshalca@gmail.com"
+      ],
+      "title": "Run Submission Approved",
+      "content": "Your submission for \"Rune Scholar\" has been approved and added to the leaderboard! You earned 50 points.",
+      "created_at": "2025-05-25T01:51:08.817Z",
+      "read": true,
+      "type": "success",
+      "challenge": 6,
+      "status": "approved"
+    }
+  },
+  {
+    "model": "api.notification",
+    "pk": 9,
+    "fields": {
+      "user": [
+        "inshalca@gmail.com"
+      ],
+      "title": "Run Submission Approved",
+      "content": "Your submission for \"The Salty Scrub\" has been approved and you earned 50 points!",
+      "created_at": "2025-05-25T01:39:58.125Z",
+      "read": true,
+      "type": "success",
+      "challenge": 1,
+      "status": "approved"
+    }
+  },
+  {
+    "model": "api.notification",
+    "pk": 8,
+    "fields": {
+      "user": [
+        "blahblah@gmail.com"
+      ],
+      "title": "Run Submission Approved",
+      "content": "Your submission for \"Come At Me, Bro\" has been approved and you earned 200 points!",
+      "created_at": "2025-05-25T01:39:06.764Z",
+      "read": false,
+      "type": "success",
+      "challenge": 130,
+      "status": "approved"
+    }
+  },
+  {
+    "model": "api.notification",
+    "pk": 7,
+    "fields": {
+      "user": [
+        "blahblah@gmail.com"
+      ],
+      "title": "Run Submission Rejected",
+      "content": "Your submission for \"No Armor Challenge\" has been rejected. Reason: Don't like u creepy man",
+      "created_at": "2025-05-24T21:57:26.587Z",
+      "read": true,
+      "type": "error",
+      "challenge": 4,
+      "status": "rejected"
+    }
+  },
+  {
+    "model": "api.notification",
+    "pk": 6,
+    "fields": {
+      "user": [
+        "blahblah@gmail.com"
+      ],
+      "title": "Run Submission Approved",
+      "content": "Your submission for \"No Armor Challenge\" has been approved and you earned 50 points!",
+      "created_at": "2025-05-24T21:57:09.691Z",
+      "read": true,
+      "type": "success",
+      "challenge": 4,
+      "status": "approved"
+    }
+  },
+  {
+    "model": "api.notification",
+    "pk": 5,
+    "fields": {
+      "user": [
+        "inshalca@gmail.com"
+      ],
+      "title": "Run Submission Approved",
+      "content": "Your submission for \"Artisanal Armaments\" has been approved and you earned 200 points!",
+      "created_at": "2025-05-24T21:55:34.983Z",
+      "read": true,
+      "type": "success",
+      "challenge": 120,
+      "status": "approved"
+    }
+  },
+  {
+    "model": "api.notification",
+    "pk": 4,
+    "fields": {
+      "user": [
+        "inshalca@gmail.com"
+      ],
+      "title": "Run Submission Approved",
+      "content": "Your submission for \"Daring Disrobement\" has been approved and you earned 50 points!",
+      "created_at": "2025-05-24T21:54:26.142Z",
+      "read": true,
+      "type": "success",
+      "challenge": 27,
+      "status": "approved"
+    }
+  },
+  {
+    "model": "api.notification",
+    "pk": 3,
+    "fields": {
+      "user": [
+        "blahblah@gmail.com"
+      ],
+      "title": "Run Submission Approved",
+      "content": "Your submission for \"Solo Only\" has been approved and you earned 50 points!",
+      "created_at": "2025-05-24T21:53:10.494Z",
+      "read": true,
+      "type": "success",
+      "challenge": 5,
+      "status": "approved"
+    }
+  },
+  {
+    "model": "api.notification",
+    "pk": 2,
+    "fields": {
+      "user": [
+        "skbidiwarrior@gmail.com"
+      ],
+      "title": "Run Submission Approved",
+      "content": "Your submission for \"Off The Sauce\" has been approved and added to the leaderboard!",
+      "created_at": "2025-03-19T18:51:32.157Z",
+      "read": true,
+      "type": "success",
+      "challenge": 2,
+      "status": "approved"
+    }
+  },
+  {
+    "model": "api.notification",
+    "pk": 1,
+    "fields": {
+      "user": [
+        "skbidiwarrior@gmail.com"
+      ],
+      "title": "Run Submission Rejected",
+      "content": "Your submission for \"The Salty Scrub\" has been rejected. Reason: Dont like you",
+      "created_at": "2025-03-19T16:57:37.397Z",
+      "read": true,
+      "type": "error",
+      "challenge": 1,
+      "status": "rejected"
+    }
+  }
+]

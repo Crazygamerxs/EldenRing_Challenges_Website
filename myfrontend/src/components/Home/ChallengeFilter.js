@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css';
 
+import { API_ENDPOINTS } from '../../utils/api';
 const ChallengeFilter = ({ onFilterChange }) => {
     const [selectedDifficulties, setSelectedDifficulties] = useState([]);
     const [selectedTypes, setSelectedTypes] = useState([]);

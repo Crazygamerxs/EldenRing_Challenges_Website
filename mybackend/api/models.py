@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from datetime import timedelta
+from .validators import validate_username, validate_email_format
 
 class UserManager(BaseUserManager):
     def create_user(self, email, username, password=None, **extra_fields):
@@ -17,8 +18,8 @@ class UserManager(BaseUserManager):
         return user
 
 class User(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=30, unique=True)
-    email = models.EmailField(unique=True)
+    username = models.CharField(max_length=30, unique=True, validators=[validate_username])
+    email = models.EmailField(unique=True, validators=[validate_email_format])
     profile_image = models.URLField(blank=True, null=True)
     completed_challenges = models.JSONField(default=list, blank=True)  # Optional
     badges = models.JSONField(default=list, blank=True)  # Optional

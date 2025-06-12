@@ -1,0 +1,49 @@
+# Render.com deployment configuration for Elden Ring Challenges Website
+# Domain: eldenringchallenge.xyz
+
+services:
+  # Main web service (Django + React)
+  - type: web
+    name: eldenring-challenges
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn mybackend.wsgi:application"
+    healthCheckPath: "/api/health/"
+
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: mybackend.settings_render
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 2
+      - key: MAX_REQUESTS
+        value: 1000
+      - key: MAX_REQUESTS_JITTER
+        value: 100
+      - key: TIMEOUT
+        value: 30
+      - key: KEEP_ALIVE
+        value: 2
+      - key: PRELOAD_APP
+        value: true
+
+    # Custom domains
+    domains:
+      - eldenringchallenge.xyz
+      - www.eldenringchallenge.xyz
+
+  # PostgreSQL database (free for 90 days)
+  - type: pserv
+    name: eldenring-db
+    env: postgresql
+    region: oregon
+    plan: free
+    ipAllowList: []
+# Environment variables that will be automatically set
+# DATABASE_URL - automatically provided by Render for PostgreSQL
+# REDIS_URL - optional, for caching (not included in free tier)

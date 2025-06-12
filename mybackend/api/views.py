@@ -21,9 +21,18 @@ from django.utils.encoding import force_bytes, force_str
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.conf import settings
-from datetime import timedelta  # ADD THIS IMPORT
-from django.utils import timezone  # ADD THIS IMPORT
+from datetime import timedelta
+from django.utils import timezone
 from .models import Challenge, User, Submission, DiscussionThread, Comment, Notification
+from .validators import (
+    validate_username, validate_email_format, validate_submission_url,
+    validate_time_format, sanitize_text_input, validate_challenge_data,
+    validate_rejection_reason
+)
+import logging
+
+logger = logging.getLogger('api')
+
 # Try to import SiteSettings, create a mock if it doesn't exist
 try:
     from .models import SiteSettings
@@ -143,9 +152,9 @@ class SignupAPIView(APIView):
 class LoginAPIView(APIView):
     def post(self, request):
         print("Login View - POST request")
-        print("Request Data:", request.data)  # Log request data
+        print("Request Data:", request.data)
 
-        username = request.data.get('username', '').strip().lower()  # Convert to lowercase and strip whitespace
+        username = request.data.get('username', '').strip().lower()
         password = request.data.get('password', '')
         
         # Validate input
@@ -177,7 +186,6 @@ class LoginAPIView(APIView):
 
 @method_decorator(csrf_protect, name='dispatch')
 class LogoutAPIView(APIView):
-
     def post(self, request):
         # Logout the user
         django_logout(request)
@@ -186,15 +194,16 @@ class LogoutAPIView(APIView):
         response = Response({"message": "Logged out successfully"}, status=status.HTTP_200_OK)
         
         # Clear session ID cookie
-        response.delete_cookie('sessionid', path='/')  # Default path
+        response.delete_cookie('sessionid', path='/')
         
         # Optionally clear CSRF token cookie
-        response.delete_cookie('csrftoken', path='/')  # Path should match if set
+        response.delete_cookie('csrftoken', path='/')
 
         return response
 
 # Generate token for password reset
 token_generator = PasswordResetTokenGenerator()
+
 @method_decorator(csrf_protect, name='dispatch')
 class PasswordResetRequestView(APIView):
     def post(self, request):
@@ -234,7 +243,6 @@ class PasswordResetConfirmView(APIView):
         except User.DoesNotExist:
             return Response({"error": "Invalid user"}, status=status.HTTP_400_BAD_REQUEST)
 
-
 class UserProfileAPIView(APIView):
     """
     Modified to work without the user profile feature
@@ -253,8 +261,6 @@ class UserProfileAPIView(APIView):
             return Response(data, status=status.HTTP_200_OK)
         return Response({'error': 'Not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
 
-
-
 class HomeAPIView(APIView):
     def post(self, request):
         return Response({"message": "Home Page!"})
@@ -263,21 +269,27 @@ class HomeAPIView(APIView):
 class ChallengeAPIView(APIView):
     def get(self, request, challenge_id=None):
         if challenge_id:
-            challenge = Challenge.objects.get(id=challenge_id)
-            serializer = ChallengeSerializer(challenge)
-            
-            # Check if the user has completed this challenge
-            completed = False
-            if request.user.is_authenticated:
-                completed = Submission.objects.filter(
-                    user=request.user,
-                    challenge=challenge,
-                    status='approved'
-                ).exists()
-            
-            data = serializer.data
-            data['completed'] = completed
-            return Response(data)
+            try:
+                challenge = Challenge.objects.get(id=challenge_id)
+                serializer = ChallengeSerializer(challenge)
+                
+                # Check if the user has completed this challenge
+                completed = False
+                if request.user.is_authenticated:
+                    completed = Submission.objects.filter(
+                        user=request.user,
+                        challenge=challenge,
+                        status='approved'
+                    ).exists()
+                
+                data = serializer.data
+                data['completed'] = completed
+                return Response(data)
+            except Challenge.DoesNotExist:
+                return Response(
+                    {"error": "Challenge not found"}, 
+                    status=status.HTTP_404_NOT_FOUND
+                )
         else:
             challenges = Challenge.objects.all()
             serializer = ChallengeSerializer(challenges, many=True)
@@ -304,20 +316,50 @@ class ChallengeAPIView(APIView):
                     challenge_data['completed'] = False
                 
                 return Response(data)
-
         
 @method_decorator(csrf_protect, name='dispatch')
 class ChallengeDetailView(generics.RetrieveAPIView):
     queryset = Challenge.objects.all()
     serializer_class = ChallengeSerializer
 
-class ChallengeSubmissionsView(generics.ListAPIView):
-    serializer_class = SubmissionSerializer
-
-    def get_queryset(self):
-        challenge_id = self.request.query_params.get('challenge')
-        return Submission.objects.filter(challenge_id=challenge_id, status='approved').order_by('time_taken')[:10]
-    
+# FIXED: Updated ChallengeSubmissionsView to return proper JSON
+class ChallengeSubmissionsView(APIView):
+    """
+    Fixed API view for retrieving challenge submissions
+    """
+    def get(self, request):
+        try:
+            challenge_id = request.GET.get('challenge')
+            if not challenge_id:
+                return Response(
+                    {"error": "Challenge ID is required"}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            # Verify challenge exists
+            try:
+                challenge = Challenge.objects.get(id=challenge_id)
+            except Challenge.DoesNotExist:
+                return Response(
+                    {"error": "Challenge not found"}, 
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            
+            # Get approved submissions for this challenge, ordered by time
+            submissions = Submission.objects.filter(
+                challenge_id=challenge_id, 
+                status='approved'
+            ).order_by('time_taken')[:10]
+            
+            serializer = SubmissionSerializer(submissions, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+            
+        except Exception as e:
+            logger.error(f"Error in ChallengeSubmissionsView: {str(e)}")
+            return Response(
+                {"error": "Internal server error"}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
     
 @method_decorator(csrf_protect, name='dispatch')
 class SubmitRunAPIView(APIView):
@@ -358,13 +400,13 @@ class SubmitRunAPIView(APIView):
                 challenge=challenge,
                 file_url=file_url,
                 user=user,
-                time_taken=request.data.get('time_taken', timedelta())  # Use provided time or default
+                time_taken=request.data.get('time_taken', timedelta())
             )
             
             # Check if auto-approval is enabled
             if settings.auto_approve_submissions:
                 # Auto-approve the submission
-                points_to_award = challenge.get_total_points()  # Uses your existing method
+                points_to_award = challenge.get_total_points()
                 submission.status = 'approved'
                 submission.points_awarded = points_to_award
                 submission.approved_at = timezone.now()
@@ -412,10 +454,10 @@ class SubmitRunAPIView(APIView):
         except Exception as e:
             print(f"Error creating submission: {e}")
             return Response({"error": "Failed to create submission"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 class ThreadListView(APIView):
     permission_classes = [IsAuthenticated]
 
-    print("ThreadListView")
     def get(self, request, *args, **kwargs):
         category_id = request.query_params.get('category_id', None)
         if category_id:
@@ -424,7 +466,7 @@ class ThreadListView(APIView):
             threads = DiscussionThread.objects.all()
         
         serializer = DiscussionThreadSerializer(threads, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)  # Co
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
 class ThreadDetailView(APIView):
     permission_classes = [IsAuthenticated]
@@ -441,7 +483,7 @@ class ThreadDetailView(APIView):
             data = {
                 'thread': thread_serializer.data,
                 'comments': comments_serializer.data,
-                'categoryName': thread.category.name  # Include categoryName
+                'categoryName': thread.category.name
             }
             
             return Response(data, status=status.HTTP_200_OK)

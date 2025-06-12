@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import './Admin.css';
 import LoadingSpinner from '../common/LoadingSpinner';
 
+import { API_ENDPOINTS } from '../../utils/api';
 const AdminSubmissions = () => {
     const [submissions, setSubmissions] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -33,7 +34,7 @@ const AdminSubmissions = () => {
         setLoading(true);
         try {
             const csrfToken = Cookies.get('csrftoken');
-            let endpoint = `http://localhost:8888/api/admin/submissions/?status=${statusFilter}`;
+            let endpoint = `${API_ENDPOINTS.ADMIN_SUBMISSIONS}?status=statusFilter`;
             
             if (userFilter) {
                 endpoint += `&user=${userFilter}`;
@@ -77,7 +78,7 @@ const handleApprove = async (submissionId, adminTime = '') => {
             requestBody.admin_verified_time = adminTime;
         }
         
-        const response = await fetch(`http://localhost:8888/api/admin/submissions/${submissionId}/approve/`, {
+        const response = await fetch(`API_ENDPOINTS.ADMIN_APPROVE_SUBMISSION(submissionId)`, {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -141,7 +142,7 @@ const handleApprove = async (submissionId, adminTime = '') => {
         setActionLoading(true);
         try {
             const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch(`http://localhost:8888/api/admin/submissions/${selectedSubmission.id}/reject/`, {
+            const response = await fetch(`API_ENDPOINTS.ADMIN_REJECT_SUBMISSION(selectedSubmission.id)`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -178,7 +179,7 @@ const handleApprove = async (submissionId, adminTime = '') => {
     const fetchUsers = async () => {
         try {
             const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch('http://localhost:8888/api/admin/users/', {
+            const response = await fetch(API_ENDPOINTS.ADMIN_USERS, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -198,7 +199,7 @@ const handleApprove = async (submissionId, adminTime = '') => {
     const fetchChallenges = async () => {
         try {
             const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch('http://localhost:8888/api/admin/challenges/', {
+            const response = await fetch(API_ENDPOINTS.ADMIN_CHALLENGES, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {

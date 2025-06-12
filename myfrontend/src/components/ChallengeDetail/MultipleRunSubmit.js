@@ -4,6 +4,7 @@ import { UserContext } from '../common/UserContext';
 import Notification from '../common/Notification'; 
 import Cookies from 'js-cookie';
 
+import { API_ENDPOINTS } from '../../utils/api';
 const MultipleRunSubmit = ({ onClose }) => {
   const [challenges, setChallenges] = useState([]);
   const [selectedChallenges, setSelectedChallenges] = useState([]);
@@ -18,7 +19,7 @@ const MultipleRunSubmit = ({ onClose }) => {
     const fetchChallenges = async () => {
       try {
         const csrfToken = Cookies.get('csrftoken');
-        const response = await fetch('http://localhost:8888/api/challenge/', {
+        const response = await fetch(API_ENDPOINTS.CHALLENGES, {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -128,7 +129,7 @@ const MultipleRunSubmit = ({ onClose }) => {
 
       for (const challengeId of selectedChallenges) {
         try {
-          const response = await fetch('http://localhost:8888/api/submit_run/', {
+          const response = await fetch(API_ENDPOINTS.SUBMIT_RUN, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

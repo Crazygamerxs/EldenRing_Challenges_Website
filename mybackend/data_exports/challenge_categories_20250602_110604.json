@@ -1,0 +1,107 @@
+[
+  {
+    "model": "api.challenge_category",
+    "pk": 1,
+    "fields": {
+      "name": "General Challenges"
+    }
+  },
+  {
+    "model": "api.challenge_category",
+    "pk": 2,
+    "fields": {
+      "name": "Basic Weaponry Challenges"
+    }
+  },
+  {
+    "model": "api.challenge_category",
+    "pk": 3,
+    "fields": {
+      "name": "Advance Weaponry Challenges"
+    }
+  },
+  {
+    "model": "api.challenge_category",
+    "pk": 4,
+    "fields": {
+      "name": "Advance Spell Challenges"
+    }
+  },
+  {
+    "model": "api.challenge_category",
+    "pk": 5,
+    "fields": {
+      "name": "Extreme Weaponry/Spell Challenges"
+    }
+  },
+  {
+    "model": "api.challenge_category",
+    "pk": 6,
+    "fields": {
+      "name": "Status Challenges"
+    }
+  },
+  {
+    "model": "api.challenge_category",
+    "pk": 7,
+    "fields": {
+      "name": "Crafting and Item Challenges"
+    }
+  },
+  {
+    "model": "api.challenge_category",
+    "pk": 8,
+    "fields": {
+      "name": "Healing and FP Recovery Challenges"
+    }
+  },
+  {
+    "model": "api.challenge_category",
+    "pk": 9,
+    "fields": {
+      "name": "Level/Stats Challenges"
+    }
+  },
+  {
+    "model": "api.challenge_category",
+    "pk": 10,
+    "fields": {
+      "name": "Challenges for the Brave or Insane"
+    }
+  },
+  {
+    "model": "api.challenge_category",
+    "pk": 11,
+    "fields": {
+      "name": "Challenge Combination Examples:"
+    }
+  },
+  {
+    "model": "api.challenge_category",
+    "pk": 12,
+    "fields": {
+      "name": "Advanced Weaponry Challenges"
+    }
+  },
+  {
+    "model": "api.challenge_category",
+    "pk": 13,
+    "fields": {
+      "name": "Advanced Spell Challenges"
+    }
+  },
+  {
+    "model": "api.challenge_category",
+    "pk": 14,
+    "fields": {
+      "name": "Extreme Weaponry/Spells Challenges"
+    }
+  },
+  {
+    "model": "api.challenge_category",
+    "pk": 15,
+    "fields": {
+      "name": "Challenge Combinations"
+    }
+  }
+]

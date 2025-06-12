@@ -4,6 +4,7 @@ import images from '../../images';
 import { UserContext } from '../common/UserContext'; // Adjust the import path as needed
 import './CB.css';
 
+import { API_ENDPOINTS } from '../../utils/api';
 const CommunityBoard = () => {
     const { user } = useContext(UserContext); // Get user context
 

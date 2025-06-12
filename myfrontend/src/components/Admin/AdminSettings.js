@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import './Admin.css';
 import LoadingSpinner from '../common/LoadingSpinner';
 
+import { API_ENDPOINTS } from '../../utils/api';
 const AdminSettings = () => {
     const [settings, setSettings] = useState({
         site_name: 'Elden Ring Challenges',
@@ -27,7 +28,7 @@ const AdminSettings = () => {
         setLoading(true);
         try {
             const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch('http://localhost:8888/api/admin/settings/', {
+            const response = await fetch(API_ENDPOINTS.ADMIN_SETTINGS, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -72,7 +73,7 @@ const AdminSettings = () => {
         
         try {
             const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch('http://localhost:8888/api/admin/settings/', {
+            const response = await fetch(API_ENDPOINTS.ADMIN_SETTINGS, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {

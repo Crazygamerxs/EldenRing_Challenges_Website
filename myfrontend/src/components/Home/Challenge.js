@@ -4,6 +4,7 @@ import images from '../../images';
 import { categories } from '../../constants/categories';
 import { Link } from 'react-router-dom';
 
+import { API_ENDPOINTS } from '../../utils/api';
 const Challenge = ({ challenges }) => {
 
     const getCategoryName = (id) => {

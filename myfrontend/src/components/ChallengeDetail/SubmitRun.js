@@ -3,7 +3,9 @@ import './ChallengeDetail.css';
 import { UserContext } from '../common/UserContext';
 import Notification from '../common/Notification';
 import Cookies from 'js-cookie';
+import { validateSubmissionUrl, validateTimeFormat, sanitizeInput } from '../../utils/security';
 
+import { API_ENDPOINTS } from '../../utils/api';
 const SubmitRun = ({ challengeId, onClose, onOpenMultiSubmit }) => {
   const [challenge, setChallenge] = useState(null);
   const [fileUrl, setFileUrl] = useState('');
@@ -20,7 +22,7 @@ const SubmitRun = ({ challengeId, onClose, onOpenMultiSubmit }) => {
       
       try {
         const csrfToken = Cookies.get('csrftoken');
-        const response = await fetch(`http://localhost:8888/api/challenge/${challengeId}`, {
+        const response = await fetch(API_ENDPOINTS.CHALLENGE_DETAIL(challengeId), {
           method: 'GET',
           credentials: 'include',
           headers: {
@@ -114,7 +116,7 @@ const SubmitRun = ({ challengeId, onClose, onOpenMultiSubmit }) => {
       const csrfToken = await waitForCsrfToken();
       console.log('Using CSRF token for submission:', csrfToken.substring(0, 10) + '...');
 
-      const response = await fetch('http://localhost:8888/api/submit_run/', {
+      const response = await fetch(API_ENDPOINTS.SUBMIT_RUN, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

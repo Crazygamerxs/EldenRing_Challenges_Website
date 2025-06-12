@@ -2,6 +2,7 @@
 import React from 'react';
 import './common.css'; // Import spinner CSS
 
+import { API_ENDPOINTS } from '../../utils/api';
 const LoadingSpinner = ({ size = 'medium', color = '#a98b2d', text = 'Loading...' }) => {
     // Size classes
     const sizeClasses = {

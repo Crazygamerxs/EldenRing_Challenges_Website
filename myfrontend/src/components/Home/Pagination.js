@@ -1,6 +1,7 @@
 import React from 'react';
 import './Home.css';
 
+import { API_ENDPOINTS } from '../../utils/api';
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     // Scroll to top function
     const scrollToTop = () => {

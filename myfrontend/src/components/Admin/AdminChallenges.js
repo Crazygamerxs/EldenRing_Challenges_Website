@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import './Admin.css';
 import LoadingSpinner from '../common/LoadingSpinner';
 
+import { API_ENDPOINTS } from '../../utils/api';
 const AdminChallenges = () => {
     const [challenges, setChallenges] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -30,7 +31,7 @@ const AdminChallenges = () => {
         setLoading(true);
         try {
             const csrfToken = Cookies.get('csrftoken');
-            const endpoint = `http://localhost:8888/api/admin/challenges/?category=${filter !== 'all' ? filter : ''}`;
+            const endpoint = `${API_ENDPOINTS.ADMIN_CHALLENGES}?category=filter !== 'all' ? filter : ''`;
             
             const response = await fetch(endpoint, {
                 method: 'GET',
@@ -58,7 +59,7 @@ const AdminChallenges = () => {
     const fetchCategories = async () => {
         try {
             const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch('http://localhost:8888/api/categories/', {
+            const response = await fetch(API_ENDPOINTS.ADMIN_CATEGORIES, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -99,7 +100,7 @@ const AdminChallenges = () => {
         setActionLoading(true);
         try {
             const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch('http://localhost:8888/api/admin/challenges/', {
+            const response = await fetch(API_ENDPOINTS.ADMIN_CHALLENGES, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -147,7 +148,7 @@ const AdminChallenges = () => {
         setActionLoading(true);
         try {
             const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch(`http://localhost:8888/api/admin/challenges/${selectedChallenge.id}/`, {
+            const response = await fetch(`API_ENDPOINTS.ADMIN_CHALLENGE_DETAIL(selectedChallenge.id)`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {
@@ -203,7 +204,7 @@ const AdminChallenges = () => {
         setActionLoading(true);
         try {
             const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch(`http://localhost:8888/api/admin/challenges/${challengeId}/`, {
+            const response = await fetch(`API_ENDPOINTS.ADMIN_CHALLENGE_DETAIL(challengeId)`, {
                 method: 'DELETE',
                 credentials: 'include',
                 headers: {

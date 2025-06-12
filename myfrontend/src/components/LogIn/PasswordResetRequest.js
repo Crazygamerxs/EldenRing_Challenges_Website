@@ -3,6 +3,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import './Login.css';
 
+import { API_ENDPOINTS } from '../../utils/api';
 const PasswordResetRequest = () => {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState('');
@@ -33,7 +34,7 @@ const PasswordResetRequest = () => {
                 
                 if (!token) {
                     console.log('No CSRF token found, fetching...');
-                    await axios.get('http://localhost:8888/api/csrf-token/', { 
+                    await axios.get(API_ENDPOINTS.CSRF_TOKEN, { 
                         withCredentials: true,
                         timeout: 10000
                     });
@@ -68,7 +69,7 @@ const PasswordResetRequest = () => {
             const csrfToken = await waitForCsrfToken();
             console.log('Using CSRF Token for password reset:', csrfToken.substring(0, 10) + '...');
             
-            const response = await axios.post('http://localhost:8888/api/password-reset/', {
+            const response = await axios.post(API_ENDPOINTS.PASSWORD_RESET, {
                 email,
             }, {
                 withCredentials: true,

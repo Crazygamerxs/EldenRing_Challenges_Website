@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import './Admin.css';
 import LoadingSpinner from '../common/LoadingSpinner';
 
+import { API_ENDPOINTS } from '../../utils/api';
 const AdminUsers = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -26,7 +27,7 @@ const AdminUsers = () => {
         setLoading(true);
         try {
             const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch('http://localhost:8888/api/admin/users/', {
+            const response = await fetch(API_ENDPOINTS.ADMIN_USERS, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -58,7 +59,7 @@ const AdminUsers = () => {
         setActionLoading(true);
         try {
             const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch(`http://localhost:8888/api/admin/users/${selectedUser.id}/`, {
+            const response = await fetch(`API_ENDPOINTS.ADMIN_USER_DETAIL(selectedUser.id)`, {
                 method: 'PUT',
                 credentials: 'include',
                 headers: {
@@ -101,7 +102,7 @@ const AdminUsers = () => {
         setActionLoading(true);
         try {
             const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch(`http://localhost:8888/api/admin/users/${userId}/status/`, {
+            const response = await fetch(`API_ENDPOINTS.ADMIN_USER_DETAIL(userId)status/`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {

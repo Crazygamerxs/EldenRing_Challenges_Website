@@ -1,0 +1,182 @@
+[
+  {
+    "model": "api.user",
+    "pk": 3,
+    "fields": {
+      "last_login": "2024-11-27T15:29:33.789Z",
+      "username": "soda",
+      "email": "m.inshalfarid@gmail.com",
+      "profile_image": null,
+      "completed_challenges": [],
+      "badges": [],
+      "total_points": 600,
+      "challenges_completed_count": 12,
+      "is_staff": false,
+      "is_active": true,
+      "is_superuser": false,
+      "date_joined": "2025-05-24T22:20:07.924Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "api.user",
+    "pk": 4,
+    "fields": {
+      "last_login": "2024-08-16T12:40:31.043Z",
+      "username": "test",
+      "email": "test@gmail.com",
+      "profile_image": null,
+      "completed_challenges": [],
+      "badges": [],
+      "total_points": 600,
+      "challenges_completed_count": 12,
+      "is_staff": false,
+      "is_active": true,
+      "is_superuser": false,
+      "date_joined": "2025-05-24T22:20:07.924Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "api.user",
+    "pk": 5,
+    "fields": {
+      "last_login": "2024-08-22T15:37:27.836Z",
+      "username": "salty",
+      "email": "salty@gmail.com",
+      "profile_image": null,
+      "completed_challenges": [],
+      "badges": [],
+      "total_points": 600,
+      "challenges_completed_count": 12,
+      "is_staff": false,
+      "is_active": true,
+      "is_superuser": false,
+      "date_joined": "2025-05-24T22:20:07.924Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "api.user",
+    "pk": 6,
+    "fields": {
+      "last_login": "2024-08-15T15:04:11.985Z",
+      "username": "shadid",
+      "email": "shadid@gmail.com",
+      "profile_image": null,
+      "completed_challenges": [],
+      "badges": [],
+      "total_points": 600,
+      "challenges_completed_count": 12,
+      "is_staff": false,
+      "is_active": true,
+      "is_superuser": false,
+      "date_joined": "2025-05-24T22:20:07.924Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "api.user",
+    "pk": 7,
+    "fields": {
+      "last_login": "2024-08-16T13:28:40.905Z",
+      "username": "rocket",
+      "email": "rocket@gmail.com",
+      "profile_image": null,
+      "completed_challenges": [],
+      "badges": [],
+      "total_points": 600,
+      "challenges_completed_count": 12,
+      "is_staff": false,
+      "is_active": true,
+      "is_superuser": false,
+      "date_joined": "2025-05-24T22:20:07.924Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "api.user",
+    "pk": 8,
+    "fields": {
+      "last_login": "2024-09-04T18:01:48.545Z",
+      "username": "cyril",
+      "email": "inshalfarid.work@gmail.com",
+      "profile_image": null,
+      "completed_challenges": [],
+      "badges": [],
+      "total_points": 0,
+      "challenges_completed_count": 0,
+      "is_staff": false,
+      "is_active": true,
+      "is_superuser": false,
+      "date_joined": "2025-05-24T22:20:07.924Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "api.user",
+    "pk": 10,
+    "fields": {
+      "last_login": "2025-03-19T18:51:39.488Z",
+      "username": "sodacrazy",
+      "email": "skbidiwarrior@gmail.com",
+      "profile_image": null,
+      "completed_challenges": [],
+      "badges": [],
+      "total_points": 50,
+      "challenges_completed_count": 1,
+      "is_staff": false,
+      "is_active": true,
+      "is_superuser": false,
+      "date_joined": "2025-05-24T22:20:07.924Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "api.user",
+    "pk": 11,
+    "fields": {
+      "last_login": "2025-05-25T01:38:02.133Z",
+      "username": "creepyman",
+      "email": "blahblah@gmail.com",
+      "profile_image": null,
+      "completed_challenges": [],
+      "badges": [],
+      "total_points": 300,
+      "challenges_completed_count": 3,
+      "is_staff": false,
+      "is_active": true,
+      "is_superuser": false,
+      "date_joined": "2025-05-24T22:20:07.924Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "api.user",
+    "pk": 12,
+    "fields": {
+      "last_login": "2025-05-27T23:41:48.232Z",
+      "username": "sodakiwi",
+      "email": "inshalca@gmail.com",
+      "profile_image": null,
+      "completed_challenges": [],
+      "badges": [],
+      "total_points": 350,
+      "challenges_completed_count": 4,
+      "is_staff": false,
+      "is_active": true,
+      "is_superuser": false,
+      "date_joined": "2025-05-24T22:20:07.924Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]

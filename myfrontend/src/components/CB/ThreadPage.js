@@ -4,6 +4,7 @@ import axios from 'axios';
 import './CB.css'; // Import the CSS file
 import images from '../../images'; // Import the images
 
+import { API_ENDPOINTS } from '../../utils/api';
 const ThreadPage = () => {
     const { threadId } = useParams(); // Get thread ID from URL params
     const [thread, setThread] = useState(null);
@@ -14,7 +15,7 @@ const ThreadPage = () => {
 
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8888/api/threads/${threadId}/`, {
+                const response = await axios.get(`API_ENDPOINTS.THREAD_DETAIL(threadId)`, {
                     withCredentials: true // Ensure cookies are sent with the request
                 });
                 const data = response.data;

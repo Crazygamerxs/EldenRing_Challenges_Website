@@ -4,6 +4,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import './Login.css';
 
+import { API_ENDPOINTS } from '../../utils/api';
 const PasswordResetConfirm = () => {
     const { uidb64, token } = useParams();
     const [password, setPassword] = useState('');
@@ -37,7 +38,7 @@ const PasswordResetConfirm = () => {
                 
                 if (!token) {
                     console.log('No CSRF token found, fetching...');
-                    await axios.get('http://localhost:8888/api/csrf-token/', { 
+                    await axios.get(API_ENDPOINTS.CSRF_TOKEN, { 
                         withCredentials: true,
                         timeout: 10000
                     });
@@ -78,7 +79,7 @@ const PasswordResetConfirm = () => {
             const csrfToken = await waitForCsrfToken();
             console.log('Using CSRF Token for password reset confirm:', csrfToken.substring(0, 10) + '...');
 
-            const response = await axios.post(`http://localhost:8888/api/password-reset-confirm/${uidb64}/${token}/`, {
+            const response = await axios.post(`API_ENDPOINTS.PASSWORD_RESET_CONFIRM(uidb64, token)`, {
                 password,
             }, {
                 withCredentials: true,

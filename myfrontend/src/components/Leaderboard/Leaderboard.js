@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import './Leaderboard.css';
 import LoadingSpinner from '../common/LoadingSpinner';
 
+import { API_ENDPOINTS } from '../../utils/api';
 const Leaderboard = () => {
     const [activeTab, setActiveTab] = useState('challenges');
     const [leaderboardData, setLeaderboardData] = useState([]);
@@ -22,8 +23,8 @@ const Leaderboard = () => {
         try {
             const csrfToken = Cookies.get('csrftoken');
             const endpoint = activeTab === 'challenges' 
-                ? 'http://localhost:8888/api/leaderboard/challenges/'
-                : 'http://localhost:8888/api/leaderboard/points/';
+                ? API_ENDPOINTS.LEADERBOARD_CHALLENGES
+                : API_ENDPOINTS.LEADERBOARD_POINTS;
             
             const response = await fetch(endpoint, {
                 method: 'GET',

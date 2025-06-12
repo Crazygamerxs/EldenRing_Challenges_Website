@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
+import { API_ENDPOINTS } from '../../utils/api';
 const CSRFToken = () => {
     const [csrfError, setCsrfError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
     const fetchCsrfToken = async () => {
         try {
-            const response = await axios.get('http://localhost:8888/api/csrf-token/', { 
+            const response = await axios.get(API_ENDPOINTS.CSRF_TOKEN, { 
                 withCredentials: true,
                 timeout: 10000 // 10 second timeout
             });

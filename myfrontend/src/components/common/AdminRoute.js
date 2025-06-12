@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { UserContext } from './UserContext';
 import LoadingSpinner from './LoadingSpinner';
 
+import { API_ENDPOINTS } from '../../utils/api';
 /**
  * AdminRoute component for protecting admin-only routes
  * Checks if the user is logged in and is an admin

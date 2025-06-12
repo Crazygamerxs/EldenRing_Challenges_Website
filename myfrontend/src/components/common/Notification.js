@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './common.css'; // Import your CSS file
 import images from '../../images'; // Import your images
 
+import { API_ENDPOINTS } from '../../utils/api';
 const Notification = ({ message, type, onClose }) => {
   const [progress, setProgress] = useState(100);
 

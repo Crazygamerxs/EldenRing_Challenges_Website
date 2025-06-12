@@ -2,6 +2,7 @@
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
+import { API_ENDPOINTS } from '../utils/api';
 /**
  * Utility functions for managing CSRF tokens
  */
@@ -25,7 +26,7 @@ export const waitForCsrfToken = async (maxWait = 5000) => {
 // Force fetch a new CSRF token
 export const fetchCsrfToken = async () => {
   try {
-    const response = await axios.get('http://localhost:8888/api/csrf-token/', { 
+    const response = await axios.get(API_ENDPOINTS.CSRF_TOKEN, { 
       withCredentials: true,
       timeout: 10000
     });

@@ -1,0 +1,22 @@
+[
+  {
+    "model": "api.user",
+    "pk": 9,
+    "fields": {
+      "last_login": "2025-05-25T02:11:32.423Z",
+      "username": "admin",
+      "email": "admin@eldenring.com",
+      "profile_image": null,
+      "completed_challenges": [],
+      "badges": [],
+      "total_points": 100,
+      "challenges_completed_count": 7,
+      "is_staff": true,
+      "is_active": true,
+      "is_superuser": true,
+      "date_joined": "2025-05-24T22:20:07.924Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]

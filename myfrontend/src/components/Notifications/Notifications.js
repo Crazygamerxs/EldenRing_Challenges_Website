@@ -6,6 +6,7 @@ import { UserContext } from '../common/UserContext';
 import LoadingSpinner from '../common/LoadingSpinner';
 import images from '../../images';
 
+import { API_ENDPOINTS } from '../../utils/api';
 const Notifications = () => {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -21,7 +22,7 @@ const Notifications = () => {
         setLoading(true);
         try {
             const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch('http://localhost:8888/api/notifications/', {
+            const response = await fetch(API_ENDPOINTS.NOTIFICATIONS, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -47,7 +48,7 @@ const Notifications = () => {
     const markAsRead = async (notificationId) => {
         try {
             const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch(`http://localhost:8888/api/notifications/${notificationId}/read/`, {
+            const response = await fetch(`API_ENDPOINTS.MARK_NOTIFICATION_READ(notificationId)`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -89,7 +90,7 @@ const Notifications = () => {
     const markAllAsRead = async () => {
         try {
             const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch('http://localhost:8888/api/notifications/mark-all-read/', {
+            const response = await fetch(API_ENDPOINTS.MARK_ALL_NOTIFICATIONS_READ, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {

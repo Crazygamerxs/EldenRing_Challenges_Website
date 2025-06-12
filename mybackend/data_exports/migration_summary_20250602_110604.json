@@ -1,0 +1,55 @@
+{
+  "export_timestamp": "2025-06-02T11:06:04.247846",
+  "source_database": "SQLite (development)",
+  "target_database": "PostgreSQL (Supabase)",
+  "core_data": {
+    "categories": {
+      "file": "challenge_categories_20250602_110604.json",
+      "status": "exported"
+    },
+    "challenges": {
+      "file": "challenges_20250602_110604.json",
+      "status": "exported"
+    },
+    "admin_users": {
+      "file": "admin_users_20250602_110604.json",
+      "status": "exported"
+    },
+    "site_settings": {
+      "file": "site_settings_20250602_110604.json",
+      "status": "exported"
+    }
+  },
+  "optional_data": {
+    "users": {
+      "file": "regular_users_20250602_110604.json",
+      "status": "exported"
+    },
+    "submissions": {
+      "file": "submissions_20250602_110604.json",
+      "status": "exported"
+    },
+    "forum_categories": {
+      "file": "forum_categories_20250602_110604.json",
+      "status": "exported"
+    },
+    "discussions": {
+      "file": "discussion_threads_20250602_110604.json",
+      "status": "exported"
+    },
+    "comments": {
+      "file": "comments_20250602_110604.json",
+      "status": "exported"
+    },
+    "notifications": {
+      "file": "notifications_20250602_110604.json",
+      "status": "exported"
+    }
+  },
+  "notes": [
+    "Core data should be imported first",
+    "Admin passwords need to be set manually",
+    "Verify foreign key relationships after import",
+    "Test critical functionality after migration"
+  ]
+}

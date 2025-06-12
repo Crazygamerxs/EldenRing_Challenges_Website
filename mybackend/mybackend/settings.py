@@ -17,7 +17,10 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static', 'frontend'),  # React build static files
+]
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
@@ -60,7 +63,8 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',  # Adds various common middleware features
     'django.middleware.clickjacking.XFrameOptionsMiddleware',  # Protects against clickjacking
     'django.contrib.messages.middleware.MessageMiddleware',  # Manages messages for the user
-    'api.middleware.SiteSettingsMiddleware',  # Add this line
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
 
@@ -98,7 +102,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         # point to the react build directory
         # 'DIRS': [os.path.join(BASE_DIR, 'build')],
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
 
         'OPTIONS': {

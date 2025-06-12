@@ -5,6 +5,7 @@ import './Admin.css';
 import { UserContext } from '../common/UserContext';
 import LoadingSpinner from '../common/LoadingSpinner';
 
+import { API_ENDPOINTS } from '../../utils/api';
 const AdminPanel = () => {
     const [stats, setStats] = useState({
         totalUsers: 0,
@@ -27,7 +28,7 @@ const AdminPanel = () => {
             const csrfToken = Cookies.get('csrftoken');
             
             // Fetch admin dashboard stats
-            const statsResponse = await fetch('http://localhost:8888/api/admin/stats/', {
+            const statsResponse = await fetch(API_ENDPOINTS.ADMIN_STATS, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
@@ -36,7 +37,7 @@ const AdminPanel = () => {
             });
 
             // Fetch recent submissions
-            const submissionsResponse = await fetch('http://localhost:8888/api/admin/submissions/recent/', {
+            const submissionsResponse = await fetch(API_ENDPOINTS.ADMIN_RECENT_SUBMISSIONS, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {

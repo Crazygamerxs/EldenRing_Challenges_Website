@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { API_ENDPOINTS } from '../../utils/api';
 const RouteLoader = ({ setIsLoading }) => {
   const location = useLocation();
 

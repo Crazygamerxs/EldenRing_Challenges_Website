@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './ErrorBoundary.css';
 
+import { API_ENDPOINTS } from '../../utils/api';
 class ErrorBoundary extends Component {
   constructor(props) {
     super(props);

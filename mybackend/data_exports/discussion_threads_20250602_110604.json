@@ -1,0 +1,158 @@
+[
+  {
+    "model": "api.discussionthread",
+    "pk": 1,
+    "fields": {
+      "category": 1,
+      "title": "Common pitfalls in Django development",
+      "body": "Discuss the new features introduced in the latest Django release.",
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "created_at": "2024-08-14T20:07:54.931Z"
+    }
+  },
+  {
+    "model": "api.discussionthread",
+    "pk": 2,
+    "fields": {
+      "category": 1,
+      "title": "Best Django packages to use",
+      "body": "How do you manage user permissions and roles in your Django applications?",
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "created_at": "2024-08-14T20:07:54.938Z"
+    }
+  },
+  {
+    "model": "api.discussionthread",
+    "pk": 3,
+    "fields": {
+      "category": 1,
+      "title": "Best Django packages to use",
+      "body": "How do you manage user permissions and roles in your Django applications?",
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "created_at": "2024-08-14T20:07:54.944Z"
+    }
+  },
+  {
+    "model": "api.discussionthread",
+    "pk": 4,
+    "fields": {
+      "category": 2,
+      "title": "Setting up Django for a new project",
+      "body": "Avoid common mistakes and pitfalls in Django development with these tips.",
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "created_at": "2024-08-14T20:07:54.954Z"
+    }
+  },
+  {
+    "model": "api.discussionthread",
+    "pk": 5,
+    "fields": {
+      "category": 2,
+      "title": "Tips for efficient database queries",
+      "body": "Discuss the new features introduced in the latest Django release.",
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "created_at": "2024-08-14T20:07:54.961Z"
+    }
+  },
+  {
+    "model": "api.discussionthread",
+    "pk": 6,
+    "fields": {
+      "category": 2,
+      "title": "Optimizing Django for performance",
+      "body": "This is a discussion about mastering Django and making the most out of its features.",
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "created_at": "2024-08-14T20:07:54.971Z"
+    }
+  },
+  {
+    "model": "api.discussionthread",
+    "pk": 7,
+    "fields": {
+      "category": 3,
+      "title": "Setting up Django for a new project",
+      "body": "Discuss the new features introduced in the latest Django release.",
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "created_at": "2024-08-14T20:07:54.977Z"
+    }
+  },
+  {
+    "model": "api.discussionthread",
+    "pk": 8,
+    "fields": {
+      "category": 3,
+      "title": "Tips for efficient database queries",
+      "body": "Share your tips and tricks for making database queries more efficient in Django.",
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "created_at": "2024-08-14T20:07:54.987Z"
+    }
+  },
+  {
+    "model": "api.discussionthread",
+    "pk": 9,
+    "fields": {
+      "category": 3,
+      "title": "Best Django packages to use",
+      "body": "What are your favorite Django packages and why?",
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "created_at": "2024-08-14T20:07:54.994Z"
+    }
+  },
+  {
+    "model": "api.discussionthread",
+    "pk": 10,
+    "fields": {
+      "category": 4,
+      "title": "The best practices for API development",
+      "body": "How do you optimize Django applications for better performance?",
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "created_at": "2024-08-14T20:07:55.004Z"
+    }
+  },
+  {
+    "model": "api.discussionthread",
+    "pk": 11,
+    "fields": {
+      "category": 4,
+      "title": "Common pitfalls in Django development",
+      "body": "Share your tips and tricks for making database queries more efficient in Django.",
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "created_at": "2024-08-14T20:07:55.010Z"
+    }
+  },
+  {
+    "model": "api.discussionthread",
+    "pk": 12,
+    "fields": {
+      "category": 4,
+      "title": "Best Django packages to use",
+      "body": "This is a discussion about mastering Django and making the most out of its features.",
+      "user": [
+        "m.inshalfarid@gmail.com"
+      ],
+      "created_at": "2024-08-14T20:07:55.018Z"
+    }
+  }
+]

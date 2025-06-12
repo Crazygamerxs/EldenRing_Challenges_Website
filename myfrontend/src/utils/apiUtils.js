@@ -4,6 +4,7 @@
 
 import Cookies from 'js-cookie';
 
+import { API_ENDPOINTS } from '../utils/api';
 /**
  * Default fetch options with CSRF token and credentials
  * @returns {Object} Fetch options with CSRF token and credentials

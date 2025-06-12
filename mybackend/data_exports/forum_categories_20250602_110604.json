@@ -1,0 +1,30 @@
+[
+  {
+    "model": "api.forumcategory",
+    "pk": 1,
+    "fields": {
+      "name": "Introduction"
+    }
+  },
+  {
+    "model": "api.forumcategory",
+    "pk": 2,
+    "fields": {
+      "name": "Challenges"
+    }
+  },
+  {
+    "model": "api.forumcategory",
+    "pk": 3,
+    "fields": {
+      "name": "Talk"
+    }
+  },
+  {
+    "model": "api.forumcategory",
+    "pk": 4,
+    "fields": {
+      "name": "The Site"
+    }
+  }
+]
