@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignUp from './components/SignUp/SignUp';
-import Login from './components/Login/Login'; // Make sure this matches your actual file name
+// import Login from './components/Login/Login'; // Make sure this matches your actual file name
+import Login from './components/Login';
 import PasswordResetConfirm from './components/Login/PasswordResetConfirm';
 import PasswordResetRequest from './components/Login/PasswordResetRequest';
 import Home from './components/Home/Home';
