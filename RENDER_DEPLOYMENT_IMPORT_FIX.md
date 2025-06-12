@@ -10,13 +10,28 @@ Module not found: Error: Can't resolve './components/Login' in '/opt/render/proj
 
 ## Root Cause
 
-The issue was caused by an ambiguous import statement in `myfrontend/src/App.js`:
+The issue is caused by a **case sensitivity problem** between the local development environment and Render's deployment environment:
 
-```javascript
-import Login from "./components/Login";
+1. **Local Environment (Windows)**: Directory is named `Login` (lowercase 'i')
+2. **Render Environment (Linux)**: Directory appears as `LogIn` (capital 'I')
+
+This discrepancy causes module resolution failures because:
+
+- The App.js imports from `./components/Login/Login`
+- But on Render, the directory is `./components/LogIn/`
+- Linux is case-sensitive, so `Login` ≠ `LogIn`
+
+The build logs from Render show:
+
+```
+drwxr-sr-x  2 render render 4096 Jun 12 03:22 LogIn
 ```
 
-This import was trying to resolve to a directory (`./components/Login`) rather than a specific file, which caused module resolution issues during the build process on Render's Linux environment.
+But the import statements expect:
+
+```javascript
+import Login from "./components/Login/Login";
+```
 
 ## Fix Applied
 
