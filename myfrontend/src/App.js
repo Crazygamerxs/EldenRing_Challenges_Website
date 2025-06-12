@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignUp from './components/SignUp/SignUp';
-import Login from './components/Login/Login';
+import UserLogin from './components/Login/UserLogin';
 import PasswordResetConfirm from './components/Login/PasswordResetConfirm';
 import PasswordResetRequest from './components/Login/PasswordResetRequest';
 import Home from './components/Home/Home';
@@ -49,7 +49,7 @@ const App = () => {
                             <Route path="/" element={<Home />} />
                             <Route path="/home" element={<Home />} />
                             <Route path="/signup" element={<SignUp />} />
-                            <Route path="/login" element={<Login />} />
+                            <Route path="/login" element={<UserLogin />} />
                             <Route path="/password-reset" element={<PasswordResetRequest />} />
                             <Route path="/password-reset-confirm/:uidb64/:token" element={<PasswordResetConfirm />} />
                             <Route path="/challenge/:id" element={<ChallengeDetail />} />
