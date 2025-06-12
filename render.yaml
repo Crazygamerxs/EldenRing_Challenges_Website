@@ -9,7 +9,7 @@ services:
     region: oregon
     plan: free
     buildCommand: "./build.sh"
-    startCommand: "gunicorn --pythonpath mybackend mybackend.wsgi:application"
+    startCommand: "./start.sh"
     healthCheckPath: "/api/health/"
 
     envVars:
