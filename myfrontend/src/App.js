@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignUp from './components/SignUp/SignUp';
-import UserLogin from './components/Login/UserLogin';
+import Login from './components/Login/Login'; // Changed from UserLogin to Login
 import PasswordResetConfirm from './components/Login/PasswordResetConfirm';
 import PasswordResetRequest from './components/Login/PasswordResetRequest';
 import Home from './components/Home/Home';
@@ -29,7 +29,6 @@ import CSRFTOKEN from "./components/common/CSRFToken";
 import ErrorBoundary from './components/common/ErrorBoundary';
 import { initializeSecurity } from './utils/security';
 
-import { API_ENDPOINTS } from './utils/api';
 const App = () => {
     const [isLoading, setIsLoading] = useState(false);
 
@@ -49,7 +48,7 @@ const App = () => {
                             <Route path="/" element={<Home />} />
                             <Route path="/home" element={<Home />} />
                             <Route path="/signup" element={<SignUp />} />
-                            <Route path="/login" element={<UserLogin />} />
+                            <Route path="/login" element={<Login />} /> {/* Changed from UserLogin to Login */}
                             <Route path="/password-reset" element={<PasswordResetRequest />} />
                             <Route path="/password-reset-confirm/:uidb64/:token" element={<PasswordResetConfirm />} />
                             <Route path="/challenge/:id" element={<ChallengeDetail />} />
