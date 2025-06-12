@@ -1,4 +1,4 @@
-// src/components/Login/LogIn.js
+// src/components/Login/Login.js
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { UserContext } from '../common/UserContext';
@@ -6,7 +6,6 @@ import './Login.css';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
-import { API_ENDPOINTS } from '../../utils/api';
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -43,7 +42,7 @@ const Login = () => {
                 if (!token) {
                     console.log('No CSRF token found, fetching...');
                     // Fetch CSRF token
-                    await axios.get(API_ENDPOINTS.CSRF_TOKEN, { 
+                    await axios.get('/api/csrf-token/', { 
                         withCredentials: true,
                         timeout: 10000
                     });
@@ -79,7 +78,7 @@ const Login = () => {
             const csrfToken = await waitForCsrfToken();
             console.log('Using CSRF Token for login:', csrfToken.substring(0, 10) + '...');
     
-            const response = await axios.post(API_ENDPOINTS.LOGIN, {
+            const response = await axios.post('/api/login/', {
                 username: username.trim().toLowerCase(), // Ensure lowercase
                 password
             }, {
