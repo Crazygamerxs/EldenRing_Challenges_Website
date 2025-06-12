@@ -33,4 +33,11 @@ python manage.py migrate --noinput
 echo "📦 Collecting static files..."
 python manage.py collectstatic --noinput
 
+# Set up Python path for Gunicorn
+echo "🔧 Setting up Python path for deployment..."
+cd ..
+export PYTHONPATH="${PYTHONPATH}:$(pwd)/mybackend"
+
 echo "✅ Build completed successfully!"
+echo "📍 Current directory: $(pwd)"
+echo "🐍 Python path: $PYTHONPATH"
