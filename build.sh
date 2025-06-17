@@ -5,7 +5,6 @@ set -o errexit  # Exit on error
 
 echo "🚀 Starting Render deployment build..."
 
-#not a coment for the sake of a comement
 # Install Python dependencies
 echo "📦 Installing Python dependencies..."
 cd mybackend
@@ -21,6 +20,11 @@ npm run build
 echo "📁 Copying frontend build to Django static files..."
 rm -rf ../mybackend/static/*
 cp -r build/* ../mybackend/static/
+
+# Create templates directory and copy index.html
+echo "📄 Setting up Django templates..."
+mkdir -p ../mybackend/templates
+cp build/index.html ../mybackend/templates/
 
 # Return to Django directory for final setup
 cd ../mybackend

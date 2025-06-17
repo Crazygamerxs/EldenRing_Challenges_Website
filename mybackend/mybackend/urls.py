@@ -3,6 +3,10 @@ URL configuration for mybackend project.
 """
 from django.contrib import admin
 from django.urls import path, re_path
+from django.views.generic import TemplateView
+from django.conf import settings
+from django.conf.urls.static import static
+
 from api.views import (
     SimpleAPIView, GETCSRFToken, SignupAPIView, LoginAPIView, LogoutAPIView, 
     HomeAPIView, ChallengeAPIView, ChallengeDetailView, ChallengeSubmissionsView, 
@@ -27,10 +31,6 @@ from api.views_notifications import NotificationsView, MarkNotificationReadView,
 
 # Import profile views
 from api.views_profile import UserProfilePlaceholder
-
-from django.views.generic import TemplateView
-from django.conf import settings
-from django.conf.urls.static import static
 
 urlpatterns = [
     # Django admin
@@ -58,7 +58,7 @@ urlpatterns = [
     path('api/challenge/<int:challenge_id>/', ChallengeAPIView.as_view(), name='challenge-detail'),
     path('api/challenge/<int:pk>/', ChallengeDetailView.as_view(), name='challenge-specific'),
     
-    # FIXED: Submissions endpoint
+    # Submissions endpoint
     path('api/submissions/', ChallengeSubmissionsView.as_view(), name='challenge-submissions'),
     path('api/submit_run/', SubmitRunAPIView.as_view(), name='submit-run'),
     
@@ -105,16 +105,11 @@ urlpatterns = [
     path('api/user-profile/<path:path>', UserProfilePlaceholder.as_view(), name='user-profile-placeholder'),
 ]
 
-# Serve static files in development
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Serve static files in development and production
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-# Production: Serve React app for all non-API routes
-if not settings.DEBUG:
-    from django.views.generic import TemplateView
-    
-    # Catch-all pattern for React routing (must be last)
-    urlpatterns += [
-        re_path(r'^.*$', TemplateView.as_view(template_name='index.html'), name='react-app'),
-    ]
+# Catch-all pattern for React routing (must be last)
+urlpatterns += [
+    re_path(r'^.*$', TemplateView.as_view(template_name='index.html'), name='react-app'),
+]
