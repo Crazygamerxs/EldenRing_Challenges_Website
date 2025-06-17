@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Clean Django + React build script for Render
+# Simple working build script
 
 set -o errexit
 
@@ -23,12 +23,18 @@ echo "🧹 Setting up Django directories..."
 rm -rf static staticfiles templates
 mkdir -p static staticfiles templates
 
-# Copy ALL React build files to Django static
-echo "📁 Copying React build to Django..."
-cp -r ../myfrontend/build/* static/
+# Copy ALL React build files to static
+echo "📁 Copying React build files..."
+cp -r ../myfrontend/build/static/* static/
 
-# Move index.html to templates (Django needs it there)
-mv static/index.html templates/
+# Copy and fix the React index.html
+echo "📄 Fixing React index.html for Django..."
+# Add Django static loading at the top and fix all /static/ paths
+echo "{% load static %}" > templates/index.html
+sed 's|"/static/|"{% static "|g; s|\.css"|.css" %}|g; s|\.js"|.js" %}|g' ../myfrontend/build/index.html >> templates/index.html
+
+# Copy other React assets to static
+find ../myfrontend/build -maxdepth 1 -type f \( -name "*.ico" -o -name "*.png" -o -name "*.json" -o -name "*.txt" \) -exec cp {} static/ \; 2>/dev/null || true
 
 # Run Django setup
 echo "🗄️ Setting up Django..."
@@ -36,5 +42,5 @@ python manage.py migrate --noinput
 python manage.py collectstatic --noinput
 
 echo "✅ Build complete!"
-echo "📂 Static files: $(ls static/ | wc -l) items"
-echo "📄 Template: $(ls templates/)"
+echo "📄 Template created:"
+head -10 templates/index.html
