@@ -489,3 +489,20 @@ class ThreadDetailView(APIView):
             return Response(data, status=status.HTTP_200_OK)
         except DiscussionThread.DoesNotExist:
             return Response({'detail': 'Thread not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+
+# Add this to api/views.py if needed
+
+from django.shortcuts import render
+from django.views.generic import TemplateView
+
+class ReactAppView(TemplateView):
+    """
+    Serves the React app for all non-API routes
+    """
+    template_name = 'index.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add any context data your React app might need
+        return context
