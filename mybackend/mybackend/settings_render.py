@@ -1,5 +1,5 @@
 """
-Production Django settings for Render deployment - CSRF Fixed
+Production Django settings for Render deployment - MIME Types Fixed
 """
 import os
 import dj_database_url
@@ -104,29 +104,51 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# Static files (CSS, JavaScript, Images) - FIXED FOR MIME TYPES
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-# Use WhiteNoise for static file serving
+# WhiteNoise configuration with proper MIME types
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
-# Security settings for production - RELAXED FOR CSRF DEBUGGING
-SECURE_CONTENT_TYPE_NOSNIFF = True
+# Configure WhiteNoise to serve JavaScript with correct MIME type
+WHITENOISE_MIMETYPES = {
+    '.js': 'application/javascript',
+    '.css': 'text/css',
+    '.map': 'application/json',
+    '.json': 'application/json',
+    '.ico': 'image/x-icon',
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.gif': 'image/gif',
+    '.svg': 'image/svg+xml',
+    '.woff': 'font/woff',
+    '.woff2': 'font/woff2',
+    '.ttf': 'font/ttf',
+    '.eot': 'application/vnd.ms-fontobject',
+}
+
+# Disable WhiteNoise compression temporarily to debug MIME types
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_AUTOREFRESH = True
+
+# Security settings - temporarily relaxed for debugging
+SECURE_CONTENT_TYPE_NOSNIFF = False  # Allow JS files to load
 SECURE_BROWSER_XSS_FILTER = True
 
-# SSL settings - temporarily relaxed for debugging
-SECURE_SSL_REDIRECT = False  # Set to True once CSRF is working
-SESSION_COOKIE_SECURE = False  # Set to True once CSRF is working
-CSRF_COOKIE_SECURE = False  # Set to True once CSRF is working
+# SSL settings - relaxed for debugging
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
 
 # CSRF settings - configured for React
 CSRF_COOKIE_HTTPONLY = False  # React needs to read this
 CSRF_COOKIE_SAMESITE = 'Lax'
-CSRF_USE_SESSIONS = False  # Use cookie-based CSRF tokens
+CSRF_USE_SESSIONS = False
 CSRF_COOKIE_AGE = 31449600  # 1 year
 
 # Add your Render domain to trusted origins
@@ -134,7 +156,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://eldenringchallenge.xyz',
     'https://www.eldenringchallenge.xyz',
     'https://*.onrender.com',
-    'http://localhost:3000',  # For local development
+    'http://localhost:3000',
     'http://127.0.0.1:3000',
 ]
 
@@ -186,7 +208,7 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'DEBUG',
         },
-        'django.security.csrf': {
+        'whitenoise': {
             'handlers': ['console'],
             'level': 'DEBUG',
         },
@@ -196,4 +218,4 @@ LOGGING = {
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-print("✅ Production Django settings loaded with CSRF debugging")
+print("✅ Production Django settings loaded with MIME type fixes")
