@@ -11,6 +11,7 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mybackend.settings')
+# Set the default settings module for Render deployment
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mybackend.settings_render')
 
 application = get_wsgi_application()
