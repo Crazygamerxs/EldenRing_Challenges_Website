@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Fixed build script with proper MIME type handling
+# Fixed build script with proper MIME type handling and corrected superuser creation
 
 set -o errexit
 
@@ -85,7 +85,7 @@ cat > templates/index.html << 'EOF'
     </script>
     
     <!-- Load main JS file -->
-    <script type="application/javascript" src="{% static 'js/main.2447be8d.js' %}"></script>
+    <script type="application/javascript" src="{% static 'js/main.10191822.js' %}"></script>
     
     <!-- Load chunk files -->
     <script type="application/javascript" src="{% static 'js/488.2c2c4401.chunk.js' %}"></script>
@@ -121,13 +121,23 @@ python manage.py migrate --noinput
 echo "📦 Collecting static files..."
 python manage.py collectstatic --noinput --verbosity=2
 
-# Create default superuser
+# Create default superuser - FIXED VERSION
 echo "👤 Creating default superuser..."
-python manage.py shell << EOF
+python manage.py shell << 'EOF'
 from django.contrib.auth import get_user_model
 User = get_user_model()
 if not User.objects.filter(username='admin').exists():
-    User.objects.create_superuser('admin', 'admin@eldenring.com', 'admin123')
+    # Use create_user since create_superuser is not available in your UserManager
+    user = User.objects.create_user(
+        email='admin@eldenring.com',
+        username='admin',
+        password='admin123'
+    )
+    # Manually set superuser fields
+    user.is_staff = True
+    user.is_superuser = True
+    user.is_active = True
+    user.save()
     print('✅ Default superuser created: admin/admin123')
 else:
     print('ℹ️ Superuser already exists')
