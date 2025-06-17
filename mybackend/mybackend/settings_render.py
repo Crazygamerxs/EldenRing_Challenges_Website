@@ -54,84 +54,44 @@ DATABASES = {
     )
 }
 
-# Static Files (React build)
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',  # Where React build files are
-]
+# Security settings - temporarily relaxed for debugging
+SECURE_CONTENT_TYPE_NOSNIFF = False  # Allow JS files to execute
+SECURE_BROWSER_XSS_FILTER = False   # Temporarily disable
 
-# Templates (for React index.html)
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # Where index.html is
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
-]
-
-# CORS for API
-CORS_ALLOWED_ORIGINS = [
-    "https://eldenringchallenge.xyz",
-    "https://www.eldenringchallenge.xyz",
-]
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = True  # Set to True if you want to allow all origins
-CSRF_COOKIE_HTTPONLY = False
-
-# CSRF
+# CSRF settings - make sure they work with React
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_HTTPONLY = False  # React needs to read this
+CSRF_COOKIE_SAMESITE = 'Lax'
 CSRF_TRUSTED_ORIGINS = [
     'https://eldenringchallenge.xyz',
     'https://www.eldenringchallenge.xyz',
     'https://*.onrender.com',
 ]
 
-# Custom User Model
-AUTH_USER_MODEL = 'api.User'
-
-AUTHENTICATION_BACKENDS = [
-    'api.backends.UsernameBackend',
-    'django.contrib.auth.backends.ModelBackend',
+# CORS settings
+CORS_ALLOWED_ORIGINS = [
+    "https://eldenringchallenge.xyz",
+    "https://www.eldenringchallenge.xyz",
 ]
+CORS_ALLOW_CREDENTIALS = True
 
-# REST Framework
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-    ),
-}
-
-# Security Settings
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-
-# WhiteNoise for static files
+# Static files - make sure JS/CSS are served with correct MIME types
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
-# Other settings
-WSGI_APPLICATION = 'mybackend.wsgi.application'
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_TZ = True
+# Add this middleware order (important!)
+MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
 
-# Email
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'ringrunnerhelp@gmail.com'
-EMAIL_HOST_PASSWORD = 'cyiqmpfvbomjvnkk'
+# Turn on debug temporarily to see what's happening
+DEBUG = True
 
-print("✅ Django settings loaded - serving React build")
+print("✅ Django settings updated for React compatibility")
