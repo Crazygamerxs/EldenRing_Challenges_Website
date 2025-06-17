@@ -42,6 +42,7 @@ Your website is now fully configured for deployment on Render.com with your cust
    ```
 
 2. **Make build script executable:**
+
    ```bash
    chmod +x build.sh
    git add build.sh
@@ -67,6 +68,7 @@ Your website is now fully configured for deployment on Render.com with your cust
    - Click "Create Database"
 
 2. **Copy Database URL:**
+
    - Once created, copy the "External Database URL"
    - You'll need this for the web service
 
