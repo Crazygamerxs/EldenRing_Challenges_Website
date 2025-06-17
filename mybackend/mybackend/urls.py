@@ -1,11 +1,10 @@
 """
-Clean URL configuration for Django + React
+Clean URL configuration for Django + React - Production Ready
 """
 from django.contrib import admin
 from django.urls import path, re_path
 from django.views.generic import TemplateView
 from django.conf import settings
-from django.conf.urls.static import static
 
 # Import all your API views
 from api.views import *
@@ -57,9 +56,8 @@ urlpatterns = [
     path('api/health/', HealthCheckView.as_view()),
 ]
 
-# Serve static files - FIXED: Use document_root parameter
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# NO static file serving in production - WhiteNoise handles this
+# The static() function is only for development
 
 # IMPORTANT: React app catch-all (must be LAST)
 urlpatterns += [
