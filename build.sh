@@ -32,5 +32,10 @@ python manage.py migrate --noinput
 echo "📦 Collecting static files..."
 python manage.py collectstatic --noinput
 
+# Go back to root and make start script executable
+echo "🔧 Setting up start script..."
+cd ..
+chmod +x start.sh
+
 echo "✅ Build completed successfully!"
 echo "📍 Current directory: $(pwd)"

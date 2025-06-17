@@ -1,28 +1,41 @@
 #!/usr/bin/env bash
-# Startup script for Render deployment
+# Start script for Render.com deployment
+
+set -o errexit
 
 echo "🚀 Starting Elden Ring Challenges Website..."
 echo "📍 Current directory: $(pwd)"
-echo "📂 Directory contents:"
+echo "📁 Directory contents:"
 ls -la
 
-echo "🔍 Checking mybackend directory:"
-ls -la mybackend/
-
-echo "🔍 Checking mybackend/mybackend directory:"
-ls -la mybackend/mybackend/
-
-echo "🐍 Setting up Python path..."
-export PYTHONPATH="${PYTHONPATH}:$(pwd)/mybackend"
-echo "🐍 Python path: $PYTHONPATH"
-
-echo "🔧 Starting Gunicorn with correct path..."
+# Change to the mybackend directory where wsgi.py is located
 cd mybackend
+
+echo "📍 Changed to directory: $(pwd)"
+echo "📁 Backend directory contents:"
+ls -la
+
+# Set up environment
+export DJANGO_SETTINGS_MODULE=mybackend.settings_render
+
+# Check if wsgi.py exists
+if [ -f "mybackend/wsgi.py" ]; then
+    echo "✅ Found wsgi.py at: $(pwd)/mybackend/wsgi.py"
+else
+    echo "❌ wsgi.py not found!"
+    exit 1
+fi
+
+# Start Gunicorn
+echo "🔥 Starting Gunicorn..."
 exec gunicorn mybackend.wsgi:application \
     --bind 0.0.0.0:$PORT \
-    --workers $WEB_CONCURRENCY \
-    --max-requests $MAX_REQUESTS \
-    --max-requests-jitter $MAX_REQUESTS_JITTER \
-    --timeout $TIMEOUT \
-    --keep-alive $KEEP_ALIVE \
-    --preload
+    --workers 2 \
+    --timeout 30 \
+    --keep-alive 2 \
+    --max-requests 1000 \
+    --max-requests-jitter 100 \
+    --preload \
+    --log-level info \
+    --access-logfile - \
+    --error-logfile -
