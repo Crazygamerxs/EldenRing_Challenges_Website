@@ -1,4 +1,4 @@
-// src/components/Login/Login.js
+// src/components/Login/LogIn.js
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { UserContext } from '../common/UserContext';
@@ -6,7 +6,7 @@ import './Login.css';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 
-const Login = () => {
+const LogIn = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -14,6 +14,15 @@ const Login = () => {
     const [csrfReady, setCsrfReady] = useState(false);
     const navigate = useNavigate();
     const { login } = useContext(UserContext);
+
+    // Get API URL based on environment
+    const getApiUrl = (endpoint) => {
+        if (process.env.NODE_ENV === 'production') {
+            return endpoint; // Use relative URLs in production
+        } else {
+            return `http://localhost:8888${endpoint}`;
+        }
+    };
 
     // Wait for CSRF token to be available
     const waitForCsrfToken = async (maxWait = 5000) => {
@@ -42,7 +51,7 @@ const Login = () => {
                 if (!token) {
                     console.log('No CSRF token found, fetching...');
                     // Fetch CSRF token
-                    await axios.get('/api/csrf-token/', { 
+                    await axios.get(getApiUrl('/api/csrf-token/'), { 
                         withCredentials: true,
                         timeout: 10000
                     });
@@ -78,7 +87,7 @@ const Login = () => {
             const csrfToken = await waitForCsrfToken();
             console.log('Using CSRF Token for login:', csrfToken.substring(0, 10) + '...');
     
-            const response = await axios.post('/api/login/', {
+            const response = await axios.post(getApiUrl('/api/login/'), {
                 username: username.trim().toLowerCase(), // Ensure lowercase
                 password
             }, {
@@ -99,7 +108,39 @@ const Login = () => {
             console.error('Error during login:', error);
             
             if (error.response?.status === 403) {
-                setError('Security token expired. Please refresh the page and try again.');
+                // Try to refresh CSRF token and retry once
+                try {
+                    console.log('403 error, trying to refresh CSRF token...');
+                    await axios.get(getApiUrl('/api/csrf-token/'), { 
+                        withCredentials: true,
+                        timeout: 10000
+                    });
+                    
+                    // Wait for new token
+                    const newToken = await waitForCsrfToken();
+                    console.log('Got new CSRF token, retrying login...');
+                    
+                    // Retry login with new token
+                    const retryResponse = await axios.post(getApiUrl('/api/login/'), {
+                        username: username.trim().toLowerCase(),
+                        password
+                    }, {
+                        withCredentials: true,
+                        headers: {
+                            'X-CSRFToken': newToken,
+                        },
+                        timeout: 10000
+                    });
+                    
+                    console.log('Retry login successful:', retryResponse.data);
+                    await login({ username });
+                    navigate('/home?loginSuccess=Login successful!');
+                    return;
+                    
+                } catch (retryError) {
+                    console.error('Retry also failed:', retryError);
+                    setError('Security token expired. Please refresh the page and try again.');
+                }
             } else if (error.response?.status === 401) {
                 setError('Invalid username or password.');
             } else if (error.message.includes('CSRF')) {
@@ -187,4 +228,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default LogIn;
