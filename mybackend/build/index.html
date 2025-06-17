@@ -1,21 +1,24 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><link rel="icon" href="/favicon.ico"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#000000"/><meta name="description" content="Web site created using create-react-app"/><link rel="apple-touch-icon" href="/logo192.png"/><link rel="manifest" href="/manifest.json"/><title>React App</title><script defer="defer" src="/static/js/main.1f01cb56.js"></script><link href="/static/css/main.902025a5.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div></body></html><!DOCTYPE html>
+{% load static %}
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Elden Ring Challenges Website"
-    />
+<head>
+    <meta charset="utf-8"/>
+    <link rel="icon" href="{% static 'favicon.ico' %}"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="theme-color" content="#000000"/>
+    <meta name="description" content="Elden Ring Challenges - Test your skills"/>
+    <link rel="apple-touch-icon" href="{% static 'logo192.png' %}"/>
+    <link rel="manifest" href="{% static 'manifest.json' %}"/>
     <title>Elden Ring Challenges</title>
-    {% load static %}
-    <script defer="defer" src="{% static 'js/main.2447be8d.js' %}"></script>
-    <link href="{% static 'css/main.b4e3a3ca.css' %}" rel="stylesheet">
-  </head>
-  <body>
+    
+    <!-- Load CSS files -->
+    <link href="{% static 'css/main.18ca6833.css' %}" rel="stylesheet">
+</head>
+<body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-  </body>
+    
+    <!-- Load JS files -->
+    <script defer="defer" src="{% static 'js/main.0a628d57.js' %}"></script>
+</body>
 </html>
