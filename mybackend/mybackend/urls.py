@@ -57,8 +57,9 @@ urlpatterns = [
     path('api/health/', HealthCheckView.as_view()),
 ]
 
-# Serve static files
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# Serve static files (FIXED - removed document_root parameter)
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # IMPORTANT: React app catch-all (must be LAST)
 urlpatterns += [
