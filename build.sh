@@ -45,17 +45,18 @@ if [ -f "../myfrontend/build/index.html" ]; then
     # Copy the real index.html and modify it for Django static files
     cp ../myfrontend/build/index.html templates/index.html
     
-    # Replace absolute paths with Django static tags
-    sed -i 's|="/static/|="{% static '\'|g' templates/index.html
-    sed -i 's|\.css"|.css'\'' %}"|g' templates/index.html
-    sed -i 's|\.js"|.js'\'' %}"|g' templates/index.html
-    sed -i 's|="/favicon\.ico"|="{% static '\''favicon.ico'\'' %}"|g' templates/index.html
-    sed -i 's|="/logo192\.png"|="{% static '\''logo192.png'\'' %}"|g' templates/index.html
-    sed -i 's|="/logo512\.png"|="{% static '\''logo512.png'\'' %}"|g' templates/index.html
-    sed -i 's|="/manifest\.json"|="{% static '\''manifest.json'\'' %}"|g' templates/index.html
-    
     # Add Django static load at the top
     sed -i '1i{% load static %}' templates/index.html
+    
+    # Replace static file paths with Django static tags - FIXED SYNTAX
+    sed -i 's|="/static/css/|="{% static '"'"'css/|g' templates/index.html
+    sed -i 's|="/static/js/|="{% static '"'"'js/|g' templates/index.html
+    sed -i 's|\.css"|.css'"'"' %}"|g' templates/index.html
+    sed -i 's|\.js"|.js'"'"' %}"|g' templates/index.html
+    sed -i 's|="/favicon\.ico"|="{% static '"'"'favicon.ico'"'"' %}"|g' templates/index.html
+    sed -i 's|="/logo192\.png"|="{% static '"'"'logo192.png'"'"' %}"|g' templates/index.html
+    sed -i 's|="/logo512\.png"|="{% static '"'"'logo512.png'"'"' %}"|g' templates/index.html
+    sed -i 's|="/manifest\.json"|="{% static '"'"'manifest.json'"'"' %}"|g' templates/index.html
     
     echo "✅ React index.html processed for Django"
 else
