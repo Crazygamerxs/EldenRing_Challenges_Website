@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Complete build script with proper database migrations and MIME type handling
+# Fixed build script that properly integrates React with Django
 
 set -o errexit
 
@@ -21,99 +21,61 @@ pip install -r requirements.txt
 # Clean and setup directories
 echo "🧹 Setting up Django directories..."
 rm -rf static staticfiles templates
-mkdir -p static/css static/js static/media templates
+mkdir -p static templates
 
-# Copy React static files with proper structure and permissions
-echo "📁 Copying React static files with correct structure..."
+# Copy the ACTUAL React build files
+echo "📁 Copying React build files..."
 
-# Copy CSS files
-if [ -d "../myfrontend/build/static/css" ]; then
-    cp -r ../myfrontend/build/static/css/* static/css/
-    echo "✅ CSS files copied"
+# Copy the entire React build static directory
+if [ -d "../myfrontend/build/static" ]; then
+    cp -r ../myfrontend/build/static/* static/
+    echo "✅ All React static files copied"
+else
+    echo "❌ React build/static directory not found!"
+    exit 1
 fi
 
-# Copy JS files
-if [ -d "../myfrontend/build/static/js" ]; then
-    cp -r ../myfrontend/build/static/js/* static/js/
-    echo "✅ JS files copied"
-fi
-
-# Copy media files if they exist
-if [ -d "../myfrontend/build/static/media" ]; then
-    cp -r ../myfrontend/build/static/media/* static/media/
-    echo "✅ Media files copied"
-fi
-
-# Copy other React assets (favicon, manifest, etc.)
-echo "📄 Copying React assets..."
+# Copy other React assets to static (favicon, manifest, etc.)
+echo "📄 Copying React root assets..."
 find ../myfrontend/build -maxdepth 1 -type f \( -name "*.ico" -o -name "*.png" -o -name "*.json" -o -name "*.txt" \) -exec cp {} static/ \; 2>/dev/null || true
 
-# List copied files for debugging
+# Copy and modify the ACTUAL React index.html
+echo "📄 Processing React index.html for Django..."
+if [ -f "../myfrontend/build/index.html" ]; then
+    # Copy the real index.html and modify it for Django static files
+    cp ../myfrontend/build/index.html templates/index.html
+    
+    # Replace absolute paths with Django static tags
+    sed -i 's|="/static/|="{% static '\'|g' templates/index.html
+    sed -i 's|\.css"|.css'\'' %}"|g' templates/index.html
+    sed -i 's|\.js"|.js'\'' %}"|g' templates/index.html
+    sed -i 's|="/favicon\.ico"|="{% static '\''favicon.ico'\'' %}"|g' templates/index.html
+    sed -i 's|="/logo192\.png"|="{% static '\''logo192.png'\'' %}"|g' templates/index.html
+    sed -i 's|="/logo512\.png"|="{% static '\''logo512.png'\'' %}"|g' templates/index.html
+    sed -i 's|="/manifest\.json"|="{% static '\''manifest.json'\'' %}"|g' templates/index.html
+    
+    # Add Django static load at the top
+    sed -i '1i{% load static %}' templates/index.html
+    
+    echo "✅ React index.html processed for Django"
+else
+    echo "❌ React index.html not found!"
+    exit 1
+fi
+
+# Show what files were actually copied
 echo "📋 Static files structure:"
 find static -type f | head -20
 
-# Create Django template with dynamic asset references
-echo "📄 Creating Django template..."
-cat > templates/index.html << 'EOF'
-{% load static %}
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <link rel="icon" href="{% static 'favicon.ico' %}"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="theme-color" content="#000000"/>
-    <meta name="description" content="Elden Ring Challenges"/>
-    <title>Elden Ring Challenges</title>
-    
-    <!-- Dynamically find CSS files -->
-    {% for file in css_files %}
-        <link href="{% static file %}" rel="stylesheet">
-    {% endfor %}
-    
-    <!-- Fallback CSS - update the filename based on your build -->
-    <link href="{% static 'css/main.b4e3a3ca.css' %}" rel="stylesheet">
-</head>
-<body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    
-    <script>
-        console.log('🚀 Loading React app...');
-        console.log('Environment: production');
-        console.log('Static URL: {% static "" %}');
-    </script>
-    
-    <!-- Load main JS file -->
-    <script type="application/javascript" src="{% static 'js/main.10191822.js' %}"></script>
-    
-    <!-- Load chunk files -->
-    <script type="application/javascript" src="{% static 'js/488.2c2c4401.chunk.js' %}"></script>
-    
-    <script>
-        console.log('✅ React scripts loaded');
-        // Check if React mounted
-        setTimeout(() => {
-            const root = document.getElementById('root');
-            if (root && root.innerHTML.trim() === '') {
-                console.error('❌ React failed to mount!');
-                console.log('Root element:', root);
-                console.log('Available static files check...');
-            } else {
-                console.log('✅ React mounted successfully!');
-            }
-        }, 2000);
-    </script>
-</body>
-</html>
-EOF
+echo "📄 Generated Django template:"
+head -20 templates/index.html
 
 # Set proper permissions for static files
 echo "🔧 Setting file permissions..."
 find static -type f -name "*.js" -exec chmod 644 {} \;
 find static -type f -name "*.css" -exec chmod 644 {} \;
 
-# DATABASE MIGRATIONS - ADDED HERE
+# DATABASE MIGRATIONS
 echo "🗄️ Running database migrations..."
 python manage.py migrate --settings=mybackend.settings_render
 
@@ -121,19 +83,17 @@ python manage.py migrate --settings=mybackend.settings_render
 echo "📦 Collecting static files..."
 python manage.py collectstatic --noinput --settings=mybackend.settings_render
 
-# Create default superuser - FIXED VERSION
+# Create default superuser
 echo "👤 Creating default superuser..."
 python manage.py shell --settings=mybackend.settings_render << 'EOF'
 from django.contrib.auth import get_user_model
 User = get_user_model()
 if not User.objects.filter(username='admin').exists():
-    # Use create_user since create_superuser is not available in your UserManager
     user = User.objects.create_user(
         email='admin@eldenring.com',
         username='admin',
         password='admin123'
     )
-    # Manually set superuser fields
     user.is_staff = True
     user.is_superuser = True
     user.is_active = True
@@ -144,7 +104,6 @@ else:
 EOF
 
 echo "✅ Build complete!"
-echo "📄 Template created with proper MIME types"
+echo "📄 React app properly integrated with Django"
 echo "👤 Default admin credentials: admin/admin123"
-echo "🔍 Check static files in browser network tab"
 echo "🗄️ Database migrations completed"
