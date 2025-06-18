@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Fixed build script that properly integrates React with Django
+# Improved build script with better URL processing
 
 set -o errexit
 
@@ -39,25 +39,43 @@ fi
 echo "📄 Copying React root assets..."
 find ../myfrontend/build -maxdepth 1 -type f \( -name "*.ico" -o -name "*.png" -o -name "*.json" -o -name "*.txt" \) -exec cp {} static/ \; 2>/dev/null || true
 
-# Copy and modify the ACTUAL React index.html
+# Copy and modify the ACTUAL React index.html - IMPROVED METHOD
 echo "📄 Processing React index.html for Django..."
 if [ -f "../myfrontend/build/index.html" ]; then
-    # Copy the real index.html and modify it for Django static files
+    # Copy the real index.html
     cp ../myfrontend/build/index.html templates/index.html
     
-    # Add Django static load at the top
-    sed -i '1i{% load static %}' templates/index.html
-    
-    # Replace static file paths with Django static tags - FIXED SYNTAX
-    sed -i 's|="/static/css/|="{% static '"'"'css/|g' templates/index.html
-    sed -i 's|="/static/js/|="{% static '"'"'js/|g' templates/index.html
-    sed -i 's|\.css"|.css'"'"' %}"|g' templates/index.html
-    sed -i 's|\.js"|.js'"'"' %}"|g' templates/index.html
-    sed -i 's|="/favicon\.ico"|="{% static '"'"'favicon.ico'"'"' %}"|g' templates/index.html
-    sed -i 's|="/logo192\.png"|="{% static '"'"'logo192.png'"'"' %}"|g' templates/index.html
-    sed -i 's|="/logo512\.png"|="{% static '"'"'logo512.png'"'"' %}"|g' templates/index.html
-    sed -i 's|="/manifest\.json"|="{% static '"'"'manifest.json'"'"' %}"|g' templates/index.html
-    
+    # Use Python to properly process the HTML instead of sed
+    python3 << 'PYTHON_SCRIPT'
+import re
+
+# Read the HTML file
+with open('templates/index.html', 'r') as f:
+    content = f.read()
+
+# Add Django static load at the beginning
+content = '{% load static %}\n' + content
+
+# Replace static paths more carefully
+# Handle CSS files
+content = re.sub(r'href="/static/css/([^"]+)"', r'href="{% static \'css/\1\' %}"', content)
+
+# Handle JS files  
+content = re.sub(r'src="/static/js/([^"]+)"', r'src="{% static \'js/\1\' %}"', content)
+
+# Handle other assets
+content = re.sub(r'href="/favicon\.ico"', r'href="{% static \'favicon.ico\' %}"', content)
+content = re.sub(r'href="/logo192\.png"', r'href="{% static \'logo192.png\' %}"', content)
+content = re.sub(r'href="/logo512\.png"', r'href="{% static \'logo512.png\' %}"', content)
+content = re.sub(r'href="/manifest\.json"', r'href="{% static \'manifest.json\' %}"', content)
+
+# Write the processed content back
+with open('templates/index.html', 'w') as f:
+    f.write(content)
+
+print("✅ HTML processing completed successfully")
+PYTHON_SCRIPT
+
     echo "✅ React index.html processed for Django"
 else
     echo "❌ React index.html not found!"
@@ -68,7 +86,7 @@ fi
 echo "📋 Static files structure:"
 find static -type f | head -20
 
-echo "📄 Generated Django template:"
+echo "📄 Generated Django template preview:"
 head -20 templates/index.html
 
 # Set proper permissions for static files
