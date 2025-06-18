@@ -506,3 +506,53 @@ class ReactAppView(TemplateView):
         context = super().get_context_data(**kwargs)
         # Add any context data your React app might need
         return context
+    
+
+# Add this to your api/views.py or create a new views_frontend.py
+
+from django.shortcuts import render
+from django.views.generic import TemplateView
+from django.http import HttpResponse
+from django.template.loader import get_template
+from django.template import TemplateDoesNotExist
+import logging
+
+logger = logging.getLogger(__name__)
+
+class ReactAppView(TemplateView):
+    """
+    Serve the React application with proper error handling
+    """
+    template_name = 'index.html'
+    
+    def get(self, request, *args, **kwargs):
+        try:
+            # Try to load the template
+            template = get_template(self.template_name)
+            
+            # Render with context
+            context = self.get_context_data(**kwargs)
+            return self.render_to_response(context)
+            
+        except TemplateDoesNotExist:
+            logger.error(f"Template {self.template_name} not found")
+            return HttpResponse(
+                "<h1>Application Loading...</h1>"
+                "<p>The React application is being built. Please try again in a moment.</p>",
+                status=503
+            )
+        except Exception as e:
+            logger.error(f"Error loading React app: {e}")
+            return HttpResponse(
+                "<h1>Server Error</h1>"
+                "<p>There was an error loading the application. Please try again later.</p>",
+                status=500
+            )
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add any context variables you need for the React app
+        context.update({
+            'debug': False,  # Set to True for debugging
+        })
+        return context

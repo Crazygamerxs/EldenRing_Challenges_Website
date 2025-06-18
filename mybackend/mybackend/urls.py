@@ -1,3 +1,5 @@
+# Updated mybackend/urls.py
+
 """
 Clean URL configuration for Django + React - Production Ready
 """
@@ -5,6 +7,7 @@ from django.contrib import admin
 from django.urls import path, re_path
 from django.views.generic import TemplateView
 from django.conf import settings
+from django.http import HttpResponse
 
 # Import all your API views
 from api.views import *
@@ -14,9 +17,20 @@ from api.views_admin import *
 from api.views_notifications import *
 from api.views_profile import *
 
+# Simple debug view for testing
+def debug_view(request):
+    return HttpResponse(
+        "<h1>Django is working!</h1>"
+        "<p>React app integration test</p>"
+        "<p>Visit /api/health/ to test API</p>"
+    )
+
 urlpatterns = [
     # Django admin
     path('admin/', admin.site.urls),
+    
+    # Debug endpoint
+    path('debug/', debug_view),
     
     # API endpoints
     path('api/', SimpleAPIView.as_view()),
@@ -56,10 +70,31 @@ urlpatterns = [
     path('api/health/', HealthCheckView.as_view()),
 ]
 
-# NO static file serving in production - WhiteNoise handles this
-# The static() function is only for development
+# React app catch-all with error handling
+class SafeReactView(TemplateView):
+    template_name = 'index.html'
+    
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            return super().dispatch(request, *args, **kwargs)
+        except Exception as e:
+            # Log the error
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Error serving React app: {e}")
+            
+            # Return a simple fallback
+            return HttpResponse(
+                "<!DOCTYPE html>"
+                "<html><head><title>Loading...</title></head>"
+                "<body><h1>Application Loading</h1>"
+                "<p>Please wait while the application loads...</p>"
+                "<script>setTimeout(() => location.reload(), 3000);</script>"
+                "</body></html>",
+                content_type='text/html'
+            )
 
 # IMPORTANT: React app catch-all (must be LAST)
 urlpatterns += [
-    re_path(r'^.*$', TemplateView.as_view(template_name='index.html')),
+    re_path(r'^.*$', SafeReactView.as_view()),
 ]
