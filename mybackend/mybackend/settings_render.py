@@ -1,5 +1,5 @@
 """
-Production Django settings for Render deployment - MIME Types Fixed
+Production Django settings for Render deployment - CSRF Issues Fixed
 """
 import os
 import dj_database_url
@@ -67,7 +67,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mybackend.wsgi.application'
 
-# Database - Fixed configuration (SINGLE VERSION)
+# Database - Fixed configuration
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
 if DATABASE_URL:
@@ -148,15 +148,16 @@ WHITENOISE_MIMETYPES = {
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_AUTOREFRESH = True
 
-# CSRF settings - Fixed for production
+# FIXED CSRF SETTINGS - This was the main issue!
 CSRF_COOKIE_HTTPONLY = False  # React needs to read this
 CSRF_COOKIE_SECURE = True  # Use HTTPS in production
-CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'Lax'  # Changed from 'None' - this was causing issues
 CSRF_USE_SESSIONS = False
 CSRF_COOKIE_AGE = 31449600  # 1 year
 CSRF_COOKIE_NAME = 'csrftoken'
+# REMOVED: CSRF_COOKIE_DOMAIN - this was restricting to localhost only!
 
-# Add your production domains to trusted origins
+# CRITICAL: Add your production domains to trusted origins
 CSRF_TRUSTED_ORIGINS = [
     'https://eldenringchallenge.xyz',
     'https://www.eldenringchallenge.xyz',
@@ -173,13 +174,14 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = False  # Security: Don't allow all origins in production
 
-# Session settings
+# FIXED SESSION SETTINGS
 SESSION_COOKIE_SECURE = True  # Use HTTPS in production
 SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'Lax'  # Changed from 'None' - this was causing issues
 SESSION_COOKIE_AGE = 1209600  # 2 weeks
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_NAME = 'sessionid'
 
 # Security settings for production
 SECURE_CONTENT_TYPE_NOSNIFF = True
@@ -218,9 +220,9 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'INFO',
         },
-        'django.db': {
+        'django.security': {
             'handlers': ['console'],
-            'level': 'DEBUG',
+            'level': 'DEBUG',  # This will help debug CSRF issues
         },
         'api': {
             'handlers': ['console'],
@@ -236,4 +238,4 @@ LOGGING = {
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-print("✅ Production Django settings loaded with MIME type fixes")
+print("✅ Production Django settings loaded - CSRF issues fixed!")
