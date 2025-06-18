@@ -67,13 +67,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mybackend.wsgi.application'
 
-# Database
-DATABASES = {
-    'default': dj_database_url.parse(
-        os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite3'),
-        conn_max_age=600,
-    )
-}
+# Database - Fixed configuration (SINGLE VERSION)
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    }
+else:
+    # Fallback for development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Auth
 AUTH_USER_MODEL = 'api.User'
@@ -136,42 +148,44 @@ WHITENOISE_MIMETYPES = {
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_AUTOREFRESH = True
 
-# Security settings - temporarily relaxed for debugging
-SECURE_CONTENT_TYPE_NOSNIFF = False  # Allow JS files to load
-SECURE_BROWSER_XSS_FILTER = True
-
-# SSL settings - relaxed for debugging
-SECURE_SSL_REDIRECT = False
-SESSION_COOKIE_SECURE = False
-CSRF_COOKIE_SECURE = False
-
-# CSRF settings - configured for React
+# CSRF settings - Fixed for production
 CSRF_COOKIE_HTTPONLY = False  # React needs to read this
+CSRF_COOKIE_SECURE = True  # Use HTTPS in production
 CSRF_COOKIE_SAMESITE = 'Lax'
 CSRF_USE_SESSIONS = False
 CSRF_COOKIE_AGE = 31449600  # 1 year
+CSRF_COOKIE_NAME = 'csrftoken'
 
-# Add your Render domain to trusted origins
+# Add your production domains to trusted origins
 CSRF_TRUSTED_ORIGINS = [
     'https://eldenringchallenge.xyz',
     'https://www.eldenringchallenge.xyz',
     'https://*.onrender.com',
-    'http://localhost:3000',
+    'http://localhost:3000',  # Keep for development
     'http://127.0.0.1:3000',
 ]
 
-# CORS settings
+# CORS settings - Fixed for production
 CORS_ALLOWED_ORIGINS = [
     "https://eldenringchallenge.xyz",
     "https://www.eldenringchallenge.xyz",
 ]
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_ALL_ORIGINS = False  # Security: Don't allow all origins in production
 
 # Session settings
+SESSION_COOKIE_SECURE = True  # Use HTTPS in production
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
 SESSION_COOKIE_AGE = 1209600  # 2 weeks
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+# Security settings for production
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_SSL_REDIRECT = True  # Force HTTPS
+X_FRAME_OPTIONS = 'DENY'
 
 # REST Framework
 REST_FRAMEWORK = {
@@ -183,7 +197,7 @@ REST_FRAMEWORK = {
     ],
 }
 
-# Logging
+# Logging - Single unified configuration
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -203,6 +217,10 @@ LOGGING = {
         'django': {
             'handlers': ['console'],
             'level': 'INFO',
+        },
+        'django.db': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
         },
         'api': {
             'handlers': ['console'],

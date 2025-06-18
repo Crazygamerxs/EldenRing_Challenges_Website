@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Fixed build script with proper MIME type handling and corrected superuser creation
+# Complete build script with proper database migrations and MIME type handling
 
 set -o errexit
 
@@ -113,17 +113,17 @@ echo "🔧 Setting file permissions..."
 find static -type f -name "*.js" -exec chmod 644 {} \;
 find static -type f -name "*.css" -exec chmod 644 {} \;
 
-# Run Django setup
-echo "🗄️ Setting up Django..."
-python manage.py migrate --noinput
+# DATABASE MIGRATIONS - ADDED HERE
+echo "🗄️ Running database migrations..."
+python manage.py migrate --settings=mybackend.settings_render
 
 # Collect static files
 echo "📦 Collecting static files..."
-python manage.py collectstatic --noinput --verbosity=2
+python manage.py collectstatic --noinput --settings=mybackend.settings_render
 
 # Create default superuser - FIXED VERSION
 echo "👤 Creating default superuser..."
-python manage.py shell << 'EOF'
+python manage.py shell --settings=mybackend.settings_render << 'EOF'
 from django.contrib.auth import get_user_model
 User = get_user_model()
 if not User.objects.filter(username='admin').exists():
@@ -147,3 +147,4 @@ echo "✅ Build complete!"
 echo "📄 Template created with proper MIME types"
 echo "👤 Default admin credentials: admin/admin123"
 echo "🔍 Check static files in browser network tab"
+echo "🗄️ Database migrations completed"
