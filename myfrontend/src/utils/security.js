@@ -19,6 +19,7 @@ export const initializeSecurity = () => {
             }
         });
     }
+}
 
 /**
  * Sanitize text input to prevent XSS
