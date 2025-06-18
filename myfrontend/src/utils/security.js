@@ -19,18 +19,6 @@ export const initializeSecurity = () => {
             }
         });
     }
-    
-    // Set security headers for fetch requests
-    const originalFetch = window.fetch;
-    window.fetch = function(...args) {
-        if (args[1]) {
-            args[1].credentials = args[1].credentials || 'include';
-        } else {
-            args[1] = { credentials: 'include' };
-        }
-        return originalFetch.apply(this, args);
-    };
-};
 
 /**
  * Sanitize text input to prevent XSS
