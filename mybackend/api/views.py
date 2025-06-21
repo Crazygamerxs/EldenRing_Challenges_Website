@@ -271,54 +271,72 @@ class ChallengeAPIView(APIView):
     permission_classes = [permissions.AllowAny]  # Allow public access to challenges
     
     def get(self, request, challenge_id=None):
-        if challenge_id:
-            try:
-                challenge = Challenge.objects.get(id=challenge_id)
-                serializer = ChallengeSerializer(challenge)
-                
-                # Check if the user has completed this challenge
-                completed = False
-                if request.user.is_authenticated:
-                    completed = Submission.objects.filter(
-                        user=request.user,
-                        challenge=challenge,
-                        status='approved'
-                    ).exists()
-                
-                data = serializer.data
-                data['completed'] = completed
-                return Response(data)
-            except Challenge.DoesNotExist:
-                return Response(
-                    {"error": "Challenge not found"}, 
-                    status=status.HTTP_404_NOT_FOUND
-                )
-        else:
-            challenges = Challenge.objects.all()
-            serializer = ChallengeSerializer(challenges, many=True)
-            
-            # If user is authenticated, check completion status for each challenge
-            if request.user.is_authenticated:
-                user_completed_challenges = set(
-                    Submission.objects.filter(
-                        user=request.user,
-                        status='approved'
-                    ).values_list('challenge_id', flat=True)
-                )
-                
-                # Add completion status to each challenge
-                data = serializer.data
-                for challenge_data in data:
-                    challenge_data['completed'] = challenge_data['id'] in user_completed_challenges
-                
-                return Response(data)
+        try:
+            if challenge_id:
+                logger.info(f"Fetching challenge with ID: {challenge_id}")
+                try:
+                    challenge = Challenge.objects.get(id=challenge_id)
+                    serializer = ChallengeSerializer(challenge)
+                    
+                    # Check if the user has completed this challenge
+                    completed = False
+                    if request.user.is_authenticated:
+                        completed = Submission.objects.filter(
+                            user=request.user,
+                            challenge=challenge,
+                            status='approved'
+                        ).exists()
+                    
+                    data = serializer.data
+                    data['completed'] = completed
+                    logger.info(f"Successfully fetched challenge: {challenge.name}")
+                    return Response(data)
+                except Challenge.DoesNotExist:
+                    logger.error(f"Challenge with ID {challenge_id} not found")
+                    return Response(
+                        {"error": "Challenge not found"}, 
+                        status=status.HTTP_404_NOT_FOUND
+                    )
             else:
-                # For non-authenticated users, all challenges are not completed
-                data = serializer.data
-                for challenge_data in data:
-                    challenge_data['completed'] = False
+                logger.info("Fetching all challenges")
+                challenges = Challenge.objects.all()
+                challenge_count = challenges.count()
+                logger.info(f"Found {challenge_count} challenges in database")
                 
-                return Response(data)
+                if challenge_count == 0:
+                    logger.warning("No challenges found in database")
+                    return Response([], status=status.HTTP_200_OK)
+                
+                serializer = ChallengeSerializer(challenges, many=True)
+                
+                # If user is authenticated, check completion status for each challenge
+                if request.user.is_authenticated:
+                    user_completed_challenges = set(
+                        Submission.objects.filter(
+                            user=request.user,
+                            status='approved'
+                        ).values_list('challenge_id', flat=True)
+                    )
+                    
+                    # Add completion status to each challenge
+                    data = serializer.data
+                    for challenge_data in data:
+                        challenge_data['completed'] = challenge_data['id'] in user_completed_challenges
+                    
+                    return Response(data)
+                else:
+                    # For non-authenticated users, all challenges are not completed
+                    data = serializer.data
+                    for challenge_data in data:
+                        challenge_data['completed'] = False
+                    
+                    return Response(data)
+        except Exception as e:
+            logger.error(f"Error in ChallengeAPIView: {str(e)}")
+            return Response(
+                {"error": "Internal server error"}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
         
 @method_decorator(csrf_protect, name='dispatch')
 class ChallengeDetailView(generics.RetrieveAPIView):
