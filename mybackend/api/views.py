@@ -267,7 +267,6 @@ class HomeAPIView(APIView):
     def post(self, request):
         return Response({"message": "Home Page!"})
 
-@method_decorator(csrf_protect, name='dispatch')
 class ChallengeAPIView(APIView):
     permission_classes = [permissions.AllowAny]  # Allow public access to challenges
     

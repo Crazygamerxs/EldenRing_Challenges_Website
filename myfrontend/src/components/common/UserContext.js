@@ -11,10 +11,26 @@ export const UserProvider = ({ children }) => {
 
 
     useEffect(() => {
-        // Don't automatically fetch user profile on app startup
-        // This was causing 401 Unauthorized errors in production
-        // User profile will be fetched after successful login
-        setLoading(false);
+        // Check if user is already logged in on app startup
+        const checkExistingSession = async () => {
+            try {
+                setLoading(true);
+                const response = await axios.get(API_ENDPOINTS.USER_PROFILE, {
+                    withCredentials: true,
+                });
+                if (response.status === 200) {
+                    setUser(response.data);
+                }
+            } catch (error) {
+                // User is not logged in, which is fine
+                console.log('No existing session found');
+                setUser(null);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        checkExistingSession();
     }, []);
 
     const fetchUserProfile = async () => {

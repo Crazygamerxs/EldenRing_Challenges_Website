@@ -92,16 +92,17 @@ class MarkAllNotificationsReadView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-@method_decorator(csrf_protect, name='dispatch')
 class UnreadNotificationsCountView(APIView):
     """
     API endpoint for getting the count of unread notifications
     """
-    permission_classes = [IsAuthenticated]
-    
     def get(self, request):
         try:
-            # Count unread notifications
+            # Return 0 for unauthenticated users
+            if not request.user.is_authenticated:
+                return Response({'count': 0}, status=status.HTTP_200_OK)
+            
+            # Count unread notifications for authenticated users
             count = Notification.objects.filter(user=request.user, read=False).count()
             
             return Response({'count': count}, status=status.HTTP_200_OK)
