@@ -19,6 +19,7 @@ export const API_ENDPOINTS = {
     
     // Challenge endpoints
     CHALLENGES: `${getBaseUrl()}/api/challenge/`,
+    CHALLENGE_DETAIL: (id) => `${getBaseUrl()}/api/challenge/${id}/`,
     SUBMISSIONS: `${getBaseUrl()}/api/submissions/`,
     SUBMIT_RUN: `${getBaseUrl()}/api/submit_run/`,
     

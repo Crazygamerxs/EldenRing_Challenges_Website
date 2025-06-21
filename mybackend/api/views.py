@@ -267,6 +267,8 @@ class HomeAPIView(APIView):
 
 @method_decorator(csrf_protect, name='dispatch')
 class ChallengeAPIView(APIView):
+    permission_classes = [permissions.AllowAny]  # Allow public access to challenges
+    
     def get(self, request, challenge_id=None):
         if challenge_id:
             try:
@@ -327,6 +329,8 @@ class ChallengeSubmissionsView(APIView):
     """
     Fixed API view for retrieving challenge submissions
     """
+    permission_classes = [permissions.AllowAny]  # Allow public access to submissions
+    
     def get(self, request):
         try:
             challenge_id = request.GET.get('challenge')

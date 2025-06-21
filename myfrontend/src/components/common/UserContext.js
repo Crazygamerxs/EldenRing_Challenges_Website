@@ -11,26 +11,30 @@ export const UserProvider = ({ children }) => {
 
 
     useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const response = await axios.get(API_ENDPOINTS.USER_PROFILE, {
-                    withCredentials: true, // Ensure cookies are sent
-                });
-                if (response.status === 200) {
-                    setUser(response.data);
-                } else {
-                    setUser(null);
-                }
-            } catch (error) {
-                console.error('Error fetching user profile:', error);
-                setUser(null);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchUser();
+        // Don't automatically fetch user profile on app startup
+        // This was causing 401 Unauthorized errors in production
+        // User profile will be fetched after successful login
+        setLoading(false);
     }, []);
+
+    const fetchUserProfile = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.get(API_ENDPOINTS.USER_PROFILE, {
+                withCredentials: true, // Ensure cookies are sent
+            });
+            if (response.status === 200) {
+                setUser(response.data);
+            } else {
+                setUser(null);
+            }
+        } catch (error) {
+            console.error('Error fetching user profile:', error);
+            setUser(null);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const login = async (userData) => {
         try {
@@ -77,7 +81,7 @@ export const UserProvider = ({ children }) => {
     
 
     return (
-        <UserContext.Provider value={{ user, loading, login, logout }}>
+        <UserContext.Provider value={{ user, loading, login, logout, fetchUserProfile }}>
             {children}
         </UserContext.Provider>
     );
