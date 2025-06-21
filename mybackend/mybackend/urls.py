@@ -68,6 +68,9 @@ urlpatterns = [
     
     # Health check
     path('api/health/', HealthCheckView.as_view()),
+
+    path("api/db-test/", db_test_view),  # Add this
+
 ]
 
 # React app catch-all with error handling

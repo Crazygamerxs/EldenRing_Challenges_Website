@@ -556,3 +556,11 @@ class ReactAppView(TemplateView):
             'debug': False,  # Set to True for debugging
         })
         return context
+    
+
+def db_test_view(request):
+    try:
+        count = Challenge.objects.count()
+        return JsonResponse({"db_status": "connected", "challenge_count": count})
+    except Exception as e:
+        return JsonResponse({"db_status": "error", "message": str(e)})

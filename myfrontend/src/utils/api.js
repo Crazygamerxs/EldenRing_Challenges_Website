@@ -1,7 +1,7 @@
 // src/utils/api.js - Fixed API endpoints
 const getBaseUrl = () => {
     if (process.env.NODE_ENV === 'production') {
-        return 'https://eldenringchallenge.xyz'; // ✅ YOUR DEPLOYED DOMAIN
+        return 'https://eldenringchallenge.xyz';
     } else {
         return 'http://localhost:8888';
     }
