@@ -69,7 +69,7 @@ urlpatterns = [
     # Health check
     path('api/health/', HealthCheckView.as_view()),
 
-    path("api/db-test/", db_test_view),  # Add this
+    path("/db-test/", db_test_view),  # Add this
 
 ]
 
