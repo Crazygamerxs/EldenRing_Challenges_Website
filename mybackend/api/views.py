@@ -63,8 +63,9 @@ class SimpleAPIView(APIView):
     def get(self, request):
         return Response({"message": "Hello from Django!"})
     
-@method_decorator(csrf_protect, name='dispatch')
 class SignupAPIView(APIView):
+    permission_classes = [permissions.AllowAny]  # Allow public signup
+    
     def post(self, request):
         # Check if registrations are enabled
         try:
@@ -148,8 +149,9 @@ class SignupAPIView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
             
-@method_decorator(csrf_protect, name='dispatch')
 class LoginAPIView(APIView):
+    permission_classes = [permissions.AllowAny]  # Allow public login
+    
     def post(self, request):
         print("Login View - POST request")
         print("Request Data:", request.data)

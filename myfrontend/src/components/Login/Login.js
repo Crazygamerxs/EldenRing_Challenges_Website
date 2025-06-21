@@ -3,7 +3,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { UserContext } from '../common/UserContext';
 import './Login.css';
-import Cookies from 'js-cookie';
+import { API_ENDPOINTS } from '../../utils/api';
 import axios from 'axios';
 
 const LogIn = () => {
@@ -11,140 +11,40 @@ const LogIn = () => {
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
-    const [csrfReady, setCsrfReady] = useState(false);
     const navigate = useNavigate();
     const { login } = useContext(UserContext);
-
-    // Get API URL based on environment
-    const getApiUrl = (endpoint) => {
-        if (process.env.NODE_ENV === 'production') {
-            return endpoint; // Use relative URLs in production
-        } else {
-            return `http://localhost:8888${endpoint}`;
-        }
-    };
-
-    // Wait for CSRF token to be available
-    const waitForCsrfToken = async (maxWait = 5000) => {
-        const startTime = Date.now();
-        
-        while (Date.now() - startTime < maxWait) {
-            const token = Cookies.get('csrftoken');
-            if (token) {
-                console.log('CSRF token found:', token.substring(0, 10) + '...');
-                return token;
-            }
-            // Wait 100ms before checking again
-            await new Promise(resolve => setTimeout(resolve, 100));
-        }
-        
-        throw new Error('CSRF token not available after waiting');
-    };
-
-    // Ensure CSRF token is available when component mounts
-    useEffect(() => {
-        const ensureCsrfToken = async () => {
-            try {
-                // First check if token already exists
-                let token = Cookies.get('csrftoken');
-                
-                if (!token) {
-                    console.log('No CSRF token found, fetching...');
-                    // Fetch CSRF token
-                    await axios.get(getApiUrl('/api/csrf-token/'), { 
-                        withCredentials: true,
-                        timeout: 10000
-                    });
-                    
-                    // Wait for token to be set
-                    token = await waitForCsrfToken();
-                }
-                
-                setCsrfReady(true);
-                console.log('CSRF token ready for login page');
-            } catch (error) {
-                console.error('Error ensuring CSRF token:', error);
-                setError('Security initialization failed. Please refresh the page.');
-            }
-        };
-
-        ensureCsrfToken();
-    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
-        
-        if (!csrfReady) {
-            setError('Security token not ready. Please wait a moment.');
-            return;
-        }
-        
         setIsLoading(true);
     
         try {
-            // Get CSRF token with retry
-            const csrfToken = await waitForCsrfToken();
-            console.log('Using CSRF Token for login:', csrfToken.substring(0, 10) + '...');
-    
-            const response = await axios.post(getApiUrl('/api/login/'), {
-                username: username.trim().toLowerCase(), // Ensure lowercase
+            console.log('Attempting login...');
+            
+            const response = await axios.post(API_ENDPOINTS.LOGIN, {
+                username: username.trim().toLowerCase(),
                 password
             }, {
                 withCredentials: true,
-                headers: {
-                    'X-CSRFToken': csrfToken,
-                },
                 timeout: 10000
             });
 
             console.log('Login successful:', response.data);
             
-            // Update user context
-            await login({ username });
+            // Update user context with the returned user data
+            await login(response.data.user);
             
             navigate('/home?loginSuccess=Login successful!');
         } catch (error) {
             console.error('Error during login:', error);
             
-            if (error.response?.status === 403) {
-                // Try to refresh CSRF token and retry once
-                try {
-                    console.log('403 error, trying to refresh CSRF token...');
-                    await axios.get(getApiUrl('/api/csrf-token/'), { 
-                        withCredentials: true,
-                        timeout: 10000
-                    });
-                    
-                    // Wait for new token
-                    const newToken = await waitForCsrfToken();
-                    console.log('Got new CSRF token, retrying login...');
-                    
-                    // Retry login with new token
-                    const retryResponse = await axios.post(getApiUrl('/api/login/'), {
-                        username: username.trim().toLowerCase(),
-                        password
-                    }, {
-                        withCredentials: true,
-                        headers: {
-                            'X-CSRFToken': newToken,
-                        },
-                        timeout: 10000
-                    });
-                    
-                    console.log('Retry login successful:', retryResponse.data);
-                    await login({ username });
-                    navigate('/home?loginSuccess=Login successful!');
-                    return;
-                    
-                } catch (retryError) {
-                    console.error('Retry also failed:', retryError);
-                    setError('Security token expired. Please refresh the page and try again.');
-                }
-            } else if (error.response?.status === 401) {
+            if (error.response?.status === 401) {
                 setError('Invalid username or password.');
-            } else if (error.message.includes('CSRF')) {
-                setError('Security token not available. Please refresh the page.');
+            } else if (error.response?.status === 403) {
+                setError('Authentication failed. Please try again.');
+            } else if (error.response?.data?.error) {
+                setError(error.response.data.error);
             } else {
                 setError('Login failed. Please try again.');
             }
@@ -157,19 +57,6 @@ const LogIn = () => {
         <div className='login-page'>
             <div className="login-content">
                 <h2>LOGIN TO ELDENRING.CA</h2>
-                
-                {!csrfReady && (
-                    <div style={{ 
-                        background: '#a98b2d', 
-                        color: 'white', 
-                        padding: '10px', 
-                        borderRadius: '5px', 
-                        marginBottom: '15px',
-                        textAlign: 'center'
-                    }}>
-                        Initializing security...
-                    </div>
-                )}
                 
                 {error && (
                     <div style={{ 
@@ -192,7 +79,7 @@ const LogIn = () => {
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             required
-                            disabled={!csrfReady || isLoading}
+                            disabled={isLoading}
                         />
                     </div>
                     <div className="form-group">
@@ -203,13 +90,13 @@ const LogIn = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            disabled={!csrfReady || isLoading}
+                            disabled={isLoading}
                         />
                     </div>
                     <div className="form-actions">
                         <button 
                             type="submit" 
-                            disabled={!csrfReady || isLoading}
+                            disabled={isLoading}
                         >
                             {isLoading ? 'Logging in...' : 'Log In'}
                         </button>

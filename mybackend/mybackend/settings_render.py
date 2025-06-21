@@ -148,14 +148,15 @@ WHITENOISE_MIMETYPES = {
 WHITENOISE_USE_FINDERS = True
 WHITENOISE_AUTOREFRESH = True
 
-# FIXED CSRF SETTINGS - This was the main issue!
+# FIXED CSRF SETTINGS - Enhanced for production
 CSRF_COOKIE_HTTPONLY = False  # React needs to read this
 CSRF_COOKIE_SECURE = True  # Use HTTPS in production
-CSRF_COOKIE_SAMESITE = 'Lax'  # Changed from 'None' - this was causing issues
-CSRF_USE_SESSIONS = False
+CSRF_COOKIE_SAMESITE = 'Lax'  # Works better than 'None' for same-origin requests
+CSRF_USE_SESSIONS = False  # Use cookies instead of sessions for CSRF
 CSRF_COOKIE_AGE = 31449600  # 1 year
 CSRF_COOKIE_NAME = 'csrftoken'
-# REMOVED: CSRF_COOKIE_DOMAIN - this was restricting to localhost only!
+CSRF_COOKIE_PATH = '/'  # Ensure cookie is available site-wide
+# REMOVED: CSRF_COOKIE_DOMAIN - let Django auto-detect the domain
 
 # CRITICAL: Add your production domains to trusted origins
 CSRF_TRUSTED_ORIGINS = [
@@ -165,6 +166,9 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',  # Keep for development
     'http://127.0.0.1:3000',
 ]
+
+# Add CSRF failure view for better debugging
+CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
 
 # CORS settings - Fixed for production
 CORS_ALLOWED_ORIGINS = [

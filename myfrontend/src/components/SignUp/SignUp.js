@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import './SignUp.css';
-import { validateUsername, validateEmail, validatePassword, sanitizeInput } from '../../utils/security';
 import { API_ENDPOINTS } from '../../utils/api';
 
 const SignUp = () => {
@@ -13,55 +11,7 @@ const SignUp = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
-    const [csrfReady, setCsrfReady] = useState(false);
     const navigate = useNavigate();
-
-    // Wait for CSRF token to be available
-    const waitForCsrfToken = async (maxWait = 5000) => {
-        const startTime = Date.now();
-        
-        while (Date.now() - startTime < maxWait) {
-            const token = Cookies.get('csrftoken');
-            if (token) {
-                console.log('CSRF token found:', token.substring(0, 10) + '...');
-                return token;
-            }
-            // Wait 100ms before checking again
-            await new Promise(resolve => setTimeout(resolve, 100));
-        }
-        
-        throw new Error('CSRF token not available after waiting');
-    };
-
-    // Ensure CSRF token is available when component mounts
-    useEffect(() => {
-        const ensureCsrfToken = async () => {
-            try {
-                // First check if token already exists
-                let token = Cookies.get('csrftoken');
-                
-                if (!token) {
-                    console.log('No CSRF token found, fetching...');
-                    // Fetch CSRF token
-                    await axios.get(API_ENDPOINTS.CSRF_TOKEN, { 
-                        withCredentials: true,
-                        timeout: 10000
-                    });
-                    
-                    // Wait for token to be set
-                    token = await waitForCsrfToken();
-                }
-                
-                setCsrfReady(true);
-                console.log('CSRF token ready for signup page');
-            } catch (error) {
-                console.error('Error ensuring CSRF token:', error);
-                setError('Security initialization failed. Please refresh the page.');
-            }
-        };
-
-        ensureCsrfToken();
-    }, []);
 
     // Validate form inputs
     const validateForm = () => {
@@ -98,11 +48,6 @@ const SignUp = () => {
         setError('');
         setSuccess('');
 
-        if (!csrfReady) {
-            setError('Security token not ready. Please wait a moment.');
-            return;
-        }
-
         if (!validateForm()) {
             return;
         }
@@ -110,58 +55,40 @@ const SignUp = () => {
         setIsLoading(true);
 
         try {
-            // Get CSRF token with retry
-            const csrfToken = await waitForCsrfToken();
-            console.log('Using CSRF Token for signup:', csrfToken.substring(0, 10) + '...');
-
-            const response = await fetch(API_ENDPOINTS.SIGNUP, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': csrfToken,
-                },
-                body: JSON.stringify({ 
-                    username: username.trim().toLowerCase(), 
-                    email: email.trim().toLowerCase(), 
-                    password 
-                }),
-                credentials: 'include',
+            console.log('Attempting signup...');
+            
+            const response = await axios.post(API_ENDPOINTS.SIGNUP, {
+                username: username.trim().toLowerCase(), 
+                email: email.trim().toLowerCase(), 
+                password 
+            }, {
+                withCredentials: true,
+                timeout: 10000
             });
 
-            if (response.ok) {
-                setSuccess('Account created successfully! Redirecting to login...');
-                
-                // Clear form
-                setUsername('');
-                setEmail('');
-                setPassword('');
-                
-                // Redirect to login page after a short delay
-                setTimeout(() => {
-                    navigate('/login?signupSuccess=Account created successfully! Please log in.');
-                }, 2000);
-            } else {
-                const errorData = await response.json();
-                
-                if (errorData.error) {
-                    setError(errorData.error);
-                } else if (response.status === 400) {
-                    setError('Invalid input. Please check your information and try again.');
-                } else if (response.status === 403) {
-                    setError('Security token expired. Please refresh the page and try again.');
-                } else {
-                    setError('Sign up failed. Please try again.');
-                }
-            }
+            console.log('Signup successful:', response.data);
+            setSuccess('Account created successfully! Redirecting to login...');
+            
+            // Clear form
+            setUsername('');
+            setEmail('');
+            setPassword('');
+            
+            // Redirect to login page after a short delay
+            setTimeout(() => {
+                navigate('/login?signupSuccess=Account created successfully! Please log in.');
+            }, 2000);
         } catch (error) {
             console.error('Error during signup:', error);
             
-            if (error.message.includes('CSRF')) {
-                setError('Security token not available. Please refresh the page.');
-            } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
-                setError('Network error. Please check your connection and try again.');
+            if (error.response?.data?.error) {
+                setError(error.response.data.error);
+            } else if (error.response?.status === 400) {
+                setError('Invalid input. Please check your information and try again.');
+            } else if (error.response?.status === 403) {
+                setError('Authentication failed. Please try again.');
             } else {
-                setError('An unexpected error occurred. Please try again.');
+                setError('Sign up failed. Please try again.');
             }
         } finally {
             setIsLoading(false);
@@ -172,19 +99,6 @@ const SignUp = () => {
         <div className='signup-page'>
             <div className="sign-up-content">
                 <h2>SIGN UP FOR ELDENRING.CA</h2>
-                
-                {!csrfReady && (
-                    <div style={{ 
-                        background: '#a98b2d', 
-                        color: 'white', 
-                        padding: '10px', 
-                        borderRadius: '5px', 
-                        marginBottom: '15px',
-                        textAlign: 'center'
-                    }}>
-                        Initializing security...
-                    </div>
-                )}
                 
                 {error && (
                     <div style={{ 
@@ -219,7 +133,7 @@ const SignUp = () => {
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             required
-                            disabled={!csrfReady || isLoading}
+                            disabled={isLoading}
                             placeholder="Enter a unique username"
                             maxLength={30}
                         />
@@ -235,7 +149,7 @@ const SignUp = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            disabled={!csrfReady || isLoading}
+                            disabled={isLoading}
                             placeholder="Enter your email address"
                         />
                         <small style={{ color: '#909090', fontSize: '12px' }}>
@@ -250,7 +164,7 @@ const SignUp = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            disabled={!csrfReady || isLoading}
+                            disabled={isLoading}
                             placeholder="Create a strong password"
                             minLength={8}
                         />
@@ -261,7 +175,7 @@ const SignUp = () => {
                     <div className="form-actions">
                         <button 
                             type="submit" 
-                            disabled={!csrfReady || isLoading}
+                            disabled={isLoading}
                         >
                             {isLoading ? 'Creating Account...' : 'Sign Up'}
                         </button>
