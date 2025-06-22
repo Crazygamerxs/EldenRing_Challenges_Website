@@ -140,7 +140,7 @@ const TopBar = () => {
                         {/* Notification icon with unread count */}
                         <Link to="/notifications" className="notification-icon-link hover-effect">
                             <div className="notification-icon-container">
-                                <i className="fas fa-bell"></i>
+                                <img src={images.notification} alt="notifications" className="notification-icon-svg" />
                                 {unreadCount > 0 && (
                                     <span className="notification-badge">{unreadCount > 9 ? '9+' : unreadCount}</span>
                                 )}

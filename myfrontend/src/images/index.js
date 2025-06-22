@@ -10,7 +10,7 @@ import pin from './pin.png';
 import success_icon from './success_icon.png';
 import ranni_icon from './ranni_icon.png';
 import tarnished_icon from './tarnished_icon.png';
-
+import notification from './notification.svg';;
 
 import { API_ENDPOINTS } from '../utils/api';
 const images = { 
@@ -25,7 +25,8 @@ pp_3,
 pin,
 success_icon,
 tarnished_icon,
-ranni_icon
+ranni_icon,
+notification
 };
 
 export default images;
