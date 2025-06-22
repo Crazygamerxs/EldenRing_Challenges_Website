@@ -159,11 +159,28 @@ class AdminApproveSubmissionView(APIView):
     
     def dispatch(self, request, *args, **kwargs):
         # Custom admin check - allow staff or superuser
+        if not request.user.is_authenticated:
+            from rest_framework.response import Response
+            from rest_framework import status
+            return Response(
+                {'error': 'Authentication required'}, 
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+        
         if not (request.user.is_staff or request.user.is_superuser):
             from rest_framework.response import Response
             from rest_framework import status
             return Response(
-                {'error': 'Admin privileges required'}, 
+                {
+                    'error': 'Admin privileges required',
+                    'debug': {
+                        'user_id': request.user.id,
+                        'username': request.user.username,
+                        'is_staff': request.user.is_staff,
+                        'is_superuser': request.user.is_superuser,
+                        'is_authenticated': request.user.is_authenticated
+                    }
+                }, 
                 status=status.HTTP_403_FORBIDDEN
             )
         return super().dispatch(request, *args, **kwargs)
