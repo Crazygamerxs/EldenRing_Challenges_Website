@@ -25,14 +25,12 @@ const AdminPanel = () => {
     const fetchAdminData = async () => {
         setLoading(true);
         try {
-            const csrfToken = Cookies.get('csrftoken');
-            
             // Fetch admin dashboard stats
             const statsResponse = await fetch(API_ENDPOINTS.ADMIN_STATS, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
-                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json',
                 },
             });
 
@@ -41,30 +39,36 @@ const AdminPanel = () => {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
-                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json',
                 },
             });
 
             if (!statsResponse.ok || !submissionsResponse.ok) {
-                throw new Error('Failed to fetch admin data');
+                console.error('API Response Status:', {
+                    stats: statsResponse.status,
+                    submissions: submissionsResponse.status
+                });
+                throw new Error(`Failed to fetch admin data: Stats ${statsResponse.status}, Submissions ${submissionsResponse.status}`);
             }
 
             const statsData = await statsResponse.json();
             const submissionsData = await submissionsResponse.json();
 
+            console.log('Admin data fetched successfully:', { statsData, submissionsData });
             setStats(statsData);
             setRecentSubmissions(submissionsData);
         } catch (error) {
             console.error('Error fetching admin data:', error);
-            // Use mock data for demonstration
+            // Show error state instead of mock data
             setStats({
-                totalUsers: 125,
-                totalChallenges: 42,
-                pendingSubmissions: 15,
-                approvedSubmissions: 87,
-                rejectedSubmissions: 23
+                totalUsers: 0,
+                totalChallenges: 0,
+                pendingSubmissions: 0,
+                approvedSubmissions: 0,
+                rejectedSubmissions: 0,
+                error: 'Failed to load admin statistics'
             });
-            setRecentSubmissions(generateMockSubmissions());
+            setRecentSubmissions([]);
         } finally {
             setLoading(false);
         }

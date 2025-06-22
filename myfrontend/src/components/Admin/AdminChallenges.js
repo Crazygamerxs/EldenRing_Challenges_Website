@@ -30,27 +30,28 @@ const AdminChallenges = () => {
     const fetchChallenges = async () => {
         setLoading(true);
         try {
-            const csrfToken = Cookies.get('csrftoken');
-            const endpoint = `${API_ENDPOINTS.ADMIN_CHALLENGES}?category=filter !== 'all' ? filter : ''`;
+            const endpoint = filter !== 'all' ? `${API_ENDPOINTS.ADMIN_CHALLENGES}?category=${filter}` : API_ENDPOINTS.ADMIN_CHALLENGES;
             
             const response = await fetch(endpoint, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
-                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json',
                 },
             });
 
             if (!response.ok) {
-                throw new Error('Failed to fetch challenges');
+                console.error('Failed to fetch challenges:', response.status);
+                throw new Error(`Failed to fetch challenges: ${response.status}`);
             }
 
             const data = await response.json();
+            console.log('Challenges fetched successfully:', data);
             setChallenges(data);
         } catch (error) {
             console.error('Error fetching challenges:', error);
-            // Use mock data for demonstration
-            setChallenges(generateMockChallenges(filter));
+            // Show error state instead of mock data
+            setChallenges([]);
         } finally {
             setLoading(false);
         }
@@ -58,36 +59,26 @@ const AdminChallenges = () => {
 
     const fetchCategories = async () => {
         try {
-            const csrfToken = Cookies.get('csrftoken');
             const response = await fetch(API_ENDPOINTS.ADMIN_CATEGORIES, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
-                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json',
                 },
             });
 
             if (!response.ok) {
-                throw new Error('Failed to fetch categories');
+                console.error('Failed to fetch categories:', response.status);
+                throw new Error(`Failed to fetch categories: ${response.status}`);
             }
 
             const data = await response.json();
+            console.log('Categories fetched successfully:', data);
             setCategories(data);
         } catch (error) {
             console.error('Error fetching categories:', error);
-            // Use mock data for demonstration
-            setCategories([
-                { id: 1, name: 'General Challenges' },
-                { id: 2, name: 'Basic Weaponry Challenges' },
-                { id: 3, name: 'Advanced Weaponry Challenges' },
-                { id: 4, name: 'Advanced Spell Challenges' },
-                { id: 5, name: 'Status Challenges' },
-                { id: 6, name: 'Crafting and Item Challenges' },
-                { id: 7, name: 'Healing and FP Recovery Challenges' },
-                { id: 8, name: 'Level/Stats Challenges' },
-                { id: 9, name: 'Challenges for the Brave or Insane' },
-                { id: 10, name: 'Challenge Combination Examples' }
-            ]);
+            // Show error state instead of mock data
+            setCategories([]);
         }
     };
 
