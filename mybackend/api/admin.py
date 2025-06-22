@@ -116,8 +116,8 @@ class SubmissionAdmin(admin.ModelAdmin):
 # Notification Admin
 @admin.register(Notification)
 class NotificationAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'title', 'type', 'status', 'is_read', 'created_at')
-    list_filter = ('type', 'status', 'is_read', 'created_at')
+    list_display = ('id', 'user', 'title', 'type', 'status', 'read', 'created_at')
+    list_filter = ('type', 'status', 'read', 'created_at')
     search_fields = ('user__username', 'title', 'content')
     ordering = ('-created_at',)
     
@@ -126,15 +126,15 @@ class NotificationAdmin(admin.ModelAdmin):
             'fields': ('user', 'title', 'content', 'type')
         }),
         ('Status & Links', {
-            'fields': ('status', 'is_read', 'challenge')
+            'fields': ('status', 'read', 'challenge')
         }),
         ('Timestamps', {
-            'fields': ('created_at', 'read_at'),
+            'fields': ('created_at',),
             'classes': ('collapse',)
         }),
     )
     
-    readonly_fields = ('created_at', 'read_at')
+    readonly_fields = ('created_at',)
 
 # Site Settings Admin
 @admin.register(SiteSettings)
