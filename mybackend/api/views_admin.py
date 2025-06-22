@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .models import User, Challenge, Challenge_Category, Submission, Notification, SiteSettings  # ADDED SiteSettings
+from .models import User, Challenge, Challenge_Category, Submission, Notification, SiteSettings
 from .serializers import SubmissionSerializer, ChallengeSerializer, UserSerializer
 from django.views.decorators.csrf import csrf_protect
 from django.utils.decorators import method_decorator
@@ -10,7 +10,6 @@ from django.db.models import Count, Avg
 from django.utils import timezone
 from datetime import timedelta
 import json
-from .models import User, Challenge, Challenge_Category, Submission, Notification, SiteSettings
 
 
 class IsAdminOrSuperUser(permissions.BasePermission):
@@ -60,7 +59,6 @@ class AdminStatsView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-@method_decorator(csrf_protect, name='dispatch')
 class AdminSettingsView(APIView):
     """
     API endpoint for managing site settings - NOW WITH REAL PERSISTENCE
@@ -153,7 +151,6 @@ class AdminSettingsView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-@method_decorator(csrf_protect, name='dispatch')
 class AdminApproveSubmissionView(APIView):
     """
     Enhanced API endpoint for approving a submission with points calculation
@@ -234,7 +231,6 @@ class AdminApproveSubmissionView(APIView):
                 {'error': f'Failed to approve submission: {str(e)}'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-@method_decorator(csrf_protect, name='dispatch')
 class AdminRejectSubmissionView(APIView):
     """
     Enhanced API endpoint for rejecting a submission with points removal
@@ -344,7 +340,6 @@ class AdminSubmissionsView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-@method_decorator(csrf_protect, name='dispatch')
 class AdminChallengesView(APIView):
     """
     Enhanced API endpoint for managing challenges with points information
@@ -441,7 +436,6 @@ class AdminChallengesView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-@method_decorator(csrf_protect, name='dispatch')
 class AdminUsersView(APIView):
     """
     Enhanced API endpoint for managing users with points information
@@ -477,7 +471,6 @@ class AdminUsersView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-@method_decorator(csrf_protect, name='dispatch')
 class AdminRecentSubmissionsView(APIView):
     """
     API endpoint for retrieving recent submissions for admin dashboard
@@ -510,7 +503,6 @@ class AdminRecentSubmissionsView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-@method_decorator(csrf_protect, name='dispatch')
 class AdminChallengeDetailView(APIView):
     """
     API endpoint for managing a specific challenge
@@ -656,7 +648,6 @@ class AdminChallengeDetailView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-@method_decorator(csrf_protect, name='dispatch')
 class AdminCategoriesView(APIView):
     """
     API endpoint for retrieving challenge categories
@@ -688,7 +679,6 @@ class AdminCategoriesView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-@method_decorator(csrf_protect, name='dispatch')
 class AdminUserDetailView(APIView):
     """
     API endpoint for managing a specific user with points information

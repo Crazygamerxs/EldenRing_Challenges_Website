@@ -58,7 +58,12 @@ urlpatterns = [
     path('api/admin/submissions/<int:submission_id>/approve/', AdminApproveSubmissionView.as_view()),
     path('api/admin/submissions/<int:submission_id>/reject/', AdminRejectSubmissionView.as_view()),
     path('api/admin/challenges/', AdminChallengesView.as_view()),
+    path('api/admin/challenges/<int:challenge_id>/', AdminChallengeDetailView.as_view()),
     path('api/admin/users/', AdminUsersView.as_view()),
+    path('api/admin/users/<int:user_id>/', AdminUserDetailView.as_view()),
+    path('api/admin/users/<int:user_id>/status/', AdminUserStatusView.as_view()),
+    path('api/admin/categories/', AdminCategoriesView.as_view()),
+    path('api/admin/recent-submissions/', AdminRecentSubmissionsView.as_view()),
     path('api/admin/settings/', AdminSettingsView.as_view()),
     
     # Notifications
