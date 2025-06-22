@@ -571,8 +571,8 @@
     white-space: nowrap;
     gap: 6px; /* Reduced gap for better proportions */
     background: linear-gradient(135deg, #222b33 0%, #2c3b47 50%, #3a4a59 100%); /* Navbar-like background */
-    min-width: 280px; /* Reduced width to give notification bell more space */
-    max-width: 280px; /* Consistent width */
+    min-width: 220px; /* Further reduced for notification bell space */
+    max-width: 220px; /* Consistent smaller width */
 }
 
 /* Tarnished theme - subtle before hover */
