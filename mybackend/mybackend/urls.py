@@ -26,8 +26,8 @@ def debug_view(request):
     )
 
 urlpatterns = [
-    # Django admin
-    path('admin/', admin.site.urls),
+    # Django admin - be more specific to avoid conflicts with React admin
+    path('django-admin/', admin.site.urls),
     
     # Debug endpoint
     path('debug/', debug_view),
