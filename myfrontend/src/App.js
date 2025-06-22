@@ -25,16 +25,10 @@ import { NotificationProvider } from './components/common/NotificationContext';
 import RouteLoader from './components/common/RouteLoader';
 import PrivateRoute from './components/common/PrivateRoute';
 import AdminRoute from './components/common/AdminRoute';
-import CSRFTOKEN from "./components/common/CSRFToken";
 import ErrorBoundary from './components/common/ErrorBoundary';
-import { initializeSecurity } from './utils/security';
 
 const App = () => {
     const [isLoading, setIsLoading] = useState(false);
-
-    useEffect(() => {
-        initializeSecurity();
-    }, []);
 
     return (
         <ErrorBoundary showDetails={process.env.NODE_ENV === 'development'}>
@@ -42,7 +36,6 @@ const App = () => {
                 <NotificationProvider>
                     <Router>
                         <TopBar />
-                        <CSRFTOKEN />
                         <LoadingIndicator isVisible={isLoading} />
                         <Routes>
                             <Route path="/" element={<Home />} />

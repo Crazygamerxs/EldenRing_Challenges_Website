@@ -73,17 +73,17 @@ const TopBar = () => {
     
     const buttonMessages = [
         {
-            text: "Support the Tarnished",
+            text: "Support the Tarnished on their journey",
             icon: "⚔️",
             theme: "tarnished"
         },
         {
-            text: "Fund Ranni's research",
+            text: "Fund Ranni's mystical research endeavors",
             icon: "🌙",
             theme: "ranni"
         },
         {
-            text: "Aid a lost Tarnished",
+            text: "Aid a weary Tarnished in their quest",
             icon: "🔥",
             theme: "weary"
         }
