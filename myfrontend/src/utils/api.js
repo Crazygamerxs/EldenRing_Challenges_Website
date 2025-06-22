@@ -33,6 +33,12 @@ export const API_ENDPOINTS = {
     ADMIN_CHALLENGES: `${getBaseUrl()}/api/admin/challenges/`,
     ADMIN_USERS: `${getBaseUrl()}/api/admin/users/`,
     ADMIN_SETTINGS: `${getBaseUrl()}/api/admin/settings/`,
+    ADMIN_CATEGORIES: `${getBaseUrl()}/api/admin/categories/`,
+    ADMIN_RECENT_SUBMISSIONS: `${getBaseUrl()}/api/admin/recent-submissions/`,
+    ADMIN_CHALLENGE_DETAIL: (id) => `${getBaseUrl()}/api/admin/challenges/${id}/`,
+    ADMIN_USER_DETAIL: (id) => `${getBaseUrl()}/api/admin/users/${id}/`,
+    ADMIN_APPROVE_SUBMISSION: (id) => `${getBaseUrl()}/api/admin/submissions/${id}/approve/`,
+    ADMIN_REJECT_SUBMISSION: (id) => `${getBaseUrl()}/api/admin/submissions/${id}/reject/`,
     
     // Notification endpoints
     NOTIFICATIONS: `${getBaseUrl()}/api/notifications/`,
@@ -45,30 +51,8 @@ export const API_ENDPOINTS = {
 // Axios configuration
 import axios from 'axios';
 
-// Set default configuration
+// Set default configuration for session-based auth
 axios.defaults.withCredentials = true;
-axios.defaults.xsrfCookieName = 'csrftoken';
-axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-
-// Add a request interceptor to ensure CSRF token is included
-axios.interceptors.request.use(
-    (config) => {
-        // Get CSRF token from cookie
-        const csrfToken = document.cookie
-            .split('; ')
-            .find(row => row.startsWith('csrftoken='))
-            ?.split('=')[1];
-        
-        if (csrfToken) {
-            config.headers['X-CSRFToken'] = csrfToken;
-        }
-        
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
-    }
-);
 
 // Add a response interceptor to handle common errors
 axios.interceptors.response.use(
@@ -76,10 +60,10 @@ axios.interceptors.response.use(
         return response;
     },
     (error) => {
-        if (error.response?.status === 403) {
-            console.warn('CSRF token may have expired');
-        } else if (error.response?.status === 401) {
+        if (error.response?.status === 401) {
             console.warn('Authentication required');
+        } else if (error.response?.status === 403) {
+            console.warn('Access forbidden');
         }
         
         return Promise.reject(error);
