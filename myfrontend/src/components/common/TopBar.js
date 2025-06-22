@@ -4,7 +4,7 @@ import './common.css';
 import images from '../../images';
 import { UserContext } from '../common/UserContext';
 import { API_ENDPOINTS } from '../../utils/api';
-import Cookies from 'js-cookie';
+import axios from 'axios';
 
 const TopBar = () => {
     const { user, loading, logout } = useContext(UserContext);
@@ -14,25 +14,16 @@ const TopBar = () => {
     // Memoized function to fetch unread count
     const fetchUnreadNotificationsCount = useCallback(async () => {
         try {
-            const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch(API_ENDPOINTS.NOTIFICATIONS_UNREAD_COUNT, {
-                method: 'GET',
-                credentials: 'include',
-                headers: {
-                    'X-CSRFToken': csrfToken,
-                },
+            const response = await axios.get(API_ENDPOINTS.NOTIFICATIONS_UNREAD_COUNT, {
+                withCredentials: true,
+                timeout: 5000
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch unread notifications count');
-            }
-
-            const data = await response.json();
-            setUnreadCount(data.count);
+            setUnreadCount(response.data.count || 0);
         } catch (error) {
             console.error('Error fetching unread notifications count:', error);
-            // For demo, set a random count
-            setUnreadCount(Math.floor(Math.random() * 5));
+            // Set to 0 on error instead of random number
+            setUnreadCount(0);
         }
     }, []);
 

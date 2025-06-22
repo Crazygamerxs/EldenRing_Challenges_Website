@@ -20,7 +20,6 @@ class IsAdminOrSuperUser(permissions.BasePermission):
     def has_permission(self, request, user):
         return bool(request.user and (request.user.is_staff or request.user.is_superuser))
 
-@method_decorator(csrf_protect, name='dispatch')
 class AdminStatsView(APIView):
     """
     API endpoint for retrieving admin dashboard statistics
@@ -297,7 +296,6 @@ class AdminRejectSubmissionView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-@method_decorator(csrf_protect, name='dispatch')
 class AdminSubmissionsView(APIView):
     """
     Enhanced API endpoint for retrieving submissions with points information
@@ -822,4 +820,3 @@ class AdminUserStatusView(APIView):
                 {'error': f'Failed to update user status: {str(e)}'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-
