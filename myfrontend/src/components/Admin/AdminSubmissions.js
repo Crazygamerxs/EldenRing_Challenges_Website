@@ -33,34 +33,45 @@ const AdminSubmissions = () => {
     const fetchSubmissions = async () => {
         setLoading(true);
         try {
-            const csrfToken = Cookies.get('csrftoken');
-            let endpoint = `${API_ENDPOINTS.ADMIN_SUBMISSIONS}?status=statusFilter`;
+            let endpoint = API_ENDPOINTS.ADMIN_SUBMISSIONS;
             
+            // Build query parameters
+            const params = new URLSearchParams();
+            if (statusFilter !== 'all') {
+                params.append('status', statusFilter);
+            }
             if (userFilter) {
-                endpoint += `&user=${userFilter}`;
+                params.append('user', userFilter);
+            }
+            if (challengeFilter) {
+                params.append('challenge', challengeFilter);
             }
             
-            if (challengeFilter) {
-                endpoint += `&challenge=${challengeFilter}`;
+            if (params.toString()) {
+                endpoint += `?${params.toString()}`;
             }
+            
+            console.log('Fetching submissions from:', endpoint);
             
             const response = await fetch(endpoint, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
-                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json',
                 },
             });
 
             if (!response.ok) {
-                throw new Error('Failed to fetch submissions');
+                console.error('Failed to fetch submissions:', response.status);
+                throw new Error(`Failed to fetch submissions: ${response.status}`);
             }
 
             const data = await response.json();
+            console.log('Submissions fetched successfully:', data);
             setSubmissions(data);
         } catch (error) {
             console.error('Error fetching submissions:', error);
-            alert('Failed to load submissions. Please refresh the page.');
+            setSubmissions([]);
         } finally {
             setLoading(false);
         }
@@ -71,28 +82,28 @@ const AdminSubmissions = () => {
 const handleApprove = async (submissionId, adminTime = '') => {
     setActionLoading(true);
     try {
-        const csrfToken = Cookies.get('csrftoken');
         const requestBody = {};
         
         if (adminTime) {
             requestBody.admin_verified_time = adminTime;
         }
         
-        const response = await fetch(`API_ENDPOINTS.ADMIN_APPROVE_SUBMISSION(submissionId)`, {
+        const response = await fetch(API_ENDPOINTS.ADMIN_APPROVE_SUBMISSION(submissionId), {
             method: 'POST',
             credentials: 'include',
             headers: {
-                'X-CSRFToken': csrfToken,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(requestBody),
         });
 
         if (!response.ok) {
-            throw new Error('Failed to approve submission');
+            console.error('Failed to approve submission:', response.status);
+            throw new Error(`Failed to approve submission: ${response.status}`);
         }
 
         const result = await response.json();
+        console.log('Submission approved successfully:', result);
         
         // Update local state
         setSubmissions(prevSubmissions => 
@@ -141,20 +152,21 @@ const handleApprove = async (submissionId, adminTime = '') => {
 
         setActionLoading(true);
         try {
-            const csrfToken = Cookies.get('csrftoken');
-            const response = await fetch(`API_ENDPOINTS.ADMIN_REJECT_SUBMISSION(selectedSubmission.id)`, {
+            const response = await fetch(API_ENDPOINTS.ADMIN_REJECT_SUBMISSION(selectedSubmission.id), {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
-                    'X-CSRFToken': csrfToken,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ reason: rejectReason }),
             });
 
             if (!response.ok) {
-                throw new Error('Failed to reject submission');
+                console.error('Failed to reject submission:', response.status);
+                throw new Error(`Failed to reject submission: ${response.status}`);
             }
+
+            console.log('Submission rejected successfully');
 
             // Update local state
             setSubmissions(prevSubmissions => 
@@ -178,17 +190,17 @@ const handleApprove = async (submissionId, adminTime = '') => {
 
     const fetchUsers = async () => {
         try {
-            const csrfToken = Cookies.get('csrftoken');
             const response = await fetch(API_ENDPOINTS.ADMIN_USERS, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
-                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json',
                 },
             });
 
             if (response.ok) {
                 const data = await response.json();
+                console.log('Users fetched successfully:', data);
                 setUsers(data);
             }
         } catch (error) {
@@ -198,17 +210,17 @@ const handleApprove = async (submissionId, adminTime = '') => {
 
     const fetchChallenges = async () => {
         try {
-            const csrfToken = Cookies.get('csrftoken');
             const response = await fetch(API_ENDPOINTS.ADMIN_CHALLENGES, {
                 method: 'GET',
                 credentials: 'include',
                 headers: {
-                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json',
                 },
             });
 
             if (response.ok) {
                 const data = await response.json();
+                console.log('Challenges fetched successfully:', data);
                 setChallenges(data);
             }
         } catch (error) {
