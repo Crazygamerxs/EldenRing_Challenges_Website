@@ -23,7 +23,6 @@ export const UserProvider = ({ children }) => {
                 }
             } catch (error) {
                 // User is not logged in, which is fine
-                console.log('No existing session found');
                 setUser(null);
             } finally {
                 setLoading(false);
@@ -64,7 +63,6 @@ export const UserProvider = ({ children }) => {
         try {
             // Retrieve the CSRF token from cookies
             const csrfToken = Cookies.get('csrftoken');
-            console.log('CSRF Token being sent:', csrfToken);  // Debugging
     
             // Send POST request to logout endpoint
             const response = await axios.post(API_ENDPOINTS.LOGOUT, {}, {
@@ -76,7 +74,6 @@ export const UserProvider = ({ children }) => {
     
             // Handle response
             if (response.status === 200) {
-                console.log('Logout successful');  // Debugging
                 setUser(null);  // Update user context or state
     
                 // Remove cookies

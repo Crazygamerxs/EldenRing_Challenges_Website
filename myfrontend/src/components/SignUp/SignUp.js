@@ -55,18 +55,15 @@ const SignUp = () => {
         setIsLoading(true);
 
         try {
-            console.log('Attempting signup...');
-            
             const response = await axios.post(API_ENDPOINTS.SIGNUP, {
-                username: username.trim().toLowerCase(), 
-                email: email.trim().toLowerCase(), 
-                password 
+                username,
+                email,
+                password
             }, {
                 withCredentials: true,
                 timeout: 10000
             });
 
-            console.log('Signup successful:', response.data);
             setSuccess('Account created successfully! Redirecting to login...');
             
             // Clear form

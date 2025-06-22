@@ -20,17 +20,13 @@ const LogIn = () => {
         setIsLoading(true);
     
         try {
-            console.log('Attempting login...');
-            
             const response = await axios.post(API_ENDPOINTS.LOGIN, {
-                username: username.trim().toLowerCase(),
+                username,
                 password
             }, {
                 withCredentials: true,
                 timeout: 10000
             });
-
-            console.log('Login successful:', response.data);
             
             // Update user context with the returned user data
             await login(response.data.user);

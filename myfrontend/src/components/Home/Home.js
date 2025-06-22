@@ -114,7 +114,6 @@ function Home() {
     const totalPages = Math.ceil(filteredChallenges.length / challengesPerPage);
 
     const handlePageChange = (page) => {
-        console.log('Changing to page:', page); // Debug log
         if (page >= 1 && page <= totalPages) {
             setCurrentPage(page);
         }
