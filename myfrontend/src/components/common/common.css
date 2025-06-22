@@ -47,10 +47,11 @@
 
 .right-section {
   display: flex;
-  gap: 20px;
+  gap: 15px;
   margin-right: 165px;
   align-items: center; 
   font-weight: 600;
+  flex-wrap: nowrap;
 }
 
 .middle-section {
@@ -570,8 +571,8 @@
     white-space: nowrap;
     gap: 6px; /* Reduced gap for better proportions */
     background: linear-gradient(135deg, #222b33 0%, #2c3b47 50%, #3a4a59 100%); /* Navbar-like background */
-    min-width: 340px; /* Dynamic width with minimum */
-    max-width: 320px; /* Maximum width to prevent oversizing */
+    min-width: 280px; /* Reduced width to give notification bell more space */
+    max-width: 280px; /* Consistent width */
 }
 
 /* Tarnished theme - subtle before hover */

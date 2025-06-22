@@ -33,22 +33,8 @@ import logging
 
 logger = logging.getLogger('api')
 
-# Try to import SiteSettings, create a mock if it doesn't exist
-try:
-    from .models import SiteSettings
-except ImportError:
-    # Create a mock SiteSettings class if the model doesn't exist
-    class SiteSettings:
-        @classmethod
-        def get_settings(cls):
-            # Return default settings
-            class MockSettings:
-                enable_registrations = True
-                enable_submissions = True
-                maintenance_mode = False
-                max_submissions_per_day = 5
-                auto_approve_submissions = False
-            return MockSettings()
+# Import SiteSettings from models
+from .models import SiteSettings
 
 User = get_user_model()
 
