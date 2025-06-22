@@ -155,7 +155,18 @@ class AdminApproveSubmissionView(APIView):
     """
     Enhanced API endpoint for approving a submission with points calculation
     """
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAuthenticated]
+    
+    def dispatch(self, request, *args, **kwargs):
+        # Custom admin check - allow staff or superuser
+        if not (request.user.is_staff or request.user.is_superuser):
+            from rest_framework.response import Response
+            from rest_framework import status
+            return Response(
+                {'error': 'Admin privileges required'}, 
+                status=status.HTTP_403_FORBIDDEN
+            )
+        return super().dispatch(request, *args, **kwargs)
     
     def post(self, request, submission_id):
         try:
@@ -235,7 +246,18 @@ class AdminRejectSubmissionView(APIView):
     """
     Enhanced API endpoint for rejecting a submission with points removal
     """
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAuthenticated]
+    
+    def dispatch(self, request, *args, **kwargs):
+        # Custom admin check - allow staff or superuser
+        if not (request.user.is_staff or request.user.is_superuser):
+            from rest_framework.response import Response
+            from rest_framework import status
+            return Response(
+                {'error': 'Admin privileges required'}, 
+                status=status.HTTP_403_FORBIDDEN
+            )
+        return super().dispatch(request, *args, **kwargs)
     
     def post(self, request, submission_id):
         try:
