@@ -774,7 +774,6 @@ class AdminUserDetailView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
-@method_decorator(csrf_protect, name='dispatch')
 class AdminUserStatusView(APIView):
     """
     API endpoint for updating a user's active status
