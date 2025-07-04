@@ -19,7 +19,7 @@ import AdminUsers from './components/Admin/AdminUsers';
 import AdminSettings from './components/Admin/AdminSettings';
 import LoadingIndicator from './components/common/LoadingIndicator';
 import TopBar from './components/common/TopBar';
-import BottomBar from './components/common/BottomBar';
+import BottomBar from './components/common/bottomBar';
 import { UserProvider } from './components/common/UserContext';
 import { NotificationProvider } from './components/common/NotificationContext';
 import RouteLoader from './components/common/RouteLoader';
