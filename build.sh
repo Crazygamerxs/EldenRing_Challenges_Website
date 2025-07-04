@@ -67,6 +67,7 @@ sed -i 's|\.css"|.css'\'' %}"|g' templates/index.html
 sed -i 's|\.js"|.js'\'' %}"|g' templates/index.html
 
 # Handle specific assets
+sed -i 's|href="/favicon\.png"|href="{% static '\''favicon.png'\'' %}"|g' templates/index.html
 sed -i 's|href="/favicon\.ico"|href="{% static '\''favicon.ico'\'' %}"|g' templates/index.html
 sed -i 's|href="/manifest\.json"|href="{% static '\''manifest.json'\'' %}"|g' templates/index.html
 
