@@ -61,7 +61,7 @@ const TopBar = () => {
     // Buy Me a Coffee click handler
     const handleBuyMeCoffeeClick = () => {
         // Replace 'yourusername' with your actual Buy Me a Coffee username
-        window.open('https://buymeacoffee.com/Soda', '_blank', 'noopener,noreferrer');
+        window.open('https://buymeacoffee.com/fasana', '_blank', 'noopener,noreferrer');
     };
 
     // Cycling button text and icon messages on reload
