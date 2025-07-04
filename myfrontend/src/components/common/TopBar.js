@@ -77,7 +77,7 @@ const TopBar = () => {
             theme: "tarnished"
         },
         {
-            text: "Fund Ranni's mystical research endeavors",
+            text: "Fund Ranni's feet pic addiction!",
             icon: "🌙",
             theme: "ranni"
         },
